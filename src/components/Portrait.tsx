@@ -1,10 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
 export function Portrait() {
-  const [imgOk, setImgOk] = useState(true);
-
   return (
     <div className="relative aspect-square max-w-md mx-auto lg:mx-0 rounded-[32px] border border-border/12 overflow-hidden bg-bg/30">
       <div className="absolute inset-0 animated-gradient opacity-35" />
@@ -28,24 +24,12 @@ export function Portrait() {
 
       <div className="absolute inset-0 grid place-items-center">
         <div className="h-[72%] w-[66%] overflow-hidden rounded-3xl border border-border/12 bg-bg/30 shadow-[0_10px_40px_rgba(11,15,20,0.35)]">
-          {imgOk ? (
-            // Замените файл на свой портрет: `public/images/anastasia-hero.png`
-            // Если файла нет — покажем fallback.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/images/anastasia-hero.png"
-              alt="Анастасия Мельникова"
-              className="h-full w-full object-cover"
-              onError={() => setImgOk(false)}
-            />
-          ) : (
-            <div className="text-center">
-              <div className="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-accent via-accent2 to-warm leading-none">
-                AM
-              </div>
-              <div className="mt-2 text-sm text-text/70">AI-архитектор • наставник</div>
-            </div>
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/anastasia-hero.png"
+            alt="Анастасия Мельникова"
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
     </div>
