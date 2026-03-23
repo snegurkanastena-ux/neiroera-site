@@ -1,0 +1,74 @@
+ "use client";
+
+import Link from "next/link";
+import type { ReactNode } from "react";
+
+type ButtonVariant = "primary" | "secondary" | "ghost";
+
+export type ButtonProps = {
+  children: ReactNode;
+  href?: string;
+  onClick?: () => void;
+  type?: "button" | "submit";
+  variant?: ButtonVariant;
+  className?: string;
+  target?: string;
+  rel?: string;
+};
+
+function buttonClasses(variant: ButtonVariant) {
+  switch (variant) {
+    case "primary":
+      return "bg-accent text-onAccent shadow-glow hover:brightness-110 border border-accent/70";
+    case "secondary":
+      return "bg-accent2/20 text-text border border-accent2/35 hover:bg-accent2/25";
+    case "ghost":
+      return "bg-transparent text-text/90 border border-border/12 hover:bg-surface/8";
+  }
+}
+
+export function Button({
+  children,
+  href,
+  onClick,
+  type = "button",
+  variant = "primary",
+  className = "",
+  target,
+  rel
+}: ButtonProps) {
+  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 ${buttonClasses(
+    variant
+  )} ${className}`;
+
+  if (href) {
+    const isHash = href.startsWith("#");
+    const isInternal = href.startsWith("/");
+    if (isHash) {
+      return (
+        <a href={href} className={cls} onClick={onClick}>
+          {children}
+        </a>
+      );
+    }
+    if (isInternal) {
+      return (
+        <Link href={href} className={cls} onClick={onClick}>
+          {children}
+        </Link>
+      );
+    }
+    return (
+      <a href={href} className={cls} target={target ?? "_blank"} rel={rel ?? "noopener noreferrer"} onClick={onClick}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button type={type} className={cls} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+

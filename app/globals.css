@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Темы: data-theme="dark" | data-theme="light" на <html>.
+  Цвета через RGB + opacity в Tailwind (border-border/10 и т.д.).
+*/
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Тёмная тема — по умолчанию (как на исходном сайте) */
+  html[data-theme="dark"],
+  html:not([data-theme]) {
+    --bg-rgb: 11 15 20;
+    --text-rgb: 245 247 250;
+    /* «Стекло» и границы: светлый оттенок поверх тёмного фона */
+    --surface-rgb: 255 255 255;
+    --border-rgb: 255 255 255;
+    --header-bg-rgb: 11 15 20;
+    --orb-cyan: 55 230 255;
+    --orb-purple: 139 92 255;
+  }
+
+  html[data-theme="light"] {
+    --bg-rgb: 248 250 252;
+    --text-rgb: 15 23 42;
+    --surface-rgb: 15 23 42;
+    --border-rgb: 15 23 42;
+    --header-bg-rgb: 248 250 252;
+    --orb-cyan: 6 182 212;
+    --orb-purple: 124 58 237;
+  }
+
+  body {
+    background: rgb(var(--bg-rgb));
+    color: rgb(var(--text-rgb));
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+      "Segoe UI Emoji";
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+}
+
+.gradient-orb {
+  background: radial-gradient(
+    closest-side,
+    rgb(var(--orb-cyan) / 0.55),
+    rgb(var(--orb-cyan) / 0) 70%
+  );
+  filter: blur(10px);
+  opacity: 0.9;
+  transition: opacity 0.35s ease;
+}
+
+.gradient-orb.purple {
+  background: radial-gradient(
+    closest-side,
+    rgb(var(--orb-purple) / 0.55),
+    rgb(var(--orb-purple) / 0) 70%
+  );
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--orb-cyan) / 0.25),
+    rgb(var(--orb-purple) / 0.25),
+    rgb(243 201 182 / 0.15)
+  );
+  background-size: 220% 220%;
+  animation: gradientShift 10s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
