@@ -29,11 +29,11 @@ export function Portrait() {
       <div className="absolute inset-0 grid place-items-center">
         <div className="h-[72%] w-[66%] overflow-hidden rounded-3xl border border-border/12 bg-bg/30 shadow-[0_10px_40px_rgba(11,15,20,0.35)]">
           {imgOk ? (
-            // Замените файл на свой портрет: `public/images/anastasia-hero.jpg`
+            // Замените файл на свой портрет: `public/images/anastasia-hero.png`
             // Если файла нет — покажем fallback.
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src="/images/anastasia-hero.jpg"
+              src="/images/anastasia-hero.png"
               alt="Анастасия Мельникова"
               className="h-full w-full object-cover"
               onError={() => setImgOk(false)}
