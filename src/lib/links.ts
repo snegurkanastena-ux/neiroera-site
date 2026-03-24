@@ -8,6 +8,8 @@ export const siteLinks = {
   telegramChannel: "https://t.me/neiroeraMelnikova",
   /** Telegram-бот для связи */
   telegramBot: "https://t.me/Neuroeracall_bot",
+  /** Telegram: кейсы, видео и музыка (портфолио) */
+  telegramPortfolioCases: "https://t.me/portfplio_creator_Melnikova",
   /** Страница VK */
   vkPage: "https://vk.com/neuroera_melnikova",
   /** VK канал (мессенджер) */

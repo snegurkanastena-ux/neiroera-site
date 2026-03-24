@@ -14,6 +14,15 @@ import { Reveal } from "./Reveal";
 import { ServiceCalculator } from "./ServiceCalculator";
 import { Button } from "./ui/Button";
 
+/** Треки в `public/portfolio/music` (имена файлов из репозитория). */
+const PORTFOLIO_MUSIC_TRACKS = [
+  "/portfolio/music/ai-track-01.mp3.mp3",
+  "/portfolio/music/ai-track-02.mp3.mp3",
+  "/portfolio/music/ai-track-03.mp3.mp3",
+  "/portfolio/music/ai-track-04.mp3.mp3",
+  "/portfolio/music/ai-track-05.mp3.mp3"
+] as const;
+
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
   const { t } = useI18n();
   return (
@@ -234,11 +243,11 @@ export function HomePageContent() {
             <Reveal key={item.title} delayMs={idx * 70}>
               <a
                 href={`#${item.anchor}`}
-                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 no-underline outline-none transition-all duration-300 hover:scale-[1.025] hover:border-accent/32 hover:shadow-[0_0_48px_rgba(94,231,255,0.14)] focus-visible:ring-2 focus-visible:ring-accent/40"
+                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.03] hover:border-accent/35 hover:shadow-[0_0_56px_rgba(94,231,255,0.2)] focus-visible:ring-2 focus-visible:ring-accent/40"
               >
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
+                  className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent/12 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
                 />
                 <article className="relative flex h-full flex-col">
                   <h3 className="text-lg font-black text-text">{item.title}</h3>
@@ -257,6 +266,51 @@ export function HomePageContent() {
                 <div className="rounded-3xl border border-border/12 bg-bg/[0.15] p-6 sm:p-8">
                   <h3 className="text-xl font-black">{item.title}</h3>
                   <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
+
+                  {item.anchor === "portfolio-video" && item.casesCta ? (
+                    <div className="mt-6">
+                      <Button
+                        href={siteLinks.telegramPortfolioCases}
+                        variant="primary"
+                        className="w-full sm:w-auto"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.casesCta}
+                      </Button>
+                      {item.casesNote ? (
+                        <p className="mt-3 max-w-xl text-xs leading-relaxed text-text/55">{item.casesNote}</p>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  {item.anchor === "portfolio-music" ? (
+                    <div className="mt-6">
+                      <div className="space-y-3">
+                        {PORTFOLIO_MUSIC_TRACKS.map((src) => (
+                          <audio
+                            key={src}
+                            controls
+                            preload="metadata"
+                            className="h-10 w-full max-w-xl rounded-lg accent-accent"
+                          >
+                            <source src={src} type="audio/mpeg" />
+                          </audio>
+                        ))}
+                      </div>
+                      {item.listenMoreCta ? (
+                        <Button
+                          href={siteLinks.telegramPortfolioCases}
+                          variant="secondary"
+                          className="mt-6 w-full sm:w-auto"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.listenMoreCta}
+                        </Button>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
               </Reveal>
             </div>

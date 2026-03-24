@@ -28,7 +28,14 @@ export type Messages = {
     kicker: string;
     title: string;
     intro: string;
-    items: { title: string; desc: string; anchor: string }[];
+    items: {
+      title: string;
+      desc: string;
+      anchor: string;
+      casesCta?: string;
+      casesNote?: string;
+      listenMoreCta?: string;
+    }[];
   };
   productsSection: { kicker: string; title: string; items: { title: string; desc: string }[] };
   servicesSection: Record<string, string>;
@@ -158,14 +165,17 @@ export const messagesByLang: Record<Lang, Messages> = {
           anchor: "portfolio-neurophoto"
         },
         {
-          title: "Видео / клипы",
-          desc: "Сценарий, ритм монтажа и визуальный ряд: от коротких роликов до выразительных клипов.",
-          anchor: "portfolio-video"
+          title: "Кейсы и видео",
+          desc: "Реальные проекты, сценарии и визуал — смотрите в Telegram",
+          anchor: "portfolio-video",
+          casesCta: "Смотреть кейсы →",
+          casesNote: "Часть кейсов не публикуется в открытом доступе"
         },
         {
           title: "Музыка",
           desc: "Музыкальные идеи и аранжировки в связке с современными AI-инструментами.",
-          anchor: "portfolio-music"
+          anchor: "portfolio-music",
+          listenMoreCta: "Слушать больше →"
         }
       ]
     },
@@ -536,14 +546,17 @@ export const messagesByLang: Record<Lang, Messages> = {
           anchor: "portfolio-neurophoto"
         },
         {
-          title: "Video / clips",
-          desc: "Scripts, edit rhythm, and visuals — from short-form to expressive clips.",
-          anchor: "portfolio-video"
+          title: "Cases & video",
+          desc: "Real projects, scripts, and visuals — on Telegram",
+          anchor: "portfolio-video",
+          casesCta: "View cases →",
+          casesNote: "Some work is not shared publicly"
         },
         {
           title: "Music",
           desc: "Musical ideas and arrangements using modern AI music workflows.",
-          anchor: "portfolio-music"
+          anchor: "portfolio-music",
+          listenMoreCta: "Listen more →"
         }
       ]
     },
