@@ -36,7 +36,7 @@ export function Portrait() {
       onPointerLeave={onPointerLeave}
     >
       <motion.div
-        className="relative overflow-hidden rounded-[22px] border border-white/[0.12] shadow-[0_32px_100px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06),0_0_72px_rgba(94,231,255,0.1)] ring-1 ring-white/[0.04]"
+        className="relative overflow-hidden rounded-[20px] shadow-[0_28px_64px_rgba(0,0,0,0.42)]"
         style={reduceMotion ? undefined : { x: springX, y: springY }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}

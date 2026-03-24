@@ -612,11 +612,16 @@ export function HomePageContent() {
 
       {/* ФИНАЛ */}
       <section id="consultation" className="mt-20 scroll-mt-24">
-        <div className="relative overflow-hidden rounded-[32px] border border-border/14 bg-bg/[0.18] p-6 sm:p-10">
-          <div aria-hidden="true" className="animated-gradient absolute inset-0 opacity-[0.22]" />
-          <div aria-hidden="true" className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
-          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-            <div className="min-w-0 max-w-3xl flex-1">
+        <div className="relative rounded-[32px] border border-border/14 bg-bg/[0.18]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]"
+          >
+            <div className="animated-gradient absolute inset-0 opacity-[0.22]" />
+            <div className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
+          </div>
+          <div className="relative z-10 p-6 pb-14 sm:p-10 sm:pb-12">
+            <div className="min-w-0 max-w-3xl">
               <Reveal>
                 <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
               </Reveal>
@@ -637,20 +642,20 @@ export function HomePageContent() {
             </div>
             <motion.div
               aria-hidden
-              className="flex shrink-0 justify-center lg:justify-end lg:self-end"
-              initial={reduceMotion ? { opacity: 0.72, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.97 }}
-              whileInView={{ opacity: 0.72, y: 0, scale: 1 }}
+              className="pointer-events-auto absolute bottom-0 right-0 z-20 w-max translate-x-[12%] translate-y-[18%] sm:translate-x-[18%] sm:translate-y-[24%]"
+              initial={reduceMotion ? { opacity: 0.55, y: 0, scale: 1 } : { opacity: 0, y: 6, scale: 0.96 }}
+              whileInView={{ opacity: 0.55, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={reduceMotion ? undefined : { scale: 1.05 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={reduceMotion ? undefined : { scale: 1.08, y: -2 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/chipmunk.png"
                 alt=""
-                width={72}
-                height={72}
-                className="h-[4.25rem] w-[4.25rem] object-contain sm:h-[4.75rem] sm:w-[4.75rem]"
+                width={48}
+                height={48}
+                className="h-11 w-11 object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.28)] sm:h-12 sm:w-12"
               />
             </motion.div>
           </div>
