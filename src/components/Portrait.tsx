@@ -36,14 +36,14 @@ export function Portrait() {
       onPointerLeave={onPointerLeave}
     >
       <motion.div
-        className="relative overflow-hidden rounded-[18px] lg:rounded-[20px]"
+        className="relative mx-auto w-fit max-w-full lg:mx-0 lg:ml-auto"
         style={reduceMotion ? undefined : { x: springX, y: springY }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/anastasia-hero.png"
           alt="Анастасия Мельникова"
-          className="mx-auto h-auto w-full max-h-[320px] object-contain object-center sm:max-h-none lg:mx-0"
+          className="mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center rounded-[18px] sm:max-h-none lg:mx-0 lg:rounded-[20px]"
         />
       </motion.div>
     </div>

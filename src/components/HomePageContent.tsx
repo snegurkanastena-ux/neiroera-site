@@ -158,7 +158,7 @@ export function HomePageContent() {
             </div>
           </div>
 
-          <Reveal className="relative w-full max-lg:mt-1 lg:justify-self-end">
+          <Reveal className="relative flex w-full max-lg:mt-1 justify-center lg:justify-self-end lg:justify-end">
             <Portrait />
           </Reveal>
         </div>
