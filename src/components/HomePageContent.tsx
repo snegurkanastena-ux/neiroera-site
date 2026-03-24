@@ -68,6 +68,14 @@ export function HomePageContent() {
     }
   }, [t]);
 
+  const aboutListItems = useMemo(() => {
+    try {
+      return JSON.parse(t("about.listItems")) as string[];
+    } catch {
+      return [];
+    }
+  }, [t]);
+
   const [calcLines, setCalcLines] = useState<CalcLine[]>([]);
 
   const addToCalc = useCallback((id: ServiceId) => {
@@ -103,12 +111,21 @@ export function HomePageContent() {
   const caseItems = messages.cases.items;
   const processSteps = messages.process.steps;
   const reviewItems = messages.reviews.items;
+  const portfolioItems = messages.portfolio.items;
 
   return (
     <div id="top" className="pt-10 sm:pt-16 pb-14">
       {/* HERO */}
-      <section>
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+      <section className="relative">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(92vh,880px)] w-full -translate-y-1/2 rounded-[44px] opacity-100"
+        >
+          <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
+          <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.42]" />
+        </div>
+
+        <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12">
           <div>
             <Reveal>
               <div className="inline-flex items-center gap-2 rounded-2xl border border-border/12 bg-transparent px-4 py-2 text-xs text-text/70 sm:text-sm">
@@ -118,7 +135,9 @@ export function HomePageContent() {
             </Reveal>
 
             <Reveal delayMs={80}>
-              <h1 className="mt-5 text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">{t("hero.title")}</h1>
+              <h1 className="mt-5 whitespace-pre-line text-3xl font-black leading-[1.08] sm:text-4xl lg:text-[2.65rem] lg:leading-[1.06]">
+                {t("hero.title")}
+              </h1>
             </Reveal>
 
             <Reveal delayMs={140}>
@@ -148,7 +167,13 @@ export function HomePageContent() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Reveal>
-                <Button href="#consultation" variant="primary" className="w-full sm:w-auto">
+                <Button
+                  href={siteLinks.telegramBot}
+                  variant="primary"
+                  className="w-full sm:w-auto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {t("hero.ctaConsult")}
                 </Button>
               </Reveal>
@@ -184,31 +209,78 @@ export function HomePageContent() {
       {/* ABOUT */}
       <section id="about" className="mt-20">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
-        <div className="grid items-start gap-8 lg:grid-cols-2">
+        <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <Reveal>
-            <div className="rounded-3xl border border-border/12 bg-transparent p-6">
-              <p className="leading-relaxed text-text/85">{t("about.p1")}</p>
-              <p className="mt-4 leading-relaxed text-text/85">{t("about.p2")}</p>
+            <div className="overflow-hidden rounded-3xl border border-white/[0.08] shadow-[0_24px_70px_rgba(0,0,0,0.45),0_0_48px_rgba(94,231,255,0.06)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/anastasia-about.png"
+                alt={t("footer.name")}
+                className="aspect-[4/5] w-full object-cover sm:aspect-[5/6] lg:aspect-auto lg:min-h-[380px]"
+              />
             </div>
           </Reveal>
 
-          <Reveal delayMs={80}>
-            <div className="space-y-3">
-              {pillars.map((x, idx) => (
-                <div key={x.title} className="rounded-3xl border border-border/12 bg-bg/20 p-5 transition-all duration-300 hover:border-accent/20">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="font-bold">{x.title}</div>
-                      <div className="mt-1 text-sm text-text/70">{x.desc}</div>
-                    </div>
-                    <div className="grid h-10 w-10 place-items-center rounded-2xl border border-accent/30 bg-accent/15">
-                      <span className="font-black text-accent">{idx + 1}</span>
+          <div className="space-y-6">
+            <Reveal delayMs={60}>
+              <div className="rounded-3xl border border-border/12 bg-transparent p-6">
+                <p className="whitespace-pre-line leading-relaxed text-text/88">{t("about.p1")}</p>
+                <p className="mt-4 leading-relaxed text-text/88">{t("about.p2")}</p>
+                <p className="mt-6 text-sm font-semibold text-text/90">{t("about.listLabel")}</p>
+                <ul className="mt-3 space-y-2 text-sm leading-relaxed text-text/80">
+                  {aboutListItems.map((line) => (
+                    <li key={line} className="flex gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+
+            <Reveal delayMs={120}>
+              <div className="space-y-3">
+                {pillars.map((x, idx) => (
+                  <div
+                    key={x.title}
+                    className="rounded-3xl border border-border/12 bg-bg/20 p-5 transition-all duration-300 hover:border-accent/20 hover:shadow-glow-soft"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="font-bold">{x.title}</div>
+                        <div className="mt-1 text-sm text-text/70">{x.desc}</div>
+                      </div>
+                      <div className="grid h-10 w-10 place-items-center rounded-2xl border border-accent/30 bg-accent/15">
+                        <span className="font-black text-accent">{idx + 1}</span>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* PORTFOLIO */}
+      <section id="portfolio" className="mt-20 scroll-mt-24">
+        <SectionTitle kickerKey="portfolio.kicker" titleKey="portfolio.title" />
+        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-text/72">{t("portfolio.intro")}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {portfolioItems.map((item, idx) => (
+            <Reveal key={item.title} delayMs={idx * 70}>
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 transition-all duration-300 hover:scale-[1.02] hover:border-accent/28 hover:shadow-glow-soft">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
+                />
+                <div className="relative">
+                  <h3 className="text-lg font-black">{item.title}</h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-text/72">{item.desc}</p>
                 </div>
-              ))}
-            </div>
-          </Reveal>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -501,7 +573,13 @@ export function HomePageContent() {
                 </Reveal>
                 <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                   <Reveal>
-                    <Button href="#consultation" variant="primary" className="w-full sm:w-auto">
+                    <Button
+                      href={siteLinks.telegramBot}
+                      variant="primary"
+                      className="w-full sm:w-auto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {t("final.ctaConsult")}
                     </Button>
                   </Reveal>

@@ -15,18 +15,18 @@
   /* Тёмная тема — по умолчанию (как на исходном сайте) */
   html[data-theme="dark"],
   html:not([data-theme]) {
-    --bg-rgb: 11 15 20;
-    --text-rgb: 245 247 250;
+    --bg-rgb: 6 9 14;
+    --text-rgb: 248 250 252;
     /* «Стекло» и границы: светлый оттенок поверх тёмного фона */
     --surface-rgb: 255 255 255;
     --border-rgb: 255 255 255;
-    --header-bg-rgb: 11 15 20;
+    --header-bg-rgb: 6 9 14;
     --orb-cyan: 55 230 255;
     --orb-purple: 139 92 255;
   }
 
   html[data-theme="light"] {
-    --bg-rgb: 248 250 252;
+    --bg-rgb: 241 245 249;
     --text-rgb: 15 23 42;
     --surface-rgb: 15 23 42;
     --border-rgb: 15 23 42;
@@ -47,41 +47,53 @@
 .gradient-orb {
   background: radial-gradient(
     closest-side,
-    rgb(var(--orb-cyan) / 0.55),
-    rgb(var(--orb-cyan) / 0) 70%
+    rgb(var(--orb-cyan) / 0.62),
+    rgb(var(--orb-cyan) / 0) 72%
   );
-  filter: blur(10px);
-  opacity: 0.9;
+  filter: blur(12px);
+  opacity: 0.95;
   transition: opacity 0.35s ease;
 }
 
 .gradient-orb.purple {
   background: radial-gradient(
     closest-side,
-    rgb(var(--orb-purple) / 0.55),
-    rgb(var(--orb-purple) / 0) 70%
+    rgb(var(--orb-purple) / 0.58),
+    rgb(var(--orb-purple) / 0) 72%
   );
 }
 
 .animated-gradient {
   background: linear-gradient(
-    120deg,
-    rgb(var(--orb-cyan) / 0.25),
-    rgb(var(--orb-purple) / 0.25),
-    rgb(243 201 182 / 0.15)
+    125deg,
+    rgb(var(--orb-cyan) / 0.34),
+    rgb(var(--orb-purple) / 0.32),
+    rgb(243 201 182 / 0.12),
+    rgb(var(--orb-cyan) / 0.2)
   );
-  background-size: 220% 220%;
-  animation: gradientShift 10s ease-in-out infinite;
+  background-size: 280% 280%;
+  animation: gradientShift 16s ease-in-out infinite;
+}
+
+.hero-gradient-layer {
+  background: radial-gradient(
+      ellipse 85% 65% at 78% 18%,
+      rgb(var(--orb-purple) / 0.26),
+      transparent 52%
+    ),
+    radial-gradient(ellipse 70% 55% at 12% 72%, rgb(var(--orb-cyan) / 0.2), transparent 50%),
+    linear-gradient(165deg, rgb(var(--bg-rgb) / 0) 0%, rgb(var(--bg-rgb)) 100%);
+  pointer-events: none;
 }
 
 @keyframes gradientShift {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 40%;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 60%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0% 40%;
   }
 }

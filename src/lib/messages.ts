@@ -15,6 +15,12 @@ export type Messages = {
   nav: Record<string, string>;
   hero: Record<string, string | string[]>;
   about: Record<string, string | Pillar[]>;
+  portfolio: {
+    kicker: string;
+    title: string;
+    intro: string;
+    items: { title: string; desc: string }[];
+  };
   servicesSection: Record<string, string>;
   serviceItems: Record<ServiceId, { title: string; desc: string; action: string }>;
   calculatorSection: Record<string, string>;
@@ -52,6 +58,7 @@ export const messagesByLang: Record<Lang, Messages> = {
   ru: {
     nav: {
       about: "Обо мне",
+      portfolio: "Портфолио",
       services: "Услуги",
       calculator: "Калькулятор",
       audience: "Для кого",
@@ -63,9 +70,11 @@ export const messagesByLang: Record<Lang, Messages> = {
       openMenu: "Открыть меню"
     },
     hero: {
-      badge: "AI-архитектор личного бренда и цифровых решений",
-      title: "Анастасия Мельникова",
-      subtitle: "Помогаю экспертам и бизнесу внедрять нейросети в контент, продажи и систему роста",
+      badge: "AI-креатор · AI-архитектор цифровых систем",
+      title:
+        "Создаю системы роста на базе ИИ\nдля бизнеса, экспертов и творчества",
+      subtitle:
+        "Сайт, контент, автоматизация и AI-инструменты — всё в одной системе, которая приносит результат",
       systemLabel: "Создаю для вас систему:",
       systemItems: JSON.stringify(["сайт", "контент", "AI-инструменты", "автоматизация"]),
       ctaConsult: "Записаться на консультацию",
@@ -79,13 +88,39 @@ export const messagesByLang: Record<Lang, Messages> = {
     },
     about: {
       kicker: "Обо мне",
-      title: "Живая практика: от управления к внедрению ИИ",
-      p1: "Я помогаю предпринимателям, экспертам и малому бизнесу внедрять нейросети в работу, контент и систему роста. Мой фокус — не «поиграться с ИИ», а сделать результат стабильным.",
-      p2: "Путь простой: больше 15 лет управленческого опыта в телеком/ритейл — и затем переход к практикам AI. Поэтому я умею разговаривать с бизнесом языком задач, процессов и измеримого эффекта.",
+      title: "От управления к внедрению ИИ в реальные задачи",
+      p1: "Я не учу «пользоваться нейросетями».\nЯ внедряю их в реальные задачи бизнеса.",
+      p2: "Более 15 лет управленческого опыта и переход в практическое применение ИИ.",
+      listLabel: "Помогаю собрать систему, где:",
+      listItems: JSON.stringify([
+        "сайт приводит клиентов",
+        "контент продаёт",
+        "автоматизация экономит время",
+        "AI усиливает результат"
+      ]),
       pillars: [
         { title: "Практик, а не теоретик", desc: "Реальные кейсы и внедрения, которые можно повторить." },
         { title: "Система вместо хаоса", desc: "Контент, сайт и AI-инструменты собираются в один рабочий контур." },
         { title: "Тональность бренда", desc: "Личный стиль сохраняется — технологии лишь усиливают." }
+      ]
+    },
+    portfolio: {
+      kicker: "Портфолио",
+      title: "Визуал, движение и звук",
+      intro: "Направления, в которых собираю цельные решения на стыке креатива и AI.",
+      items: [
+        {
+          title: "Нейрофото",
+          desc: "Обложки, визуалы для соцсетей и рекламы — быстро, в едином стиле и с сильным кадром."
+        },
+        {
+          title: "Видео / клипы",
+          desc: "Сценарий, ритм монтажа и визуальный ряд: от коротких роликов до выразительных клипов."
+        },
+        {
+          title: "Музыка",
+          desc: "Музыкальные идеи и аранжировки в связке с современными AI-инструментами."
+        }
       ]
     },
     servicesSection: {
@@ -302,9 +337,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       note: "Оставьте заявку — я уточню запрос и предложу следующий шаг. Обычно начинаем с разбора ситуации и стратегии внедрения."
     },
     leadForm: {
-      badge: "Форма заявки",
-      title: "Запишитесь на консультацию",
-      hint: "Ответим в Telegram или по контакту",
+      badge: "Связь",
+      title: "Заявка и консультация",
+      intro: "Откройте диалог в боте и кратко опишите задачу — так быстрее согласуем запрос и следующий шаг.",
+      hint: "Напишите в Telegram — так быстрее согласуем задачу и следующий шаг",
       name: "Имя",
       namePh: "Как к вам обращаться?",
       contact: "Telegram / Email / Телефон",
@@ -314,12 +350,13 @@ export const messagesByLang: Record<Lang, Messages> = {
       message: "Коротко о задаче",
       messagePh: "Напишите 2–4 предложения: что есть сейчас, что не получается, какой результат нужен.",
       submit: "Отправить заявку",
+      ctaTelegram: "Написать в Telegram",
       sending: "Отправляем...",
       successTitle: "Заявка отправлена",
       successText:
         "Спасибо! Я свяжусь с вами, чтобы обсудить задачу и следующий шаг. Параллельно пришлю материалы в Telegram или на контакт.",
       error: "Не удалось отправить заявку. Попробуйте ещё раз.",
-      consent: "Нажимая «Отправить заявку», вы соглашаетесь на обработку данных для связи."
+      consent: "Переходя в Telegram, вы инициируете диалог для обсуждения запроса."
     },
     footer: {
       name: "Анастасия Мельникова",
@@ -327,8 +364,9 @@ export const messagesByLang: Record<Lang, Messages> = {
       rights: "Все права защищены"
     },
     meta: {
-      title: "Анастасия Мельникова — AI-архитектор личного бренда",
-      description: "Помогаю экспертам и бизнесу внедрять нейросети в контент, продажи и систему роста"
+      title: "Анастасия Мельникова — AI-креатор и AI-архитектор",
+      description:
+        "Системы роста на базе ИИ: сайт, контент, автоматизация и инструменты — в одном контуре с измеримым результатом"
     },
     theme: {
       toLight: "Включить светлую тему",
@@ -340,6 +378,7 @@ export const messagesByLang: Record<Lang, Messages> = {
   en: {
     nav: {
       about: "About",
+      portfolio: "Portfolio",
       services: "Services",
       calculator: "Estimator",
       audience: "Audience",
@@ -351,9 +390,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       openMenu: "Open menu"
     },
     hero: {
-      badge: "AI architect for personal brands and digital systems",
-      title: "Anastasia Melnikova",
-      subtitle: "I help experts and businesses embed AI into content, sales, and growth systems",
+      badge: "AI creator · AI architect for digital systems",
+      title: "I build AI-powered growth systems\nfor business, experts, and creative work",
+      subtitle:
+        "Website, content, automation, and AI tools — one connected system that drives outcomes",
       systemLabel: "What we can build together:",
       systemItems: JSON.stringify(["website", "content", "AI tools", "automation"]),
       ctaConsult: "Book a consultation",
@@ -367,13 +407,39 @@ export const messagesByLang: Record<Lang, Messages> = {
     },
     about: {
       kicker: "About",
-      title: "Hands-on path: from management to AI adoption",
-      p1: "I help founders, experts, and small teams bring neural networks into daily work, content, and growth. The goal is not to “play with AI,” but to make outcomes repeatable.",
-      p2: "Background: 15+ years in telecom and retail leadership, then a sharp focus on practical AI. I speak the language of processes, constraints, and measurable impact.",
+      title: "From leadership to AI embedded in real business work",
+      p1: "I don’t teach people to “use neural networks.”\nI embed them into real business problems.",
+      p2: "15+ years of management experience and a shift into hands-on AI adoption.",
+      listLabel: "I help assemble a system where:",
+      listItems: JSON.stringify([
+        "your site brings clients",
+        "content sells",
+        "automation saves time",
+        "AI amplifies outcomes"
+      ]),
       pillars: [
         { title: "Practitioner, not hype", desc: "Real launches you can copy, not abstract slides." },
         { title: "Systems over chaos", desc: "Website, content, and AI tools wired into one loop." },
         { title: "Brand voice first", desc: "Technology amplifies your tone—it does not replace it." }
+      ]
+    },
+    portfolio: {
+      kicker: "Portfolio",
+      title: "Visuals, motion, and sound",
+      intro: "Focus areas where I ship cohesive work at the intersection of craft and AI.",
+      items: [
+        {
+          title: "Neuro photography",
+          desc: "Covers and social visuals with a strong frame — fast and visually consistent."
+        },
+        {
+          title: "Video / clips",
+          desc: "Scripts, edit rhythm, and visuals — from short-form to expressive clips."
+        },
+        {
+          title: "Music",
+          desc: "Musical ideas and arrangements using modern AI music workflows."
+        }
       ]
     },
     servicesSection: {
@@ -590,9 +656,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       note: "Share a short brief—I’ll reply with next steps. We usually start with discovery and an adoption roadmap."
     },
     leadForm: {
-      badge: "Contact form",
-      title: "Book a consultation",
-      hint: "We reply on Telegram or your preferred channel",
+      badge: "Contact",
+      title: "Requests & consultations",
+      intro: "Open the bot chat and share a short brief — we’ll align faster on scope and next steps.",
+      hint: "Message on Telegram — fastest way to align on the brief and next steps",
       name: "Name",
       namePh: "How should we address you?",
       contact: "Telegram / Email / Phone",
@@ -602,12 +669,13 @@ export const messagesByLang: Record<Lang, Messages> = {
       message: "Brief context",
       messagePh: "2–4 sentences: current state, blockers, desired outcome.",
       submit: "Send request",
+      ctaTelegram: "Message on Telegram",
       sending: "Sending...",
       successTitle: "Request received",
       successText:
         "Thank you! I’ll follow up to align on the brief and next steps, and share materials on Telegram or email.",
       error: "Something went wrong. Please try again.",
-      consent: "By sending the form you agree to be contacted about your request."
+      consent: "Opening Telegram starts a conversation to discuss your request."
     },
     footer: {
       name: "Anastasia Melnikova",
@@ -615,8 +683,9 @@ export const messagesByLang: Record<Lang, Messages> = {
       rights: "All rights reserved"
     },
     meta: {
-      title: "Anastasia Melnikova — AI brand architect",
-      description: "Helping experts and businesses embed AI into content, sales, and growth systems"
+      title: "Anastasia Melnikova — AI creator & architect",
+      description:
+        "AI-powered growth systems: website, content, automation, and tools in one loop with measurable outcomes"
     },
     theme: {
       toLight: "Switch to light theme",

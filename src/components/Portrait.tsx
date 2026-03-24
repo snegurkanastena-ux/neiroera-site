@@ -1,38 +1,55 @@
 "use client";
 
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
+
 export function Portrait() {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+
+  const moveX = useTransform(mx, [0, 1], [10, -10]);
+  const moveY = useTransform(my, [0, 1], [-8, 8]);
+  const springX = useSpring(moveX, { stiffness: 52, damping: 22, mass: 0.4 });
+  const springY = useSpring(moveY, { stiffness: 52, damping: 22, mass: 0.4 });
+
+  function onPointerMove(e: React.PointerEvent) {
+    if (reduceMotion) return;
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width);
+    my.set((e.clientY - r.top) / r.height);
+  }
+
+  function onPointerLeave() {
+    mx.set(0.5);
+    my.set(0.5);
+  }
+
   return (
-    <div className="relative aspect-square max-w-md mx-auto lg:mx-0 rounded-[32px] border border-border/12 overflow-hidden bg-bg/30">
-      <div className="absolute inset-0 animated-gradient opacity-35" />
-      <div className="absolute -top-28 -left-28 h-64 w-64 gradient-orb" />
-      <div className="absolute -bottom-32 -right-36 h-72 w-72 gradient-orb purple opacity-80" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(243,201,182,0.14),rgba(11,15,20,0)_55%)]" />
-
-      {/* Световой “каркас” */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-10 top-12 h-2 w-2 rounded-full bg-accent shadow-glow" />
-        <div className="absolute right-10 top-24 h-2 w-2 rounded-full bg-accent2 shadow-[0_0_24px_rgba(139,92,255,0.35)]" />
-        <div className="absolute left-16 bottom-16 h-2 w-2 rounded-full bg-warm/90 shadow-[0_0_24px_rgba(243,201,182,0.25)]" />
-      </div>
-
-      <div className="absolute inset-0 flex items-end justify-end p-5">
-        <div className="rounded-2xl border border-border/12 bg-bg/40 px-4 py-3">
-          <div className="text-xs text-text/60">Digital glow</div>
-          <div className="text-lg font-black">personal brand</div>
-        </div>
-      </div>
-
-      <div className="absolute inset-0 grid place-items-center">
-        <div className="h-[72%] w-[66%] overflow-hidden rounded-3xl border border-border/12 bg-bg/30 shadow-[0_10px_40px_rgba(11,15,20,0.35)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/anastasia-hero.png"
-            alt="Анастасия Мельникова"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </div>
+    <div
+      ref={ref}
+      className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none"
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-6 rounded-[36px] bg-[radial-gradient(ellipse_at_30%_20%,rgb(var(--orb-cyan)/0.14),transparent_55%),radial-gradient(ellipse_at_80%_70%,rgb(var(--orb-purple)/0.12),transparent_50%)] opacity-90 blur-[1px]"
+      />
+      <motion.div
+        className="relative overflow-hidden rounded-[28px] border border-white/[0.08] shadow-[0_28px_90px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.04),0_0_60px_rgba(55,230,255,0.08)]"
+        style={reduceMotion ? undefined : { x: springX, y: springY }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/anastasia-hero.png"
+          alt="Анастасия Мельникова"
+          className="aspect-[4/5] w-full object-cover sm:aspect-[3/4] lg:min-h-[min(520px,70vh)] lg:aspect-auto"
+        />
+      </motion.div>
     </div>
   );
 }
-

@@ -14,6 +14,7 @@ import { LanguageSwitch } from "./LanguageSwitch";
 
 const NAV_KEYS = [
   { labelKey: "nav.about", href: "#about" },
+  { labelKey: "nav.portfolio", href: "#portfolio" },
   { labelKey: "nav.services", href: "#services" },
   { labelKey: "nav.calculator", href: "#calculator" },
   { labelKey: "nav.audience", href: "#audience" },
@@ -37,7 +38,7 @@ export default function Header() {
           </span>
           <span className="hidden sm:block">
             <span className="block font-semibold leading-3">{t("footer.tag")}</span>
-            <span className="block text-xs leading-3 text-text/70">{t("hero.title")}</span>
+            <span className="block text-xs leading-3 text-text/70">{t("footer.name")}</span>
           </span>
         </a>
 

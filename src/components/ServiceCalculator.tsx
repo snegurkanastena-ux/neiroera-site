@@ -136,7 +136,13 @@ export function ServiceCalculator({ lines, onQtyChange, onRemove, onAddService }
             {t("calculator.total")}: <span className="text-accent">{formatter.format(total)}</span>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button href="#consultation" variant="secondary" className="w-full sm:w-auto">
+            <Button
+              href={siteLinks.telegramBot}
+              variant="secondary"
+              className="w-full sm:w-auto"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t("calculator.request")}
             </Button>
             <Button href={siteLinks.telegramBot} variant="primary" className="w-full sm:w-auto">

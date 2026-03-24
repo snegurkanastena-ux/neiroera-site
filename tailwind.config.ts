@@ -9,13 +9,14 @@ export default {
         text: "rgb(var(--text-rgb) / <alpha-value>)",
         surface: "rgb(var(--surface-rgb) / <alpha-value>)",
         border: "rgb(var(--border-rgb) / <alpha-value>)",
-        accent: "#37E6FF",
-        accent2: "#8B5CFF",
+        accent: "#5EE7FF",
+        accent2: "#9B7DFF",
         warm: "#F3C9B6",
         onAccent: "#020617"
       },
       boxShadow: {
-        glow: "0 0 24px rgba(55, 230, 255, 0.35)"
+        glow: "0 0 28px rgba(94, 231, 255, 0.42)",
+        "glow-soft": "0 0 48px rgba(155, 125, 255, 0.18)"
       }
     }
   },
