@@ -96,16 +96,7 @@ export function HomePageContent() {
     <div id="top" className="pb-10 pt-10 sm:pb-14 sm:pt-16">
       {/* HERO */}
       <section className="relative">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(38vh,280px)] w-full max-w-full -translate-x-1/2 -translate-y-1/2 rounded-[44px] sm:h-[min(52vh,440px)] md:h-[min(62vh,520px)] lg:left-0 lg:h-[min(94vh,900px)] lg:w-[min(100%,calc(55%+1rem))] lg:max-w-[42rem] lg:translate-x-0 lg:-translate-y-1/2 xl:max-w-[44rem]"
-        >
-          <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
-          <div className="hero-ambient-shift absolute inset-0 rounded-[44px] opacity-[0.55]" />
-          <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.36]" />
-        </div>
-
-        <div className="relative z-10 grid grid-cols-1 items-start gap-2 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
+        <div className="grid grid-cols-1 items-start gap-2 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
           <div className="order-1 flex min-w-0 flex-col gap-2 lg:order-none lg:gap-6">
             <div>
               <Reveal>
@@ -121,7 +112,7 @@ export function HomePageContent() {
               </Reveal>
 
               <Reveal delayMs={160}>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-2.5 py-2 text-xs text-text/78 backdrop-blur-sm sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm lg:mt-6">
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-text/78 sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:text-sm lg:mt-6">
                   <span className="inline-flex items-center gap-2">
                     <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
                     {t("hero.trust1")}
