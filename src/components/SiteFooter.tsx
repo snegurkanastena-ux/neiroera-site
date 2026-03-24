@@ -53,8 +53,8 @@ export function SiteFooter() {
             <div className="font-bold">{t("footer.name")}</div>
             <div className="text-sm text-text/70">{t("footer.tag")}</div>
             <div className="mt-2 text-xs text-text/50">
-              © {year} {t("footer.rights")}
-            </div>
+  © {year} NeuroEra by Anastasia Melnikova
+</div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
