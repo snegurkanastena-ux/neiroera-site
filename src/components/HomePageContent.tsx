@@ -5,7 +5,6 @@
  * Тексты — централизованно в src/lib/messages.ts; ссылки — в src/lib/links.ts.
  */
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useMemo } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -33,7 +32,7 @@ const PORTFOLIO_PHOTOS = [
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
   const { t } = useI18n();
   return (
-    <div className="mb-8">
+    <div className="mb-5 sm:mb-8">
       <div className="text-xs sm:text-sm text-text/65 uppercase tracking-widest">{t(kickerKey)}</div>
       <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold leading-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent via-accent2 to-warm">{t(titleKey)}</span>
@@ -74,7 +73,6 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 
 export function HomePageContent() {
   const { t, messages } = useI18n();
-  const reduceMotion = useReducedMotion();
 
   const aboutListItems = useMemo(() => {
     try {
@@ -94,32 +92,32 @@ export function HomePageContent() {
   const solutionBullets = messages.solution.bullets;
 
   return (
-    <div id="top" className="pt-10 sm:pt-16 pb-14">
+    <div id="top" className="pb-10 pt-8 sm:pb-14 sm:pt-16">
       {/* HERO */}
       <section className="relative">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(94vh,900px)] w-full -translate-y-1/2 rounded-[44px] opacity-100"
+          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(72vh,560px)] w-full -translate-y-1/2 rounded-[44px] opacity-100 sm:h-[min(82vh,720px)] lg:h-[min(94vh,900px)]"
         >
           <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
           <div className="hero-ambient-shift absolute inset-0 rounded-[44px] opacity-[0.55]" />
           <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.36]" />
         </div>
 
-        <div className="relative z-10 grid items-center gap-6 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:gap-8 lg:items-center">
-          <div>
+        <div className="relative z-10 grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
+          <div className="order-1 min-w-0 lg:order-none">
             <Reveal>
-              <h1 className="whitespace-pre-line text-3xl font-black leading-[1.08] sm:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
+              <h1 className="whitespace-pre-line text-[1.65rem] font-black leading-[1.08] sm:text-3xl md:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
                 {t("hero.title")}
               </h1>
             </Reveal>
 
             <Reveal delayMs={90}>
-              <p className="mt-4 max-w-xl whitespace-pre-line text-lg leading-snug text-text/88 sm:text-xl">{t("hero.subtitle")}</p>
+              <p className="mt-3 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 sm:mt-4 sm:text-lg lg:text-xl">{t("hero.subtitle")}</p>
             </Reveal>
 
             <Reveal delayMs={160}>
-              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border/10 bg-bg/[0.22] px-4 py-3 text-sm text-text/78 backdrop-blur-sm">
+              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-3 py-2.5 text-xs text-text/78 backdrop-blur-sm sm:mt-6 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm">
                 <span className="inline-flex items-center gap-2">
                   <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
                   {t("hero.trust1")}
@@ -141,7 +139,7 @@ export function HomePageContent() {
               </div>
             </Reveal>
 
-            <div className="mt-7">
+            <div className="mt-5 sm:mt-7">
               <Reveal delayMs={220}>
                 <Button
                   href={siteLinks.telegramBot}
@@ -156,18 +154,18 @@ export function HomePageContent() {
             </div>
           </div>
 
-          <Reveal className="relative lg:justify-self-end">
+          <Reveal className="relative order-2 w-full max-lg:mx-auto max-lg:max-w-[min(100%,20rem)] lg:order-none lg:justify-self-end">
             <Portrait />
           </Reveal>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="mt-20 scroll-mt-24">
+      <section id="about" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <Reveal>
-            <div className="overflow-hidden rounded-2xl border border-white/[0.1] shadow-[0_28px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(94,231,255,0.05)] ring-1 ring-white/[0.04]">
+            <div className="overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_20px_50px_rgba(0,0,0,0.45),0_0_28px_rgba(94,231,255,0.04)] ring-1 ring-white/[0.03] sm:border-white/[0.1] sm:shadow-[0_28px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(94,231,255,0.05)] sm:ring-white/[0.04]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/anastasia-about.png"
@@ -179,7 +177,7 @@ export function HomePageContent() {
 
           <div className="space-y-6">
             <Reveal delayMs={60}>
-              <div className="rounded-3xl border border-border/12 bg-transparent p-6">
+              <div className="rounded-3xl border border-border/[0.07] bg-transparent p-4 sm:border-border/12 sm:p-6">
                 <p className="whitespace-pre-line leading-relaxed text-text/88">{t("about.p1")}</p>
                 <p className="mt-4 whitespace-pre-line leading-relaxed text-text/88">{t("about.p2")}</p>
                 <p className="mt-6 text-sm font-semibold text-text/90">{t("about.listLabel")}</p>
@@ -201,12 +199,12 @@ export function HomePageContent() {
       </section>
 
       {/* БОЛИ */}
-      <section id="pain" className="mt-20 scroll-mt-24">
+      <section id="pain" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="pain.kicker" titleKey="pain.title" />
         <div className="grid gap-3 md:grid-cols-2">
           {painCards.map((card, idx) => (
             <Reveal key={card} delayMs={idx * 70}>
-              <div className="h-full rounded-3xl border border-border/12 bg-bg/[0.18] p-5 transition-all duration-300 hover:border-accent/22 hover:shadow-[0_0_40px_rgba(155,125,255,0.12)] sm:p-6">
+              <div className="h-full rounded-3xl border border-border/[0.07] bg-bg/[0.18] p-4 transition-all duration-300 hover:border-accent/22 hover:shadow-[0_0_40px_rgba(155,125,255,0.12)] sm:border-border/12 sm:p-5 md:p-6">
                 <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
               </div>
             </Reveal>
@@ -220,10 +218,10 @@ export function HomePageContent() {
       </section>
 
       {/* РЕШЕНИЕ */}
-      <section id="solution" className="mt-20 scroll-mt-24">
+      <section id="solution" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="solution.kicker" titleKey="solution.title" />
         <Reveal>
-          <div className="rounded-3xl border border-border/14 bg-bg/[0.22] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm sm:p-8">
+          <div className="rounded-3xl border border-border/[0.08] bg-bg/[0.22] p-4 shadow-[0_16px_48px_rgba(0,0,0,0.2)] backdrop-blur-sm sm:border-border/14 sm:p-6 sm:shadow-[0_20px_60px_rgba(0,0,0,0.25)] md:p-8">
             <div className="text-center text-sm font-semibold tracking-wide text-accent sm:text-base">{messages.solution.flow}</div>
             <ul className="mx-auto mt-8 max-w-xl space-y-3 text-sm leading-relaxed text-text/78 sm:text-[0.95rem]">
               {solutionBullets.map((line) => (
@@ -243,15 +241,15 @@ export function HomePageContent() {
       </section>
 
       {/* PORTFOLIO */}
-      <section id="portfolio" className="mt-20 scroll-mt-24">
+      <section id="portfolio" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="portfolio.kicker" titleKey="portfolio.title" />
-        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-text/72">{t("portfolio.intro")}</p>
+        <p className="mb-5 max-w-2xl text-sm leading-relaxed text-text/72 sm:mb-8">{t("portfolio.intro")}</p>
         <div className="grid gap-4 md:grid-cols-3">
           {portfolioItems.map((item, idx) => (
             <Reveal key={item.title} delayMs={idx * 70}>
               <a
                 href={`#${item.anchor}`}
-                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.03] hover:border-accent/35 hover:shadow-[0_0_56px_rgba(94,231,255,0.2)] focus-visible:ring-2 focus-visible:ring-accent/40"
+                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/[0.07] bg-surface/[0.03] p-4 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.03] hover:border-accent/35 hover:shadow-[0_0_56px_rgba(94,231,255,0.2)] focus-visible:ring-2 focus-visible:ring-accent/40 sm:border-border/12 sm:p-6"
               >
                 <div
                   aria-hidden="true"
@@ -267,11 +265,11 @@ export function HomePageContent() {
           ))}
         </div>
 
-        <div className="mt-16 space-y-16">
+        <div className="mt-10 space-y-10 sm:mt-16 sm:space-y-16">
           {portfolioItems.map((item, idx) => (
             <div key={item.anchor} id={item.anchor} className="scroll-mt-28">
               <Reveal delayMs={idx * 40}>
-                <div className="rounded-3xl border border-border/12 bg-bg/[0.15] p-6 sm:p-8">
+                <div className="rounded-3xl border border-border/[0.08] bg-bg/[0.15] p-4 sm:border-border/12 sm:p-6 md:p-8">
                   <h3 className="text-xl font-black">{item.title}</h3>
                   <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
 
@@ -328,13 +326,13 @@ export function HomePageContent() {
       </section>
 
       {/* ПРОДУКТЫ */}
-      <section id="services" className="mt-20 scroll-mt-24">
+      <section id="services" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="productsSection.kicker" titleKey="productsSection.title" />
-        <p className="mb-8 max-w-2xl text-sm text-text/70">{t("servicesSection.intro")}</p>
+        <p className="mb-5 max-w-2xl text-sm text-text/70 sm:mb-8">{t("servicesSection.intro")}</p>
         <div className="grid gap-4 md:grid-cols-3">
           {productItems.map((item, idx) => (
             <Reveal key={item.title} delayMs={idx * 70}>
-              <article className="flex h-full flex-col rounded-3xl border border-border/12 bg-bg/[0.14] p-6 transition-all duration-300 hover:border-accent/24 hover:shadow-[0_0_40px_rgba(155,125,255,0.1)]">
+              <article className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.14] p-4 transition-all duration-300 hover:border-accent/24 hover:shadow-[0_0_40px_rgba(155,125,255,0.1)] sm:border-border/12 sm:p-6">
                 <h3 className="text-lg font-black">{item.title}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-text/74">{item.desc}</p>
               </article>
@@ -344,18 +342,18 @@ export function HomePageContent() {
       </section>
 
       {/* КАЛЬКУЛЯТОР / ДИАГНОСТИКА */}
-      <section id="calculator" className="mt-20 scroll-mt-24">
+      <section id="calculator" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
         <ServiceCalculator />
       </section>
 
       {/* AUDIENCE */}
-      <section id="audience" className="mt-20">
+      <section id="audience" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="audience.kicker" titleKey="audience.title" />
         <div className="grid gap-4 md:grid-cols-2">
           {audienceItems.map((x, idx) => (
             <Reveal key={x.title} delayMs={idx * 80}>
-              <div className="rounded-3xl border border-border/12 bg-bg/20 p-6 transition-all duration-300 hover:border-accent/15">
+              <div className="rounded-3xl border border-border/[0.07] bg-bg/20 p-4 transition-all duration-300 hover:border-accent/15 sm:border-border/12 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-lg font-black">{x.title}</div>
@@ -372,12 +370,12 @@ export function HomePageContent() {
       </section>
 
       {/* CASES */}
-      <section id="cases" className="mt-20">
+      <section id="cases" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="cases.kicker" titleKey="cases.title" />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {caseItems.map((c, idx) => (
             <Reveal key={idx} delayMs={idx * 70}>
-              <div className="rounded-3xl border border-border/12 bg-transparent p-6 transition-colors duration-300 hover:border-border/20">
+              <div className="rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-colors duration-300 hover:border-border/20 sm:border-border/12 sm:p-6">
                 <div className="text-sm text-text/65">{t("cases.task")}</div>
                 <div className="mt-2 font-bold leading-relaxed">{c.task}</div>
                 <div className="mt-5 text-sm text-text/65">{t("cases.solution")}</div>
@@ -391,12 +389,12 @@ export function HomePageContent() {
       </section>
 
       {/* PROCESS */}
-      <section id="process" className="mt-20">
+      <section id="process" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="process.kicker" titleKey="process.title" />
         <div className="grid gap-4 md:grid-cols-2">
           {processSteps.map((x, idx) => (
             <Reveal key={x.step} delayMs={idx * 90}>
-              <div className="rounded-3xl border border-border/12 bg-bg/20 p-6 transition-all duration-300 hover:border-accent/20">
+              <div className="rounded-3xl border border-border/[0.07] bg-bg/20 p-4 transition-all duration-300 hover:border-accent/20 sm:border-border/12 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-sm text-text/70">
@@ -416,12 +414,12 @@ export function HomePageContent() {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" className="mt-20 scroll-mt-24">
+      <section id="reviews" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="reviews.kicker" titleKey="reviews.title" />
         <div className="grid gap-4 md:grid-cols-3">
           {reviewItems.map((r, idx) => (
             <Reveal key={r.name} delayMs={idx * 80}>
-              <div className="flex h-full flex-col rounded-3xl border border-border/12 bg-bg/[0.12] p-6">
+              <div className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.12] p-4 sm:border-border/12 sm:p-6">
                 <div className="flex items-start gap-3">
                   {r.photo ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -455,9 +453,9 @@ export function HomePageContent() {
       </section>
 
       {/* СОЦСЕТИ, КОНТАКТЫ, РЕФЕРАЛЫ */}
-      <section id="socials" className="mt-20">
+      <section id="socials" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="socials.kicker" titleKey="socials.title" />
-        <div className="rounded-[32px] border border-border/12 bg-bg/20 p-5 sm:p-6">
+        <div className="rounded-[28px] border border-border/[0.08] bg-bg/20 p-4 sm:rounded-[32px] sm:border-border/12 sm:p-5 md:p-6">
           <p className="text-sm leading-relaxed text-text/70">{t("socials.intro")}</p>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
@@ -611,16 +609,16 @@ export function HomePageContent() {
       </section>
 
       {/* ФИНАЛ */}
-      <section id="consultation" className="mt-20 scroll-mt-24">
-        <div className="relative rounded-[32px] border border-border/14 bg-bg/[0.18]">
+      <section id="consultation" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
+        <div className="relative rounded-[28px] border border-border/[0.08] bg-bg/[0.18] sm:rounded-[32px] sm:border-border/14">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[32px]"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[28px] sm:rounded-[32px]"
           >
             <div className="animated-gradient absolute inset-0 opacity-[0.22]" />
             <div className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
           </div>
-          <div className="relative z-10 p-6 pb-14 sm:p-10 sm:pb-12">
+          <div className="relative z-10 p-5 sm:p-10">
             <div className="min-w-0 max-w-3xl">
               <Reveal>
                 <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
@@ -640,24 +638,6 @@ export function HomePageContent() {
                 <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
               </Reveal>
             </div>
-            <motion.div
-              aria-hidden
-              className="pointer-events-auto absolute bottom-0 right-0 z-20 w-max translate-x-[8%] translate-y-[14%] sm:translate-x-[14%] sm:translate-y-[20%]"
-              initial={reduceMotion ? { opacity: 0.5, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.98 }}
-              whileInView={{ opacity: 0.5, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={reduceMotion ? undefined : { scale: 1.04, y: -1 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/chipmunk.png"
-                alt=""
-                width={40}
-                height={40}
-                className="h-9 w-9 object-contain sm:h-10 sm:w-10"
-              />
-            </motion.div>
           </div>
         </div>
       </section>
