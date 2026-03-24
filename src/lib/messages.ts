@@ -34,7 +34,6 @@ export type Messages = {
       anchor: string;
       casesCta?: string;
       casesNote?: string;
-      listenMoreCta?: string;
     }[];
   };
   productsSection: { kicker: string; title: string; items: { title: string; desc: string }[] };
@@ -69,7 +68,6 @@ export type Messages = {
   referralSection: Record<string, string>;
   referrals: Record<string, { title: string; desc: string; cta: string }>;
   final: Record<string, string>;
-  chipmunk: { text: string; cta: string };
   leadForm: Record<string, string>;
   footer: Record<string, string>;
   meta: { title: string; description: string };
@@ -162,11 +160,11 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           title: "Нейрофото",
           desc: "Обложки, визуалы для соцсетей и рекламы — быстро, в едином стиле и с сильным кадром.",
-          anchor: "portfolio-neurophoto"
+          anchor: "portfolio-photos"
         },
         {
-          title: "Кейсы и видео",
-          desc: "Реальные проекты, сценарии и визуал — смотрите в Telegram",
+          title: "Видео / клипы",
+          desc: "Сценарии, монтаж и визуал — примеры смотрите в Telegram.",
           anchor: "portfolio-video",
           casesCta: "Смотреть кейсы →",
           casesNote: "Часть кейсов не публикуется в открытом доступе"
@@ -174,8 +172,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           title: "Музыка",
           desc: "Музыкальные идеи и аранжировки в связке с современными AI-инструментами.",
-          anchor: "portfolio-music",
-          listenMoreCta: "Слушать больше →"
+          anchor: "portfolio-music"
         }
       ]
     },
@@ -431,10 +428,6 @@ export const messagesByLang: Record<Lang, Messages> = {
       subtitle: "Обычно начинаем с диагностики и собираем решение под вас",
       cta: "Получить разбор"
     },
-    chipmunk: {
-      text: "Давайте соберём вашу систему",
-      cta: "Получить разбор"
-    },
     leadForm: {
       badge: "Связь",
       title: "Заявка и консультация",
@@ -543,11 +536,11 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           title: "Neuro photography",
           desc: "Covers and social visuals with a strong frame — fast and visually consistent.",
-          anchor: "portfolio-neurophoto"
+          anchor: "portfolio-photos"
         },
         {
-          title: "Cases & video",
-          desc: "Real projects, scripts, and visuals — on Telegram",
+          title: "Video / clips",
+          desc: "Scripts, editing, and visuals — examples on Telegram.",
           anchor: "portfolio-video",
           casesCta: "View cases →",
           casesNote: "Some work is not shared publicly"
@@ -555,8 +548,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           title: "Music",
           desc: "Musical ideas and arrangements using modern AI music workflows.",
-          anchor: "portfolio-music",
-          listenMoreCta: "Listen more →"
+          anchor: "portfolio-music"
         }
       ]
     },
@@ -810,10 +802,6 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Next step",
       title: "If you want a system—not chaos—let’s build it together",
       subtitle: "We usually start with diagnostics and tailor the solution to you",
-      cta: "Get a review session"
-    },
-    chipmunk: {
-      text: "Let’s assemble your system",
       cta: "Get a review session"
     },
     leadForm: {

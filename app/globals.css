@@ -114,27 +114,6 @@
   }
 }
 
-.chipmunk-banner:hover .chipmunk-wink {
-  animation: chipmunkWink 2.8s ease-in-out infinite;
-}
-
-@keyframes chipmunkWink {
-  0%,
-  88%,
-  100% {
-    filter: brightness(1);
-    transform: translateY(0);
-  }
-  90% {
-    filter: brightness(1.06);
-    transform: translateY(0) scaleY(0.97);
-  }
-  92% {
-    filter: brightness(1);
-    transform: translateY(0);
-  }
-}
-
 @keyframes gradientShift {
   0% {
     background-position: 0% 40%;

@@ -5,10 +5,10 @@
  * Тексты — централизованно в src/lib/messages.ts; ссылки — в src/lib/links.ts.
  */
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useMemo } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
-import { ChipmunkBanner } from "./ChipmunkBanner";
 import { Portrait } from "./Portrait";
 import { Reveal } from "./Reveal";
 import { ServiceCalculator } from "./ServiceCalculator";
@@ -21,6 +21,13 @@ const PORTFOLIO_MUSIC_TRACKS = [
   "/portfolio/music/ai-track-03.mp3.mp3",
   "/portfolio/music/ai-track-04.mp3.mp3",
   "/portfolio/music/ai-track-05.mp3.mp3"
+] as const;
+
+const PORTFOLIO_PHOTOS = [
+  "/portfolio/photos/photo-01.jpg.png",
+  "/portfolio/photos/photo-02.jpg.png",
+  "/portfolio/photos/photo-03.jpg.png",
+  "/portfolio/photos/photo-04.jpg.png"
 ] as const;
 
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
@@ -67,6 +74,7 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 
 export function HomePageContent() {
   const { t, messages } = useI18n();
+  const reduceMotion = useReducedMotion();
 
   const aboutListItems = useMemo(() => {
     try {
@@ -267,6 +275,20 @@ export function HomePageContent() {
                   <h3 className="text-xl font-black">{item.title}</h3>
                   <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
 
+                  {item.anchor === "portfolio-photos" ? (
+                    <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+                      {PORTFOLIO_PHOTOS.map((src) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={src}
+                          src={src}
+                          alt=""
+                          className="aspect-[3/4] w-full rounded-2xl border border-border/12 object-cover shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+
                   {item.anchor === "portfolio-video" && item.casesCta ? (
                     <div className="mt-6">
                       <Button
@@ -285,30 +307,17 @@ export function HomePageContent() {
                   ) : null}
 
                   {item.anchor === "portfolio-music" ? (
-                    <div className="mt-6">
-                      <div className="space-y-3">
-                        {PORTFOLIO_MUSIC_TRACKS.map((src) => (
-                          <audio
-                            key={src}
-                            controls
-                            preload="metadata"
-                            className="h-10 w-full max-w-xl rounded-lg accent-accent"
-                          >
-                            <source src={src} type="audio/mpeg" />
-                          </audio>
-                        ))}
-                      </div>
-                      {item.listenMoreCta ? (
-                        <Button
-                          href={siteLinks.telegramPortfolioCases}
-                          variant="secondary"
-                          className="mt-6 w-full sm:w-auto"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                    <div className="mt-6 space-y-3">
+                      {PORTFOLIO_MUSIC_TRACKS.map((src) => (
+                        <audio
+                          key={src}
+                          controls
+                          preload="metadata"
+                          className="h-10 w-full max-w-xl rounded-lg accent-accent"
                         >
-                          {item.listenMoreCta}
-                        </Button>
-                      ) : null}
+                          <source src={src} type="audio/mpeg" />
+                        </audio>
+                      ))}
                     </div>
                   ) : null}
                 </div>
@@ -606,29 +615,47 @@ export function HomePageContent() {
         <div className="relative overflow-hidden rounded-[32px] border border-border/14 bg-bg/[0.18] p-6 sm:p-10">
           <div aria-hidden="true" className="animated-gradient absolute inset-0 opacity-[0.22]" />
           <div aria-hidden="true" className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
-          <div className="relative max-w-3xl">
-            <Reveal>
-              <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
-            </Reveal>
-            <Reveal delayMs={100}>
-              <Button
-                href={siteLinks.telegramBot}
-                variant="primary"
-                className="mt-6 w-full sm:w-auto"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t("final.cta")}
-              </Button>
-            </Reveal>
-            <Reveal delayMs={160}>
-              <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
-            </Reveal>
+          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+            <div className="min-w-0 max-w-3xl flex-1">
+              <Reveal>
+                <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
+              </Reveal>
+              <Reveal delayMs={100}>
+                <Button
+                  href={siteLinks.telegramBot}
+                  variant="primary"
+                  className="mt-6 w-full sm:w-auto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("final.cta")}
+                </Button>
+              </Reveal>
+              <Reveal delayMs={160}>
+                <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
+              </Reveal>
+            </div>
+            <motion.div
+              aria-hidden
+              className="flex shrink-0 justify-center lg:justify-end lg:self-end"
+              initial={reduceMotion ? { opacity: 0.72, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.97 }}
+              whileInView={{ opacity: 0.72, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={reduceMotion ? undefined : { scale: 1.05 }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/chipmunk.png"
+                alt=""
+                width={72}
+                height={72}
+                className="h-[4.25rem] w-[4.25rem] object-contain sm:h-[4.75rem] sm:w-[4.75rem]"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
-
-      <ChipmunkBanner />
 
       <div className="h-10" />
     </div>
