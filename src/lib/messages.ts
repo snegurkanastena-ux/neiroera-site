@@ -6,24 +6,53 @@ export type Lang = "ru" | "en";
 export type MessageKey = string;
 
 type CaseItem = { task: string; solution: string; result: string };
-type ReviewItem = { name: string; role: string; text: string };
-type Pillar = { title: string; desc: string };
+type ReviewItem = { name: string; text: string; niche: string; outcome: string; photo?: string };
 type AudienceItem = { title: string; desc: string };
 type ProcessStep = { step: string; title: string; desc: string };
 
 export type Messages = {
   nav: Record<string, string>;
   hero: Record<string, string | string[]>;
-  about: Record<string, string | Pillar[]>;
+  about: {
+    kicker: string;
+    title: string;
+    p1: string;
+    p2: string;
+    listLabel: string;
+    listItems: string;
+    thesis: string;
+  };
+  pain: { kicker: string; title: string; cards: string[]; closing: string };
+  solution: { kicker: string; title: string; flow: string; bullets: string[]; cta: string };
   portfolio: {
     kicker: string;
     title: string;
     intro: string;
-    items: { title: string; desc: string }[];
+    items: { title: string; desc: string; anchor: string }[];
   };
+  productsSection: { kicker: string; title: string; items: { title: string; desc: string }[] };
   servicesSection: Record<string, string>;
   serviceItems: Record<ServiceId, { title: string; desc: string; action: string }>;
   calculatorSection: Record<string, string>;
+  diagnosticCalculator: {
+    kicker: string;
+    title: string;
+    intro: string;
+    q1: string;
+    needLeads: string;
+    needPack: string;
+    needAuto: string;
+    q2: string;
+    q3: string;
+    yes: string;
+    no: string;
+    resultLabel: string;
+    resultName: string;
+    resultRange: string;
+    cta: string;
+    next: string;
+    again: string;
+  };
   calculator: Record<string, string | Record<string, string>>;
   audience: { kicker: string; title: string; items: AudienceItem[] };
   cases: { kicker: string; title: string; task: string; solution: string; result: string; items: CaseItem[] };
@@ -33,6 +62,7 @@ export type Messages = {
   referralSection: Record<string, string>;
   referrals: Record<string, { title: string; desc: string; cta: string }>;
   final: Record<string, string>;
+  chipmunk: { text: string; cta: string };
   leadForm: Record<string, string>;
   footer: Record<string, string>;
   meta: { title: string; description: string };
@@ -59,7 +89,7 @@ export const messagesByLang: Record<Lang, Messages> = {
     nav: {
       about: "Обо мне",
       portfolio: "Портфолио",
-      services: "Услуги",
+      services: "Продукты",
       calculator: "Калькулятор",
       audience: "Для кого",
       cases: "Кейсы",
@@ -70,27 +100,21 @@ export const messagesByLang: Record<Lang, Messages> = {
       openMenu: "Открыть меню"
     },
     hero: {
-      badge: "AI-креатор · AI-архитектор цифровых систем",
       title:
         "Создаю системы роста на базе ИИ\nдля бизнеса, экспертов и творчества",
       subtitle:
-        "Сайт, контент, автоматизация и AI-инструменты — всё в одной системе, которая приносит результат",
-      systemLabel: "Создаю для вас систему:",
-      systemItems: JSON.stringify(["сайт", "контент", "AI-инструменты", "автоматизация"]),
-      ctaConsult: "Записаться на консультацию",
-      ctaTg: "Перейти в Telegram",
-      stat1: "15+ лет",
-      stat1Label: "15+ лет опыта",
-      stat2: "AI",
-      stat2Label: "AI-наставник",
-      stat3: "НейроЭра",
-      stat3Label: "создатель «НейроЭра»"
+        "Сайт, контент, автоматизация и AI-инструменты —\nвсё в одной системе, которая приносит результат",
+      trust1: "15+ лет опыта",
+      trust2: "внедрение под задачи, а не обучение",
+      trust3: "реальные кейсы",
+      ctaConsult: "Получить систему под свой бизнес",
+      ctaTg: "В Telegram"
     },
     about: {
       kicker: "Обо мне",
-      title: "От управления к внедрению ИИ в реальные задачи",
+      title: "Системный AI-архитектор и креатор",
       p1: "Я не учу «пользоваться нейросетями».\nЯ внедряю их в реальные задачи бизнеса.",
-      p2: "Более 15 лет управленческого опыта и переход в практическое применение ИИ.",
+      p2: "Более 15 лет управленческого опыта\nи переход в практическое применение ИИ.",
       listLabel: "Помогаю собрать систему, где:",
       listItems: JSON.stringify([
         "сайт приводит клиентов",
@@ -98,11 +122,30 @@ export const messagesByLang: Record<Lang, Messages> = {
         "автоматизация экономит время",
         "AI усиливает результат"
       ]),
-      pillars: [
-        { title: "Практик, а не теоретик", desc: "Реальные кейсы и внедрения, которые можно повторить." },
-        { title: "Система вместо хаоса", desc: "Контент, сайт и AI-инструменты собираются в один рабочий контур." },
-        { title: "Тональность бренда", desc: "Личный стиль сохраняется — технологии лишь усиливают." }
-      ]
+      thesis: "Вы не покупаете сайт.\nВы покупаете систему, которая работает."
+    },
+    pain: {
+      kicker: "Диагностика",
+      title: "Почему у вас нет стабильных заявок",
+      cards: [
+        "Контент есть, но не продаёт",
+        "Сайт есть, но не конвертит",
+        "AI пробовали, но хаос",
+        "Всё держится на вас и не масштабируется"
+      ],
+      closing: "Проблема не в инструментах.\nПроблема — в отсутствии системы."
+    },
+    solution: {
+      kicker: "Решение",
+      title: "Я собираю систему, где всё работает вместе",
+      flow: "Трафик → Контент → Сайт → AI → Заявка",
+      bullets: [
+        "сайт приводит",
+        "контент прогревает",
+        "AI ускоряет",
+        "система работает как единый механизм"
+      ],
+      cta: "Разобрать мою ситуацию"
     },
     portfolio: {
       kicker: "Портфолио",
@@ -111,22 +154,43 @@ export const messagesByLang: Record<Lang, Messages> = {
       items: [
         {
           title: "Нейрофото",
-          desc: "Обложки, визуалы для соцсетей и рекламы — быстро, в едином стиле и с сильным кадром."
+          desc: "Обложки, визуалы для соцсетей и рекламы — быстро, в едином стиле и с сильным кадром.",
+          anchor: "portfolio-neurophoto"
         },
         {
           title: "Видео / клипы",
-          desc: "Сценарий, ритм монтажа и визуальный ряд: от коротких роликов до выразительных клипов."
+          desc: "Сценарий, ритм монтажа и визуальный ряд: от коротких роликов до выразительных клипов.",
+          anchor: "portfolio-video"
         },
         {
           title: "Музыка",
-          desc: "Музыкальные идеи и аранжировки в связке с современными AI-инструментами."
+          desc: "Музыкальные идеи и аранжировки в связке с современными AI-инструментами.",
+          anchor: "portfolio-music"
+        }
+      ]
+    },
+    productsSection: {
+      kicker: "Продукты",
+      title: "Три опоры системы роста",
+      items: [
+        {
+          title: "Система заявок",
+          desc: "Сайт, посадочные и сценарии, которые ведут человека к заявке — без хаоса в воронке."
+        },
+        {
+          title: "Контент-система",
+          desc: "Рубрики, смыслы и ритм публикаций, которые прогревают аудиторию и поддерживают продажи."
+        },
+        {
+          title: "Автоматизация",
+          desc: "AI и процессы, которые снимают рутину и ускоряют команду — от черновиков до сценариев."
         }
       ]
     },
     servicesSection: {
-      kicker: "Услуги",
-      title: "Цифровые и AI-решения под ваш запрос",
-      intro: "Карточки можно добавить в расчёт в калькуляторе ниже — так проще собрать ориентир по бюджету."
+      kicker: "Продукты",
+      title: "Три опоры системы роста",
+      intro: "Не набор услуг — связанные продукты, из которых собирается работающая система."
     },
     serviceItems: {
       websites: {
@@ -191,9 +255,28 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     calculatorSection: {
-      kicker: "Калькулятор",
-      title: "Ориентир по стоимости",
-      hint: "Цены ниже — демонстрационные заглушки; итог можно уточнить на созвоне."
+      kicker: "Диагностика",
+      title: "Быстрый разбор запроса",
+      hint: "Три вопроса — чтобы понять контекст и предложить формат системы."
+    },
+    diagnosticCalculator: {
+      kicker: "Диагностика",
+      title: "Понять, какая система вам подходит",
+      intro: "Ответьте на три вопроса — покажу ориентир по формату и бюджету. Детали уточним в Telegram.",
+      q1: "Что вам нужно?",
+      needLeads: "Заявки",
+      needPack: "Упаковка",
+      needAuto: "Автоматизация",
+      q2: "Есть ли сайт?",
+      q3: "Есть ли контент?",
+      yes: "Да",
+      no: "Нет",
+      resultLabel: "Вам подходит система:",
+      resultName: "Система роста под ключ",
+      resultRange: "Ориентир: 120–250 000 ₽",
+      cta: "Записаться на разбор",
+      next: "Далее",
+      again: "Пройти снова"
     },
     calculator: {
       add: "Добавить в расчёт",
@@ -270,17 +353,20 @@ export const messagesByLang: Record<Lang, Messages> = {
       items: [
         {
           name: "Ольга Н.",
-          role: "Эксперт по образованию",
+          niche: "Эксперт, образование",
+          outcome: "Контент стал процессом, а не хаотичными постами; GPT-агент снял рутину.",
           text: "Анастасия собрала мне систему: контент перестал быть «раз в неделю» и превратился в процесс. Плюс GPT-агент реально снял рутину."
         },
         {
           name: "Алексей С.",
-          role: "Предприниматель",
+          niche: "Предприниматель, услуги",
+          outcome: "После разбора и стратегии воронка начала стабильно отдавать заявки.",
           text: "Очень практичный подход. Никаких абстракций: мы разобрали задачи, сделали стратегию, и дальше пошла сборка системы. Результат — воронка начала работать."
         },
         {
           name: "Мария К.",
-          role: "Основатель digital-проекта",
+          niche: "Digital-проект",
+          outcome: "Сайт и контент выстроены в одну линию; визуально premium tech, по смыслу — по делу.",
           text: "Понравилось, что сайт и контент начали «разговаривать» друг с другом. Визуально — premium tech, по смыслу — чётко и по делу."
         }
       ]
@@ -330,11 +416,14 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     final: {
-      kicker: "Вместе",
-      title: "Если вам нужен сайт, система контента или внедрение ИИ — давайте обсудим",
-      ctaConsult: "Записаться на консультацию",
-      ctaTg: "Написать в Telegram",
-      note: "Оставьте заявку — я уточню запрос и предложу следующий шаг. Обычно начинаем с разбора ситуации и стратегии внедрения."
+      kicker: "Следующий шаг",
+      title: "Если вы хотите систему, а не хаос — давайте соберём её",
+      subtitle: "Обычно начинаем с диагностики и собираем решение под вас",
+      cta: "Получить разбор"
+    },
+    chipmunk: {
+      text: "Давайте соберём вашу систему",
+      cta: "Получить разбор"
     },
     leadForm: {
       badge: "Связь",
@@ -379,7 +468,7 @@ export const messagesByLang: Record<Lang, Messages> = {
     nav: {
       about: "About",
       portfolio: "Portfolio",
-      services: "Services",
+      services: "Products",
       calculator: "Estimator",
       audience: "Audience",
       cases: "Cases",
@@ -390,26 +479,20 @@ export const messagesByLang: Record<Lang, Messages> = {
       openMenu: "Open menu"
     },
     hero: {
-      badge: "AI creator · AI architect for digital systems",
       title: "I build AI-powered growth systems\nfor business, experts, and creative work",
       subtitle:
-        "Website, content, automation, and AI tools — one connected system that drives outcomes",
-      systemLabel: "What we can build together:",
-      systemItems: JSON.stringify(["website", "content", "AI tools", "automation"]),
-      ctaConsult: "Book a consultation",
-      ctaTg: "Open Telegram",
-      stat1: "15+ yrs",
-      stat1Label: "15+ years of experience",
-      stat2: "AI",
-      stat2Label: "AI mentor",
-      stat3: "NeuroEra",
-      stat3Label: "founder of NeuroEra"
+        "Website, content, automation, and AI tools —\none connected system that drives outcomes",
+      trust1: "15+ years of experience",
+      trust2: "implementation for your tasks, not generic training",
+      trust3: "real case studies",
+      ctaConsult: "Get a system for your business",
+      ctaTg: "Telegram"
     },
     about: {
       kicker: "About",
-      title: "From leadership to AI embedded in real business work",
+      title: "AI architect and creator, systems-first",
       p1: "I don’t teach people to “use neural networks.”\nI embed them into real business problems.",
-      p2: "15+ years of management experience and a shift into hands-on AI adoption.",
+      p2: "15+ years in leadership\nand a shift into hands-on AI adoption.",
       listLabel: "I help assemble a system where:",
       listItems: JSON.stringify([
         "your site brings clients",
@@ -417,11 +500,30 @@ export const messagesByLang: Record<Lang, Messages> = {
         "automation saves time",
         "AI amplifies outcomes"
       ]),
-      pillars: [
-        { title: "Practitioner, not hype", desc: "Real launches you can copy, not abstract slides." },
-        { title: "Systems over chaos", desc: "Website, content, and AI tools wired into one loop." },
-        { title: "Brand voice first", desc: "Technology amplifies your tone—it does not replace it." }
-      ]
+      thesis: "You’re not buying a website.\nYou’re buying a system that works."
+    },
+    pain: {
+      kicker: "Diagnosis",
+      title: "Why steady leads still don’t show up",
+      cards: [
+        "You have content, but it doesn’t sell",
+        "You have a site, but it doesn’t convert",
+        "You tried AI, but it’s chaos",
+        "Everything depends on you and doesn’t scale"
+      ],
+      closing: "The problem isn’t the tools.\nThe problem is the lack of a system."
+    },
+    solution: {
+      kicker: "Solution",
+      title: "I assemble a system where everything works together",
+      flow: "Traffic → Content → Site → AI → Lead",
+      bullets: [
+        "the site brings people in",
+        "content warms them up",
+        "AI accelerates execution",
+        "the system runs as one mechanism"
+      ],
+      cta: "Review my situation"
     },
     portfolio: {
       kicker: "Portfolio",
@@ -430,22 +532,43 @@ export const messagesByLang: Record<Lang, Messages> = {
       items: [
         {
           title: "Neuro photography",
-          desc: "Covers and social visuals with a strong frame — fast and visually consistent."
+          desc: "Covers and social visuals with a strong frame — fast and visually consistent.",
+          anchor: "portfolio-neurophoto"
         },
         {
           title: "Video / clips",
-          desc: "Scripts, edit rhythm, and visuals — from short-form to expressive clips."
+          desc: "Scripts, edit rhythm, and visuals — from short-form to expressive clips.",
+          anchor: "portfolio-video"
         },
         {
           title: "Music",
-          desc: "Musical ideas and arrangements using modern AI music workflows."
+          desc: "Musical ideas and arrangements using modern AI music workflows.",
+          anchor: "portfolio-music"
+        }
+      ]
+    },
+    productsSection: {
+      kicker: "Products",
+      title: "Three pillars of a growth system",
+      items: [
+        {
+          title: "Lead system",
+          desc: "Site, landing flows, and scenarios that move people to a request — without funnel chaos."
+        },
+        {
+          title: "Content system",
+          desc: "Themes, narrative, and publishing rhythm that warm the audience and support sales."
+        },
+        {
+          title: "Automation",
+          desc: "AI and workflows that remove busywork and speed up the team — from drafts to playbooks."
         }
       ]
     },
     servicesSection: {
-      kicker: "Services",
-      title: "Digital and AI deliverables tailored to you",
-      intro: "Add cards to the estimator below to get a quick budget snapshot."
+      kicker: "Products",
+      title: "Three pillars of a growth system",
+      intro: "Not a service list — connected products that form a working system."
     },
     serviceItems: {
       websites: {
@@ -510,9 +633,28 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     calculatorSection: {
-      kicker: "Estimator",
-      title: "Ballpark investment",
-      hint: "Figures are demo placeholders—final scope is confirmed on a call."
+      kicker: "Diagnostics",
+      title: "Quick request check-in",
+      hint: "Three questions to understand context and suggest a system format."
+    },
+    diagnosticCalculator: {
+      kicker: "Diagnostics",
+      title: "See which system fits you",
+      intro: "Answer three questions — I’ll share a format and budget range. We’ll refine details in Telegram.",
+      q1: "What do you need?",
+      needLeads: "Leads",
+      needPack: "Packaging",
+      needAuto: "Automation",
+      q2: "Do you have a website?",
+      q3: "Do you have content?",
+      yes: "Yes",
+      no: "No",
+      resultLabel: "Recommended system:",
+      resultName: "Full growth system",
+      resultRange: "Ballpark: 120,000–250,000 ₽",
+      cta: "Book a diagnostic call",
+      next: "Next",
+      again: "Start over"
     },
     calculator: {
       add: "Add to estimate",
@@ -589,17 +731,20 @@ export const messagesByLang: Record<Lang, Messages> = {
       items: [
         {
           name: "Olga N.",
-          role: "Education expert",
+          niche: "Expert, education",
+          outcome: "Content turned into a process; the GPT agent removed repetitive work.",
           text: "Anastasia gave me a real system—content became a process, not a random weekly post. The GPT agent removed so much grunt work."
         },
         {
           name: "Alex S.",
-          role: "Entrepreneur",
+          niche: "Entrepreneur, services",
+          outcome: "After discovery and strategy, the funnel started delivering steady inquiries.",
           text: "Practical and concrete. We clarified the jobs to be done, set the strategy, then built the stack. The funnel finally moved."
         },
         {
           name: "Maria K.",
-          role: "Digital founder",
+          niche: "Digital project",
+          outcome: "Site and content aligned; premium-tech look with sharp messaging.",
           text: "Site and content finally feel connected. Visually premium-tech, verbally sharp and to the point."
         }
       ]
@@ -649,11 +794,14 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     final: {
-      kicker: "Let’s collaborate",
-      title: "Need a site, content system, or AI rollout? Let’s talk.",
-      ctaConsult: "Book a consultation",
-      ctaTg: "Message on Telegram",
-      note: "Share a short brief—I’ll reply with next steps. We usually start with discovery and an adoption roadmap."
+      kicker: "Next step",
+      title: "If you want a system—not chaos—let’s build it together",
+      subtitle: "We usually start with diagnostics and tailor the solution to you",
+      cta: "Get a review session"
+    },
+    chipmunk: {
+      text: "Let’s assemble your system",
+      cta: "Get a review session"
     },
     leadForm: {
       badge: "Contact",

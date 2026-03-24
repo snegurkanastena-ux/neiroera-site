@@ -27,7 +27,7 @@ const NAV_KEYS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { t } = useI18n();
-  const telegramHref = useMemo(() => siteLinks.telegramChannel, []);
+  const telegramHref = useMemo(() => siteLinks.telegramBot, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/8 bg-bg/75 backdrop-blur-xl transition-colors duration-300">
@@ -114,7 +114,7 @@ export default function Header() {
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                 >
-                  {t("hero.ctaTg")}
+                  {t("hero.ctaConsult")}
                 </Button>
               </div>
             </Container>

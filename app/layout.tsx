@@ -20,10 +20,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="relative min-h-screen overflow-hidden">
             {/* Фоновые градиенты (не перехватывают клики) */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-              <div className="absolute left-1/2 top-0 h-[28rem] w-[28rem] -translate-x-1/2 gradient-orb" />
-              <div className="absolute -left-28 top-1/3 h-80 w-80 gradient-orb purple" />
-              <div className="absolute bottom-0 right-0 h-[22rem] w-[22rem] opacity-60 gradient-orb purple" />
-              <div className="animated-gradient absolute inset-0 opacity-[0.38]" />
+              <div className="absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 gradient-orb opacity-95" />
+              <div className="absolute -left-32 top-1/3 h-[22rem] w-[22rem] gradient-orb purple opacity-90" />
+              <div className="absolute bottom-0 right-0 h-[26rem] w-[26rem] opacity-70 gradient-orb purple" />
+              <div className="animated-gradient absolute inset-0 opacity-[0.44]" />
             </div>
 
             <Header />

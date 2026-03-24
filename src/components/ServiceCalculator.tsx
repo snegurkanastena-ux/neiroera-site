@@ -1,152 +1,149 @@
 "use client";
 
 /**
- * Калькулятор услуг: несколько позиций, количество, сумма.
- * Цены берутся из SERVICE_PRICES (заглушки — см. src/lib/servicesCatalog.ts).
+ * Диагностический калькулятор: три вопроса и ориентир по системе + CTA в Telegram.
  */
 
-import { useMemo } from "react";
+import { useState } from "react";
 import { siteLinks } from "../lib/links";
-import {
-  CALCULATOR_ROW_CONFIG,
-  SERVICE_IDS,
-  SERVICE_PRICES,
-  type ServiceId
-} from "../lib/servicesCatalog";
 import { useI18n } from "../providers/SiteProviders";
 import { Button } from "./ui/Button";
 
-export type CalcLine = { id: ServiceId; qty: number };
+type Need = "leads" | "pack" | "auto";
 
-type Props = {
-  lines: CalcLine[];
-  onQtyChange: (index: number, qty: number) => void;
-  onRemove: (index: number) => void;
-  onAddService: (id: ServiceId) => void;
-};
+export function ServiceCalculator() {
+  const { t } = useI18n();
+  const [step, setStep] = useState(0);
+  const [need, setNeed] = useState<Need | null>(null);
+  const [hasSite, setHasSite] = useState<boolean | null>(null);
+  const [hasContent, setHasContent] = useState<boolean | null>(null);
 
-function qtyKind(id: ServiceId) {
-  return CALCULATOR_ROW_CONFIG.find((c) => c.id === id)?.qtyLabelKind ?? "projects";
-}
+  const reset = () => {
+    setStep(0);
+    setNeed(null);
+    setHasSite(null);
+    setHasContent(null);
+  };
 
-function maxQty(id: ServiceId) {
-  return CALCULATOR_ROW_CONFIG.find((c) => c.id === id)?.maxQty ?? 50;
-}
-
-export function ServiceCalculator({ lines, onQtyChange, onRemove, onAddService }: Props) {
-  const { t, lang } = useI18n();
-
-  const formatter = useMemo(
-    () =>
-      new Intl.NumberFormat(lang === "ru" ? "ru-RU" : "en-US", {
-        style: "currency",
-        currency: "RUB",
-        maximumFractionDigits: 0
-      }),
-    [lang]
-  );
-
-  const total = useMemo(
-    () => lines.reduce((s, line) => s + SERVICE_PRICES[line.id] * line.qty, 0),
-    [lines]
-  );
+  const choiceBtn =
+    "w-full rounded-2xl border border-border/14 bg-bg/35 px-4 py-3.5 text-left text-sm font-semibold text-text/90 transition-all duration-300 hover:border-accent/28 hover:bg-surface/[0.06] hover:shadow-[0_0_32px_rgba(94,231,255,0.08)] focus:outline-none focus:ring-2 focus:ring-accent/30";
 
   return (
-    <div className="rounded-[28px] border border-border/12 bg-bg/25 p-5 sm:p-7 backdrop-blur-sm transition-colors duration-300">
-      <p className="text-sm text-text/65 leading-relaxed">{t("calculatorSection.hint")}</p>
-
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
-        <label className="block flex-1">
-          <span className="text-xs text-text/60">{t("calculator.lineTitle")}</span>
-          <select
-            className="mt-1.5 w-full rounded-2xl border border-border/12 bg-bg/40 px-4 py-3 text-sm text-text outline-none transition-colors focus:ring-2 focus:ring-accent/30"
-            defaultValue=""
-            onChange={(e) => {
-              const v = e.target.value as ServiceId | "";
-              if (v) {
-                onAddService(v);
-                e.target.value = "";
-              }
-            }}
-          >
-            <option value="" disabled>
-              — {t("calculator.add")} —
-            </option>
-            {SERVICE_IDS.map((id) => (
-              <option key={id} value={id}>
-                {t(`serviceItems.${id}.title`)}
-              </option>
-            ))}
-          </select>
-        </label>
+    <div className="rounded-[28px] border border-border/14 bg-bg/[0.32] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-md transition-colors duration-300 sm:p-7">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div className="text-xs uppercase tracking-widest text-text/55">{t("diagnosticCalculator.kicker")}</div>
+          <h3 className="mt-1 text-lg font-black sm:text-xl">{t("diagnosticCalculator.title")}</h3>
+        </div>
+        <div className="text-xs text-text/45">
+          {step < 3 ? `${step + 1} / 3` : "—"}
+        </div>
       </div>
+      <p className="mt-4 text-sm leading-relaxed text-text/70">{t("diagnosticCalculator.intro")}</p>
 
-      <div className="mt-6 space-y-3">
-        {lines.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-border/20 bg-surface/5 px-4 py-8 text-center text-sm text-text/55">
-            {t("calculator.empty")}
-          </p>
-        ) : (
-          lines.map((line, index) => {
-            const kind = qtyKind(line.id);
-            const qMax = maxQty(line.id);
-            const lineSum = SERVICE_PRICES[line.id] * line.qty;
-            return (
-              <div
-                key={`${line.id}-${index}`}
-                className="flex flex-col gap-3 rounded-2xl border border-border/10 bg-surface/5 p-4 sm:flex-row sm:items-end sm:justify-between"
+      {step === 0 && (
+        <div className="mt-8 space-y-3">
+          <div className="text-sm font-semibold text-text/85">{t("diagnosticCalculator.q1")}</div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {(
+              [
+                { key: "leads" as const, labelKey: "diagnosticCalculator.needLeads" },
+                { key: "pack" as const, labelKey: "diagnosticCalculator.needPack" },
+                { key: "auto" as const, labelKey: "diagnosticCalculator.needAuto" }
+              ] as const
+            ).map(({ key, labelKey }) => (
+              <button
+                key={key}
+                type="button"
+                className={`${choiceBtn} ${need === key ? "border-accent/40 bg-accent/10 shadow-glow-soft" : ""}`}
+                onClick={() => setNeed(key)}
               >
-                <div className="min-w-0 flex-1">
-                  <div className="font-bold text-text">{t(`serviceItems.${line.id}.title`)}</div>
-                  <div className="mt-1 text-xs text-text/55">
-                    {formatter.format(SERVICE_PRICES[line.id])} {t("calculator.perUnit")}
-                  </div>
-                  <label className="mt-3 block max-w-[12rem]">
-                    <span className="text-xs text-text/60">{t(`calculator.qtyLabels.${kind}`)}</span>
-                    <input
-                      type="number"
-                      min={1}
-                      max={qMax}
-                      value={line.qty}
-                      onChange={(e) => {
-                        const n = Number(e.target.value);
-                        if (Number.isFinite(n)) {
-                          onQtyChange(index, Math.min(qMax, Math.max(1, Math.floor(n))));
-                        }
-                      }}
-                      className="mt-1 w-full rounded-xl border border-border/12 bg-bg/40 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-accent/25"
-                    />
-                  </label>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end">
-                  <div className="text-sm font-semibold text-accent">{formatter.format(lineSum)}</div>
-                  <Button type="button" variant="ghost" className="!px-3 !py-2 text-xs" onClick={() => onRemove(index)}>
-                    {t("calculator.remove")}
-                  </Button>
-                </div>
-              </div>
-            );
-          })
-        )}
-      </div>
-
-      {lines.length > 0 && (
-        <div className="mt-6 flex flex-col gap-4 border-t border-border/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-lg font-black text-text">
-            {t("calculator.total")}: <span className="text-accent">{formatter.format(total)}</span>
+                {t(labelKey)}
+              </button>
+            ))}
           </div>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              href={siteLinks.telegramBot}
-              variant="secondary"
-              className="w-full sm:w-auto"
-              target="_blank"
-              rel="noopener noreferrer"
+          <Button type="button" variant="primary" className="mt-4 w-full sm:w-auto" disabled={!need} onClick={() => setStep(1)}>
+            {t("diagnosticCalculator.next")}
+          </Button>
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="mt-8 space-y-3">
+          <div className="text-sm font-semibold text-text/85">{t("diagnosticCalculator.q2")}</div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <button
+              type="button"
+              className={`${choiceBtn} ${hasSite === true ? "border-accent/40 bg-accent/10" : ""}`}
+              onClick={() => setHasSite(true)}
             >
-              {t("calculator.request")}
+              {t("diagnosticCalculator.yes")}
+            </button>
+            <button
+              type="button"
+              className={`${choiceBtn} ${hasSite === false ? "border-accent/40 bg-accent/10" : ""}`}
+              onClick={() => setHasSite(false)}
+            >
+              {t("diagnosticCalculator.no")}
+            </button>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button type="button" variant="ghost" className="!px-4" onClick={() => setStep(0)}>
+              ←
             </Button>
-            <Button href={siteLinks.telegramBot} variant="primary" className="w-full sm:w-auto">
-              {t("calculator.discuss")}
+            <Button type="button" variant="primary" className="flex-1 sm:flex-none" disabled={hasSite === null} onClick={() => setStep(2)}>
+              {t("diagnosticCalculator.next")}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="mt-8 space-y-3">
+          <div className="text-sm font-semibold text-text/85">{t("diagnosticCalculator.q3")}</div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <button
+              type="button"
+              className={`${choiceBtn} ${hasContent === true ? "border-accent/40 bg-accent/10" : ""}`}
+              onClick={() => setHasContent(true)}
+            >
+              {t("diagnosticCalculator.yes")}
+            </button>
+            <button
+              type="button"
+              className={`${choiceBtn} ${hasContent === false ? "border-accent/40 bg-accent/10" : ""}`}
+              onClick={() => setHasContent(false)}
+            >
+              {t("diagnosticCalculator.no")}
+            </button>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button type="button" variant="ghost" className="!px-4" onClick={() => setStep(1)}>
+              ←
+            </Button>
+            <Button type="button" variant="primary" className="flex-1 sm:flex-none" disabled={hasContent === null} onClick={() => setStep(3)}>
+              {t("diagnosticCalculator.next")}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="mt-8 rounded-2xl border border-accent/20 bg-accent/[0.06] p-5 sm:p-6">
+          <div className="text-xs uppercase tracking-widest text-text/60">{t("diagnosticCalculator.resultLabel")}</div>
+          <div className="mt-2 text-xl font-black text-text sm:text-2xl">{t("diagnosticCalculator.resultName")}</div>
+          <div className="mt-2 text-sm font-semibold text-accent">{t("diagnosticCalculator.resultRange")}</div>
+          <p className="mt-4 text-xs leading-relaxed text-text/55">
+            {need != null && hasSite != null && hasContent != null
+              ? [need === "leads" ? t("diagnosticCalculator.needLeads") : need === "pack" ? t("diagnosticCalculator.needPack") : t("diagnosticCalculator.needAuto"), hasSite ? t("diagnosticCalculator.yes") : t("diagnosticCalculator.no"), hasContent ? t("diagnosticCalculator.yes") : t("diagnosticCalculator.no")].join(" · ")
+              : null}
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button href={siteLinks.telegramBot} variant="primary" className="w-full sm:w-auto" target="_blank" rel="noopener noreferrer">
+              {t("diagnosticCalculator.cta")}
+            </Button>
+            <Button type="button" variant="ghost" className="w-full sm:w-auto" onClick={reset}>
+              {t("diagnosticCalculator.again")}
             </Button>
           </div>
         </div>

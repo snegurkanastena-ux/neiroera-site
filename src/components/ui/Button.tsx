@@ -14,6 +14,7 @@ export type ButtonProps = {
   className?: string;
   target?: string;
   rel?: string;
+  disabled?: boolean;
 };
 
 function buttonClasses(variant: ButtonVariant) {
@@ -35,9 +36,10 @@ export function Button({
   variant = "primary",
   className = "",
   target,
-  rel
+  rel,
+  disabled
 }: ButtonProps) {
-  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 ${buttonClasses(
+  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:pointer-events-none disabled:opacity-45 ${buttonClasses(
     variant
   )} ${className}`;
 
@@ -66,7 +68,7 @@ export function Button({
   }
 
   return (
-    <button type={type} className={cls} onClick={onClick}>
+    <button type={type} className={cls} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

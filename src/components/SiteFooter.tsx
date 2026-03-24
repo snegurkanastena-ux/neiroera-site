@@ -44,7 +44,6 @@ function SocialGlyph({ label }: { label: string }) {
 
 export function SiteFooter() {
   const { t } = useI18n();
-  const year = new Date().getFullYear();
 
   return (
     <footer className="relative border-t border-border/8 py-10 transition-colors duration-300">
@@ -52,9 +51,7 @@ export function SiteFooter() {
           <div>
             <div className="font-bold">{t("footer.name")}</div>
             <div className="text-sm text-text/70">{t("footer.tag")}</div>
-            <div className="mt-2 text-xs text-text/50">
-  © {year} NeuroEra by Anastasia Melnikova
-</div>
+            <div className="mt-2 text-xs text-text/50">© 2026 NeuroEra by Anastasia Melnikova</div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">

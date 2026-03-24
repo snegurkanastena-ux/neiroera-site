@@ -16,7 +16,7 @@ export default function ProductsPage() {
         <Button href="/" variant="primary">
           На главную
         </Button>
-        <Button href={siteLinks.telegramChannel} variant="ghost" target="_blank" rel="noopener noreferrer">
+        <Button href={siteLinks.telegramBot} variant="ghost" target="_blank" rel="noopener noreferrer">
           Telegram
         </Button>
       </div>

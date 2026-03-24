@@ -5,14 +5,13 @@
  * Тексты — централизованно в src/lib/messages.ts; ссылки — в src/lib/links.ts.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { siteLinks } from "../lib/links";
-import { CALCULATOR_ROW_CONFIG, SERVICE_IDS, type ServiceId } from "../lib/servicesCatalog";
 import { useI18n } from "../providers/SiteProviders";
-import { LeadForm } from "./LeadForm";
+import { ChipmunkBanner } from "./ChipmunkBanner";
 import { Portrait } from "./Portrait";
 import { Reveal } from "./Reveal";
-import { ServiceCalculator, type CalcLine } from "./ServiceCalculator";
+import { ServiceCalculator } from "./ServiceCalculator";
 import { Button } from "./ui/Button";
 
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
@@ -60,14 +59,6 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 export function HomePageContent() {
   const { t, messages } = useI18n();
 
-  const systemItems = useMemo(() => {
-    try {
-      return JSON.parse(t("hero.systemItems")) as string[];
-    } catch {
-      return [];
-    }
-  }, [t]);
-
   const aboutListItems = useMemo(() => {
     try {
       return JSON.parse(t("about.listItems")) as string[];
@@ -76,42 +67,14 @@ export function HomePageContent() {
     }
   }, [t]);
 
-  const [calcLines, setCalcLines] = useState<CalcLine[]>([]);
-
-  const addToCalc = useCallback((id: ServiceId) => {
-    setCalcLines((prev) => {
-      const max = CALCULATOR_ROW_CONFIG.find((c) => c.id === id)?.maxQty ?? 50;
-      const i = prev.findIndex((l) => l.id === id);
-      if (i >= 0) {
-        const next = [...prev];
-        next[i] = { ...next[i], qty: Math.min(max, next[i].qty + 1) };
-        return next;
-      }
-      return [...prev, { id, qty: 1 }];
-    });
-  }, []);
-
-  const onQtyChange = useCallback((index: number, qty: number) => {
-    setCalcLines((prev) => {
-      const next = [...prev];
-      if (!next[index]) return prev;
-      const id = next[index].id;
-      const max = CALCULATOR_ROW_CONFIG.find((c) => c.id === id)?.maxQty ?? 50;
-      next[index] = { id, qty: Math.min(max, Math.max(1, qty)) };
-      return next;
-    });
-  }, []);
-
-  const onRemoveLine = useCallback((index: number) => {
-    setCalcLines((prev) => prev.filter((_, i) => i !== index));
-  }, []);
-
-  const pillars = messages.about.pillars as { title: string; desc: string }[];
   const audienceItems = messages.audience.items;
   const caseItems = messages.cases.items;
   const processSteps = messages.process.steps;
   const reviewItems = messages.reviews.items;
   const portfolioItems = messages.portfolio.items;
+  const productItems = messages.productsSection.items;
+  const painCards = messages.pain.cards;
+  const solutionBullets = messages.solution.bullets;
 
   return (
     <div id="top" className="pt-10 sm:pt-16 pb-14">
@@ -119,54 +82,50 @@ export function HomePageContent() {
       <section className="relative">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(92vh,880px)] w-full -translate-y-1/2 rounded-[44px] opacity-100"
+          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(94vh,900px)] w-full -translate-y-1/2 rounded-[44px] opacity-100"
         >
           <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
-          <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.42]" />
+          <div className="hero-ambient-shift absolute inset-0 rounded-[44px] opacity-[0.55]" />
+          <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.36]" />
         </div>
 
-        <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12">
+        <div className="relative z-10 grid items-center gap-6 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:gap-8 lg:items-center">
           <div>
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-2xl border border-border/12 bg-transparent px-4 py-2 text-xs text-text/70 sm:text-sm">
-                <span className="h-2 w-2 rounded-full bg-accent shadow-glow" />
-                {t("hero.badge")}
-              </div>
-            </Reveal>
-
-            <Reveal delayMs={80}>
-              <h1 className="mt-5 whitespace-pre-line text-3xl font-black leading-[1.08] sm:text-4xl lg:text-[2.65rem] lg:leading-[1.06]">
+              <h1 className="whitespace-pre-line text-3xl font-black leading-[1.08] sm:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
                 {t("hero.title")}
               </h1>
             </Reveal>
 
-            <Reveal delayMs={140}>
-              <p className="mt-4 max-w-xl text-lg text-text/85 sm:text-xl">{t("hero.subtitle")}</p>
+            <Reveal delayMs={90}>
+              <p className="mt-4 max-w-xl whitespace-pre-line text-lg leading-snug text-text/88 sm:text-xl">{t("hero.subtitle")}</p>
             </Reveal>
 
-            <Reveal delayMs={200}>
-              <div className="mt-6 grid gap-3">
-                <div className="rounded-3xl border border-border/12 bg-bg/20 p-4">
-                  <div className="text-sm text-text/70">{t("hero.systemLabel")}</div>
-                  <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {systemItems.map((item) => (
-                      <div
-                        key={item}
-                        className="flex items-center gap-2 rounded-2xl border border-border/12 bg-transparent px-3 py-2 text-sm text-text/85"
-                      >
-                        <span className="grid h-6 w-6 place-items-center rounded-xl border border-accent/30 bg-accent/15 text-accent">
-                          <span className="text-xs font-black">+</span>
-                        </span>
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            <Reveal delayMs={160}>
+              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border/10 bg-bg/[0.22] px-4 py-3 text-sm text-text/78 backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                  {t("hero.trust1")}
+                </span>
+                <span className="hidden text-text/35 sm:inline" aria-hidden>
+                  ·
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
+                  {t("hero.trust2")}
+                </span>
+                <span className="hidden text-text/35 sm:inline" aria-hidden>
+                  ·
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                  {t("hero.trust3")}
+                </span>
               </div>
             </Reveal>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Reveal>
+            <div className="mt-7">
+              <Reveal delayMs={220}>
                 <Button
                   href={siteLinks.telegramBot}
                   variant="primary"
@@ -177,46 +136,26 @@ export function HomePageContent() {
                   {t("hero.ctaConsult")}
                 </Button>
               </Reveal>
-              <Reveal delayMs={100}>
-                <Button href={siteLinks.telegramChannel} variant="secondary" className="w-full sm:w-auto">
-                  {t("hero.ctaTg")}
-                </Button>
-              </Reveal>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {[
-                { value: t("hero.stat1"), label: t("hero.stat1Label") },
-                { value: t("hero.stat2"), label: t("hero.stat2Label") },
-                { value: t("hero.stat3"), label: t("hero.stat3Label") }
-              ].map((item, idx) => (
-                <Reveal key={item.label} delayMs={220 + idx * 80}>
-                  <div className="rounded-3xl border border-border/12 bg-transparent p-4 transition-colors duration-300 hover:border-accent/25">
-                    <div className="font-black text-accent">{item.value}</div>
-                    <div className="mt-1 text-sm text-text/70">{item.label}</div>
-                  </div>
-                </Reveal>
-              ))}
             </div>
           </div>
 
-          <Reveal className="relative">
+          <Reveal className="relative lg:justify-self-end">
             <Portrait />
           </Reveal>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="mt-20">
+      <section id="about" className="mt-20 scroll-mt-24">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <Reveal>
-            <div className="overflow-hidden rounded-3xl border border-white/[0.08] shadow-[0_24px_70px_rgba(0,0,0,0.45),0_0_48px_rgba(94,231,255,0.06)]">
+            <div className="overflow-hidden rounded-2xl border border-white/[0.1] shadow-[0_28px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(94,231,255,0.05)] ring-1 ring-white/[0.04]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/anastasia-about.png"
                 alt={t("footer.name")}
-                className="aspect-[4/5] w-full object-cover sm:aspect-[5/6] lg:aspect-auto lg:min-h-[380px]"
+                className="aspect-[4/3] w-full object-cover sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[400px]"
               />
             </div>
           </Reveal>
@@ -225,7 +164,7 @@ export function HomePageContent() {
             <Reveal delayMs={60}>
               <div className="rounded-3xl border border-border/12 bg-transparent p-6">
                 <p className="whitespace-pre-line leading-relaxed text-text/88">{t("about.p1")}</p>
-                <p className="mt-4 leading-relaxed text-text/88">{t("about.p2")}</p>
+                <p className="mt-4 whitespace-pre-line leading-relaxed text-text/88">{t("about.p2")}</p>
                 <p className="mt-6 text-sm font-semibold text-text/90">{t("about.listLabel")}</p>
                 <ul className="mt-3 space-y-2 text-sm leading-relaxed text-text/80">
                   {aboutListItems.map((line) => (
@@ -235,31 +174,55 @@ export function HomePageContent() {
                     </li>
                   ))}
                 </ul>
-              </div>
-            </Reveal>
-
-            <Reveal delayMs={120}>
-              <div className="space-y-3">
-                {pillars.map((x, idx) => (
-                  <div
-                    key={x.title}
-                    className="rounded-3xl border border-border/12 bg-bg/20 p-5 transition-all duration-300 hover:border-accent/20 hover:shadow-glow-soft"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="font-bold">{x.title}</div>
-                        <div className="mt-1 text-sm text-text/70">{x.desc}</div>
-                      </div>
-                      <div className="grid h-10 w-10 place-items-center rounded-2xl border border-accent/30 bg-accent/15">
-                        <span className="font-black text-accent">{idx + 1}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <p className="mt-8 whitespace-pre-line border-t border-border/10 pt-6 text-base font-bold leading-snug text-text">
+                  {t("about.thesis")}
+                </p>
               </div>
             </Reveal>
           </div>
         </div>
+      </section>
+
+      {/* БОЛИ */}
+      <section id="pain" className="mt-20 scroll-mt-24">
+        <SectionTitle kickerKey="pain.kicker" titleKey="pain.title" />
+        <div className="grid gap-3 md:grid-cols-2">
+          {painCards.map((card, idx) => (
+            <Reveal key={card} delayMs={idx * 70}>
+              <div className="h-full rounded-3xl border border-border/12 bg-bg/[0.18] p-5 transition-all duration-300 hover:border-accent/22 hover:shadow-[0_0_40px_rgba(155,125,255,0.12)] sm:p-6">
+                <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delayMs={320}>
+          <p className="mt-10 max-w-2xl whitespace-pre-line text-base font-semibold leading-relaxed text-text/85 sm:text-lg">
+            {messages.pain.closing}
+          </p>
+        </Reveal>
+      </section>
+
+      {/* РЕШЕНИЕ */}
+      <section id="solution" className="mt-20 scroll-mt-24">
+        <SectionTitle kickerKey="solution.kicker" titleKey="solution.title" />
+        <Reveal>
+          <div className="rounded-3xl border border-border/14 bg-bg/[0.22] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm sm:p-8">
+            <div className="text-center text-sm font-semibold tracking-wide text-accent sm:text-base">{messages.solution.flow}</div>
+            <ul className="mx-auto mt-8 max-w-xl space-y-3 text-sm leading-relaxed text-text/78 sm:text-[0.95rem]">
+              {solutionBullets.map((line) => (
+                <li key={line} className="flex gap-3">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent2 shadow-glow-soft" aria-hidden />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex justify-center">
+              <Button href={siteLinks.telegramBot} variant="primary" target="_blank" rel="noopener noreferrer">
+                {messages.solution.cta}
+              </Button>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* PORTFOLIO */}
@@ -269,54 +232,58 @@ export function HomePageContent() {
         <div className="grid gap-4 md:grid-cols-3">
           {portfolioItems.map((item, idx) => (
             <Reveal key={item.title} delayMs={idx * 70}>
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 transition-all duration-300 hover:scale-[1.02] hover:border-accent/28 hover:shadow-glow-soft">
+              <a
+                href={`#${item.anchor}`}
+                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.03] p-6 no-underline outline-none transition-all duration-300 hover:scale-[1.025] hover:border-accent/32 hover:shadow-[0_0_48px_rgba(94,231,255,0.14)] focus-visible:ring-2 focus-visible:ring-accent/40"
+              >
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
                 />
-                <div className="relative">
-                  <h3 className="text-lg font-black">{item.title}</h3>
+                <article className="relative flex h-full flex-col">
+                  <h3 className="text-lg font-black text-text">{item.title}</h3>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text/72">{item.desc}</p>
-                </div>
-              </article>
+                  <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent/90">↓</span>
+                </article>
+              </a>
             </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-16 space-y-16">
+          {portfolioItems.map((item, idx) => (
+            <div key={item.anchor} id={item.anchor} className="scroll-mt-28">
+              <Reveal delayMs={idx * 40}>
+                <div className="rounded-3xl border border-border/12 bg-bg/[0.15] p-6 sm:p-8">
+                  <h3 className="text-xl font-black">{item.title}</h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
+                </div>
+              </Reveal>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* SERVICES — карточки + связь с калькулятором */}
-      <section id="services" className="mt-20">
-        <SectionTitle kickerKey="servicesSection.kicker" titleKey="servicesSection.title" />
+      {/* ПРОДУКТЫ */}
+      <section id="services" className="mt-20 scroll-mt-24">
+        <SectionTitle kickerKey="productsSection.kicker" titleKey="productsSection.title" />
         <p className="mb-8 max-w-2xl text-sm text-text/70">{t("servicesSection.intro")}</p>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {SERVICE_IDS.map((id, idx) => (
-            <Reveal key={id} delayMs={idx * 50}>
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/30 hover:shadow-[0_0_0_1px_rgba(55,230,255,0.12)]">
-                <div aria-hidden="true" className="animated-gradient absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-15 transition-opacity duration-300 group-hover:opacity-25" />
-                <div className="relative flex flex-1 flex-col">
-                  <h3 className="text-lg font-black">{t(`serviceItems.${id}.title`)}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-text/70">{t(`serviceItems.${id}.desc`)}</p>
-                  <div className="mt-5">
-                    <Button type="button" variant="secondary" className="w-full sm:w-auto !py-2.5 !text-sm" onClick={() => addToCalc(id)}>
-                      {t(`serviceItems.${id}.action`)}
-                    </Button>
-                  </div>
-                </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {productItems.map((item, idx) => (
+            <Reveal key={item.title} delayMs={idx * 70}>
+              <article className="flex h-full flex-col rounded-3xl border border-border/12 bg-bg/[0.14] p-6 transition-all duration-300 hover:border-accent/24 hover:shadow-[0_0_40px_rgba(155,125,255,0.1)]">
+                <h3 className="text-lg font-black">{item.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-text/74">{item.desc}</p>
               </article>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* КАЛЬКУЛЯТОР */}
+      {/* КАЛЬКУЛЯТОР / ДИАГНОСТИКА */}
       <section id="calculator" className="mt-20 scroll-mt-24">
         <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
-        <ServiceCalculator
-          lines={calcLines}
-          onQtyChange={onQtyChange}
-          onRemove={onRemoveLine}
-          onAddService={addToCalc}
-        />
+        <ServiceCalculator />
       </section>
 
       {/* AUDIENCE */}
@@ -386,17 +353,37 @@ export function HomePageContent() {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" className="mt-20">
+      <section id="reviews" className="mt-20 scroll-mt-24">
         <SectionTitle kickerKey="reviews.kicker" titleKey="reviews.title" />
         <div className="grid gap-4 md:grid-cols-3">
           {reviewItems.map((r, idx) => (
             <Reveal key={r.name} delayMs={idx * 80}>
-              <div className="flex h-full flex-col rounded-3xl border border-border/12 bg-transparent p-6">
-                <div className="text-sm text-text/65">{t("reviews.label")}</div>
-                <div className="mt-3 flex-1 text-sm leading-relaxed text-text/80">{r.text}</div>
-                <div className="mt-auto pt-5">
-                  <div className="font-bold">{r.name}</div>
-                  <div className="text-sm text-text/60">{r.role}</div>
+              <div className="flex h-full flex-col rounded-3xl border border-border/12 bg-bg/[0.12] p-6">
+                <div className="flex items-start gap-3">
+                  {r.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={r.photo}
+                      alt=""
+                      className="h-12 w-12 shrink-0 rounded-2xl border border-border/12 object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/15 to-accent2/15 text-sm font-black text-accent"
+                      aria-hidden
+                    >
+                      {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <div className="font-bold">{r.name}</div>
+                    <div className="mt-0.5 text-xs font-medium uppercase tracking-wide text-accent/85">{r.niche}</div>
+                  </div>
+                </div>
+                <div className="mt-3 text-sm text-text/65">{t("reviews.label")}</div>
+                <div className="mt-2 flex-1 text-sm leading-relaxed text-text/82">{r.text}</div>
+                <div className="mt-4 rounded-2xl border border-border/10 bg-surface/[0.04] px-3 py-2.5 text-xs font-semibold leading-snug text-text/80">
+                  {r.outcome}
                 </div>
               </div>
             </Reveal>
@@ -560,44 +547,34 @@ export function HomePageContent() {
         </div>
       </section>
 
-      {/* ФИНАЛ + ФОРМА */}
+      {/* ФИНАЛ */}
       <section id="consultation" className="mt-20 scroll-mt-24">
-        <div className="relative overflow-hidden rounded-[32px] border border-border/12 bg-transparent p-6 sm:p-8">
-          <div aria-hidden="true" className="animated-gradient absolute inset-0 opacity-20" />
-          <div aria-hidden="true" className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-70" />
-          <div className="relative">
-            <div className="grid items-start gap-8 lg:grid-cols-2">
-              <div>
-                <Reveal>
-                  <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
-                </Reveal>
-                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-                  <Reveal>
-                    <Button
-                      href={siteLinks.telegramBot}
-                      variant="primary"
-                      className="w-full sm:w-auto"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t("final.ctaConsult")}
-                    </Button>
-                  </Reveal>
-                  <Reveal delayMs={120}>
-                    <Button href={siteLinks.telegramBot} variant="secondary" className="w-full sm:w-auto">
-                      {t("final.ctaTg")}
-                    </Button>
-                  </Reveal>
-                </div>
-                <p className="mt-4 text-sm leading-relaxed text-text/70">{t("final.note")}</p>
-              </div>
-              <Reveal delayMs={80}>
-                <LeadForm />
-              </Reveal>
-            </div>
+        <div className="relative overflow-hidden rounded-[32px] border border-border/14 bg-bg/[0.18] p-6 sm:p-10">
+          <div aria-hidden="true" className="animated-gradient absolute inset-0 opacity-[0.22]" />
+          <div aria-hidden="true" className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
+          <div className="relative max-w-3xl">
+            <Reveal>
+              <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
+            </Reveal>
+            <Reveal delayMs={100}>
+              <Button
+                href={siteLinks.telegramBot}
+                variant="primary"
+                className="mt-6 w-full sm:w-auto"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("final.cta")}
+              </Button>
+            </Reveal>
+            <Reveal delayMs={160}>
+              <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
+            </Reveal>
           </div>
         </div>
       </section>
+
+      <ChipmunkBanner />
 
       <div className="h-10" />
     </div>
