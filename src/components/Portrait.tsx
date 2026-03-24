@@ -36,14 +36,14 @@ export function Portrait() {
       onPointerLeave={onPointerLeave}
     >
       <motion.div
-        className="relative overflow-hidden rounded-[20px] shadow-[0_28px_64px_rgba(0,0,0,0.42)]"
+        className="relative overflow-hidden rounded-[20px]"
         style={reduceMotion ? undefined : { x: springX, y: springY }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/anastasia-hero.png"
           alt="Анастасия Мельникова"
-          className="aspect-[3/4] w-full object-cover sm:aspect-[3/4] lg:aspect-[4/5] lg:min-h-[min(600px,78vh)]"
+          className="aspect-[3/4] w-full object-cover sm:aspect-[3/4] lg:aspect-[4/5] lg:min-h-[min(600px,78vh)] [filter:drop-shadow(0_18px_36px_rgba(0,0,0,0.28))]"
         />
       </motion.div>
     </div>

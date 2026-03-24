@@ -642,20 +642,20 @@ export function HomePageContent() {
             </div>
             <motion.div
               aria-hidden
-              className="pointer-events-auto absolute bottom-0 right-0 z-20 w-max translate-x-[12%] translate-y-[18%] sm:translate-x-[18%] sm:translate-y-[24%]"
-              initial={reduceMotion ? { opacity: 0.55, y: 0, scale: 1 } : { opacity: 0, y: 6, scale: 0.96 }}
-              whileInView={{ opacity: 0.55, y: 0, scale: 1 }}
+              className="pointer-events-auto absolute bottom-0 right-0 z-20 w-max translate-x-[8%] translate-y-[14%] sm:translate-x-[14%] sm:translate-y-[20%]"
+              initial={reduceMotion ? { opacity: 0.5, y: 0, scale: 1 } : { opacity: 0, y: 4, scale: 0.98 }}
+              whileInView={{ opacity: 0.5, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={reduceMotion ? undefined : { scale: 1.08, y: -2 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={reduceMotion ? undefined : { scale: 1.04, y: -1 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/chipmunk.png"
                 alt=""
-                width={48}
-                height={48}
-                className="h-11 w-11 object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.28)] sm:h-12 sm:w-12"
+                width={40}
+                height={40}
+                className="h-9 w-9 object-contain sm:h-10 sm:w-10"
               />
             </motion.div>
           </div>
