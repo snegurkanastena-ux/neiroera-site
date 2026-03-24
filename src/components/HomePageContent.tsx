@@ -5,6 +5,7 @@
  * Тексты — централизованно в src/lib/messages.ts; ссылки — в src/lib/links.ts.
  */
 
+import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -168,14 +169,15 @@ export function HomePageContent() {
       <section id="about" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
-          <Reveal>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/anastasia-about.png"
-              alt={t("footer.name")}
-              className="h-auto w-full max-h-[320px] rounded-2xl object-contain object-center sm:max-h-none lg:rounded-3xl"
-            />
-          </Reveal>
+          <motion.img
+            src="/images/anastasia-about.png"
+            alt={t("footer.name")}
+            className="h-auto w-full max-h-[320px] rounded-2xl object-contain object-center sm:max-h-none lg:rounded-3xl"
+            initial={{ opacity: 0, y: 20, scale: 0.985 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
+          />
 
           <div className="space-y-6">
             <Reveal delayMs={60}>
