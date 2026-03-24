@@ -15,7 +15,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="fixed bottom-5 right-5 z-[60] hidden h-14 w-14 items-center justify-center rounded-2xl border border-border/15 bg-bg/80 text-text shadow-glow backdrop-blur-xl transition-all duration-300 hover:border-accent/40 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-accent/35 sm:flex"
+      className="fixed bottom-5 right-5 z-[60] hidden h-14 w-14 items-center justify-center rounded-2xl border border-border/15 bg-bg/80 text-text shadow-glow backdrop-blur-xl transition-all duration-300 hover:border-accent/40 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-accent/35 md:flex"
       aria-label={isDark ? t("theme.toLight") : t("theme.toDark")}
       title={isDark ? t("theme.titleLight") : t("theme.titleDark")}
     >

@@ -92,20 +92,20 @@ export function HomePageContent() {
   const solutionBullets = messages.solution.bullets;
 
   return (
-    <div id="top" className="pb-10 pt-16 sm:pb-14 sm:pt-16">
+    <div id="top" className="pb-10 pt-10 sm:pb-14 sm:pt-16">
       {/* HERO */}
       <section className="relative">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(48vh,380px)] w-full -translate-y-1/2 rounded-[44px] opacity-100 sm:h-[min(62vh,520px)] md:h-[min(72vh,640px)] lg:h-[min(94vh,900px)]"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(38vh,280px)] w-full max-w-full -translate-x-1/2 -translate-y-1/2 rounded-[44px] sm:h-[min(52vh,440px)] md:h-[min(62vh,520px)] lg:left-0 lg:h-[min(94vh,900px)] lg:w-[min(100%,calc(55%+1rem))] lg:max-w-[42rem] lg:translate-x-0 lg:-translate-y-1/2 xl:max-w-[44rem]"
         >
           <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
           <div className="hero-ambient-shift absolute inset-0 rounded-[44px] opacity-[0.55]" />
           <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.36]" />
         </div>
 
-        <div className="relative z-10 grid grid-cols-1 items-start gap-3 max-lg:gap-3 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
-          <div className="flex min-w-0 flex-col gap-3 max-lg:gap-3 lg:gap-6">
+        <div className="relative z-10 grid grid-cols-1 items-start gap-2 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
+          <div className="order-1 flex min-w-0 flex-col gap-2 lg:order-none lg:gap-6">
             <div>
               <Reveal>
                 <h1 className="whitespace-pre-line text-[1.65rem] font-black leading-[1.08] sm:text-3xl md:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
@@ -114,13 +114,13 @@ export function HomePageContent() {
               </Reveal>
 
               <Reveal delayMs={90}>
-                <p className="mt-2 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 max-lg:mt-2 sm:mt-4 sm:text-lg lg:mt-4 lg:text-xl">
+                <p className="mt-1.5 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 sm:mt-4 sm:text-lg lg:mt-4 lg:text-xl">
                   {t("hero.subtitle")}
                 </p>
               </Reveal>
 
               <Reveal delayMs={160}>
-                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-2.5 py-2 text-xs text-text/78 backdrop-blur-sm max-lg:mt-2 sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm lg:mt-6">
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-2.5 py-2 text-xs text-text/78 backdrop-blur-sm sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm lg:mt-6">
                   <span className="inline-flex items-center gap-2">
                     <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
                     {t("hero.trust1")}
@@ -143,7 +143,7 @@ export function HomePageContent() {
               </Reveal>
             </div>
 
-            <div className="max-lg:mt-0 lg:mt-0">
+            <div className="mt-1 lg:mt-0">
               <Reveal delayMs={220}>
                 <Button
                   href={siteLinks.telegramBot}
@@ -158,7 +158,7 @@ export function HomePageContent() {
             </div>
           </div>
 
-          <Reveal className="relative flex w-full max-lg:mt-1 justify-center lg:justify-self-end lg:justify-end">
+          <Reveal className="relative order-2 mt-2 flex w-full justify-center lg:order-none lg:mt-0 lg:justify-self-end lg:justify-end">
             <Portrait />
           </Reveal>
         </div>
@@ -169,14 +169,12 @@ export function HomePageContent() {
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <Reveal>
-            <div className="overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_20px_50px_rgba(0,0,0,0.45),0_0_28px_rgba(94,231,255,0.04)] ring-1 ring-white/[0.03] sm:border-white/[0.1] sm:shadow-[0_28px_80px_rgba(0,0,0,0.5),0_0_40px_rgba(94,231,255,0.05)] sm:ring-white/[0.04]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/anastasia-about.png"
-                alt={t("footer.name")}
-                className="h-auto w-full max-h-[320px] object-contain object-center sm:max-h-none"
-              />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/anastasia-about.png"
+              alt={t("footer.name")}
+              className="h-auto w-full max-h-[320px] rounded-2xl object-contain object-center sm:max-h-none lg:rounded-3xl"
+            />
           </Reveal>
 
           <div className="space-y-6">
