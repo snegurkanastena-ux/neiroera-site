@@ -31,19 +31,19 @@ export function Portrait() {
   return (
     <div
       ref={ref}
-      className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none lg:pl-2"
+      className="relative mx-auto w-full max-w-[min(100%,20rem)] lg:mx-0 lg:max-w-none lg:pl-2"
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
     >
       <motion.div
-        className="relative overflow-hidden rounded-[20px]"
+        className="relative overflow-hidden rounded-[18px] lg:rounded-[20px]"
         style={reduceMotion ? undefined : { x: springX, y: springY }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/anastasia-hero.png"
           alt="Анастасия Мельникова"
-          className="aspect-[3/4] w-full object-cover sm:aspect-[3/4] lg:aspect-[4/5] lg:min-h-[min(600px,78vh)] [filter:drop-shadow(0_18px_36px_rgba(0,0,0,0.28))]"
+          className="mx-auto h-auto w-full max-h-[320px] object-contain object-center sm:max-h-none lg:mx-0"
         />
       </motion.div>
     </div>

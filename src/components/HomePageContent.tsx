@@ -92,59 +92,63 @@ export function HomePageContent() {
   const solutionBullets = messages.solution.bullets;
 
   return (
-    <div id="top" className="pb-10 pt-8 sm:pb-14 sm:pt-16">
+    <div id="top" className="pb-10 pt-16 sm:pb-14 sm:pt-16">
       {/* HERO */}
       <section className="relative">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(72vh,560px)] w-full -translate-y-1/2 rounded-[44px] opacity-100 sm:h-[min(82vh,720px)] lg:h-[min(94vh,900px)]"
+          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-[min(48vh,380px)] w-full -translate-y-1/2 rounded-[44px] opacity-100 sm:h-[min(62vh,520px)] md:h-[min(72vh,640px)] lg:h-[min(94vh,900px)]"
         >
           <div className="hero-gradient-layer absolute inset-0 rounded-[44px]" />
           <div className="hero-ambient-shift absolute inset-0 rounded-[44px] opacity-[0.55]" />
           <div className="animated-gradient absolute inset-0 rounded-[44px] opacity-[0.36]" />
         </div>
 
-        <div className="relative z-10 grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
-          <div className="order-1 min-w-0 lg:order-none">
-            <Reveal>
-              <h1 className="whitespace-pre-line text-[1.65rem] font-black leading-[1.08] sm:text-3xl md:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
-                {t("hero.title")}
-              </h1>
-            </Reveal>
+        <div className="relative z-10 grid grid-cols-1 items-start gap-3 max-lg:gap-3 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
+          <div className="flex min-w-0 flex-col gap-3 max-lg:gap-3 lg:gap-6">
+            <div>
+              <Reveal>
+                <h1 className="whitespace-pre-line text-[1.65rem] font-black leading-[1.08] sm:text-3xl md:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
+                  {t("hero.title")}
+                </h1>
+              </Reveal>
 
-            <Reveal delayMs={90}>
-              <p className="mt-3 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 sm:mt-4 sm:text-lg lg:text-xl">{t("hero.subtitle")}</p>
-            </Reveal>
+              <Reveal delayMs={90}>
+                <p className="mt-2 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 max-lg:mt-2 sm:mt-4 sm:text-lg lg:mt-4 lg:text-xl">
+                  {t("hero.subtitle")}
+                </p>
+              </Reveal>
 
-            <Reveal delayMs={160}>
-              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-3 py-2.5 text-xs text-text/78 backdrop-blur-sm sm:mt-6 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm">
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
-                  {t("hero.trust1")}
-                </span>
-                <span className="hidden text-text/35 sm:inline" aria-hidden>
-                  ·
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
-                  {t("hero.trust2")}
-                </span>
-                <span className="hidden text-text/35 sm:inline" aria-hidden>
-                  ·
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
-                  {t("hero.trust3")}
-                </span>
-              </div>
-            </Reveal>
+              <Reveal delayMs={160}>
+                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-2xl border border-border/[0.07] bg-bg/[0.22] px-2.5 py-2 text-xs text-text/78 backdrop-blur-sm max-lg:mt-2 sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:border-border/10 sm:px-4 sm:py-3 sm:text-sm lg:mt-6">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                    {t("hero.trust1")}
+                  </span>
+                  <span className="hidden text-text/35 sm:inline" aria-hidden>
+                    ·
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
+                    {t("hero.trust2")}
+                  </span>
+                  <span className="hidden text-text/35 sm:inline" aria-hidden>
+                    ·
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                    {t("hero.trust3")}
+                  </span>
+                </div>
+              </Reveal>
+            </div>
 
-            <div className="mt-5 sm:mt-7">
+            <div className="max-lg:mt-0 lg:mt-0">
               <Reveal delayMs={220}>
                 <Button
                   href={siteLinks.telegramBot}
                   variant="primary"
-                  className="w-full sm:w-auto"
+                  className="!w-auto !py-2.5 !px-5 !text-sm sm:!py-3 sm:!px-5 sm:!text-base"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -154,7 +158,7 @@ export function HomePageContent() {
             </div>
           </div>
 
-          <Reveal className="relative order-2 w-full max-lg:mx-auto max-lg:max-w-[min(100%,20rem)] lg:order-none lg:justify-self-end">
+          <Reveal className="relative w-full max-lg:mt-1 lg:justify-self-end">
             <Portrait />
           </Reveal>
         </div>
@@ -170,7 +174,7 @@ export function HomePageContent() {
               <img
                 src="/images/anastasia-about.png"
                 alt={t("footer.name")}
-                className="aspect-[4/3] w-full object-cover sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[400px]"
+                className="h-auto w-full max-h-[320px] object-contain object-center sm:max-h-none"
               />
             </div>
           </Reveal>
@@ -211,7 +215,7 @@ export function HomePageContent() {
           ))}
         </div>
         <Reveal delayMs={320}>
-          <p className="mt-10 max-w-2xl whitespace-pre-line text-base font-semibold leading-relaxed text-text/85 sm:text-lg">
+          <p className="mt-7 max-w-2xl whitespace-pre-line text-base font-semibold leading-relaxed text-text/85 sm:mt-10 sm:text-lg">
             {messages.pain.closing}
           </p>
         </Reveal>
@@ -281,7 +285,7 @@ export function HomePageContent() {
                           key={src}
                           src={src}
                           alt=""
-                          className="aspect-[3/4] w-full rounded-2xl border border-border/12 object-cover shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                          className="aspect-[3/4] w-full rounded-2xl border border-border/[0.08] object-cover shadow-[0_12px_28px_rgba(0,0,0,0.28)] sm:border-border/12 sm:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
                         />
                       ))}
                     </div>
@@ -460,7 +464,7 @@ export function HomePageContent() {
 
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {/* Telegram-канал — акцент */}
-            <div className="relative overflow-hidden rounded-3xl border border-accent/35 bg-accent/10 p-6 lg:col-span-2">
+            <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-accent/10 p-4 sm:border-accent/35 sm:p-6 lg:col-span-2">
               <div aria-hidden="true" className="gradient-orb absolute -left-24 -top-24 h-64 w-64 opacity-90" />
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
@@ -484,7 +488,7 @@ export function HomePageContent() {
               href={siteLinks.telegramBot}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/25 hover:bg-surface/5"
+              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 hover:bg-surface/5 sm:border-border/12 sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -503,7 +507,7 @@ export function HomePageContent() {
               href={siteLinks.vkPage}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/25"
+              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -522,7 +526,7 @@ export function HomePageContent() {
               href={siteLinks.vkChannel}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/25"
+              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -539,7 +543,7 @@ export function HomePageContent() {
             {/* Email */}
             <a
               href={siteLinks.email}
-              className="group flex flex-col rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/25"
+              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -558,7 +562,7 @@ export function HomePageContent() {
               href={siteLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/12 bg-transparent p-6 transition-all duration-300 hover:border-accent/25 lg:col-span-2"
+              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6 lg:col-span-2"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -593,7 +597,7 @@ export function HomePageContent() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-2xl border border-border/12 bg-surface/5 p-5 transition-all duration-300 hover:border-accent2/30 hover:bg-surface/8"
+                    className="rounded-2xl border border-border/[0.08] bg-surface/5 p-4 transition-all duration-300 hover:border-accent2/30 hover:bg-surface/8 sm:border-border/12 sm:p-5"
                   >
                     <div className="font-bold">{block.title}</div>
                     <p className="mt-2 text-sm text-text/65">{block.desc}</p>
