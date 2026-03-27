@@ -40,6 +40,8 @@
     color: rgb(var(--text-rgb));
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
       "Segoe UI Emoji";
+    font-size: 1.0625rem;
+    line-height: 1.6;
     transition: background-color 0.35s ease, color 0.35s ease;
   }
 }
@@ -47,11 +49,11 @@
 .gradient-orb {
   background: radial-gradient(
     closest-side,
-    rgb(var(--orb-cyan) / 0.62),
+    rgb(var(--orb-cyan) / 0.45),
     rgb(var(--orb-cyan) / 0) 72%
   );
-  filter: blur(12px);
-  opacity: 0.95;
+  filter: blur(20px);
+  opacity: 0.85;
   transition: opacity 0.35s ease;
 }
 

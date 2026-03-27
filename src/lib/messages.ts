@@ -10,6 +10,14 @@ type ReviewItem = { name: string; text: string; niche: string; outcome: string; 
 type AudienceItem = { title: string; desc: string };
 type ProcessStep = { step: string; title: string; desc: string };
 
+export type ServiceOfferCard = {
+  id: string;
+  emoji: string;
+  title: string;
+  priceLine: string;
+  details: { name: string; price: string }[];
+};
+
 export type Messages = {
   nav: Record<string, string>;
   hero: Record<string, string | string[]>;
@@ -28,6 +36,8 @@ export type Messages = {
     kicker: string;
     title: string;
     intro: string;
+    listenTrack: string;
+    watchClip: string;
     items: {
       title: string;
       desc: string;
@@ -40,6 +50,37 @@ export type Messages = {
   servicesSection: Record<string, string>;
   serviceItems: Record<ServiceId, { title: string; desc: string; action: string }>;
   calculatorSection: Record<string, string>;
+  serviceOffers: {
+    kicker: string;
+    title: string;
+    expand: string;
+    collapse: string;
+    cards: ServiceOfferCard[];
+  };
+  simpleCalculator: {
+    kicker: string;
+    title: string;
+    site: string;
+    content: string;
+    automation: string;
+    training: string;
+    emptyHint: string;
+    estimate: string;
+  };
+  educationSection: {
+    kicker: string;
+    title: string;
+    lead: string;
+    bonuses: string;
+    tariffs: { id: string; name: string; price: string; blurb: string; featured?: boolean }[];
+    ctaChoose: string;
+    ctaRequest: string;
+  };
+  uncertaintyBlock: {
+    title: string;
+    body: string;
+    cta: string;
+  };
   diagnosticCalculator: {
     kicker: string;
     title: string;
@@ -94,7 +135,8 @@ export const messagesByLang: Record<Lang, Messages> = {
     nav: {
       about: "Обо мне",
       portfolio: "Портфолио",
-      services: "Продукты",
+      services: "Услуги",
+      education: "Обучение",
       calculator: "Калькулятор",
       audience: "Для кого",
       cases: "Кейсы",
@@ -109,10 +151,17 @@ export const messagesByLang: Record<Lang, Messages> = {
         "Создаю системы роста на базе ИИ\nдля бизнеса, экспертов и творчества",
       subtitle:
         "Сайт, контент, автоматизация и AI-инструменты —\nвсё в одной системе, которая приносит результат",
+      whatYouGet: "Что вы получите:",
+      bullets: JSON.stringify([
+        "сайт, который приводит клиентов",
+        "контент, который продаёт",
+        "автоматизацию процессов"
+      ]),
       trust1: "15+ лет опыта",
-      trust2: "внедрение под задачи, а не обучение",
+      trust2: "внедрение под задачи",
       trust3: "реальные кейсы",
-      ctaConsult: "Получить систему под свой бизнес",
+      ctaConsult: "Собрать систему под себя",
+      ctaRequest: "Оставить заявку",
       ctaTg: "В Telegram"
     },
     about: {
@@ -150,12 +199,14 @@ export const messagesByLang: Record<Lang, Messages> = {
         "AI ускоряет",
         "система работает как единый механизм"
       ],
-      cta: "Разобрать мою ситуацию"
+      cta: "Разобрать мой кейс"
     },
     portfolio: {
       kicker: "Портфолио",
       title: "Визуал, движение и звук",
       intro: "Направления, в которых собираю цельные решения на стыке креатива и AI.",
+      listenTrack: "Слушать трек",
+      watchClip: "Смотреть клип",
       items: [
         {
           title: "Нейрофото",
@@ -262,9 +313,96 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     calculatorSection: {
-      kicker: "Диагностика",
-      title: "Быстрый разбор запроса",
-      hint: "Три вопроса — чтобы понять контекст и предложить формат системы."
+      kicker: "Ориентир",
+      title: "Соберите свою систему",
+      hint: "Отметьте направления — покажу ориентир по бюджету."
+    },
+    serviceOffers: {
+      kicker: "Услуги",
+      title: "Выберите, что вам нужно",
+      expand: "Подробнее",
+      collapse: "Скрыть",
+      cards: [
+        {
+          id: "sites",
+          emoji: "💻",
+          title: "Сайты",
+          priceLine: "от 80 000 ₽",
+          details: [
+            { name: "Лендинг", price: "80 000 ₽" },
+            { name: "Система под ключ", price: "150–250 000 ₽" },
+            { name: "Индивидуально", price: "заявка" }
+          ]
+        },
+        {
+          id: "automation",
+          emoji: "⚙️",
+          title: "Автоматизация",
+          priceLine: "от 50 000 ₽",
+          details: [
+            { name: "Сценарии и интеграции", price: "от 50 000 ₽" },
+            { name: "Под ключ под процесс", price: "заявка" }
+          ]
+        },
+        {
+          id: "content",
+          emoji: "🎨",
+          title: "Контент и визуал",
+          priceLine: "от 30 000 ₽",
+          details: [
+            { name: "Пакет контента", price: "от 30 000 ₽" },
+            { name: "Визуал и оформление", price: "заявка" }
+          ]
+        },
+        {
+          id: "training",
+          emoji: "🎓",
+          title: "Обучение",
+          priceLine: "от 10 000 ₽",
+          details: [
+            { name: "Старт / практика", price: "от 10 000 ₽" },
+            { name: "Индивидуально", price: "заявка" }
+          ]
+        },
+        {
+          id: "creative",
+          emoji: "🎬",
+          title: "Творчество",
+          priceLine: "от 20 000 ₽",
+          details: [
+            { name: "Музыка / видео / идеи", price: "от 20 000 ₽" },
+            { name: "Проект целиком", price: "заявка" }
+          ]
+        }
+      ]
+    },
+    simpleCalculator: {
+      kicker: "Ориентир",
+      title: "Соберите свою систему",
+      site: "сайт",
+      content: "контент",
+      automation: "автоматизация",
+      training: "обучение",
+      emptyHint: "Отметьте, что входит в систему",
+      estimate: "Ориентир: 120 000 – 250 000 ₽"
+    },
+    educationSection: {
+      kicker: "Обучение",
+      title: "Нейросети под ваши задачи",
+      lead: "Спокойный вход в практику: от первых шагов до устойчивого результата.",
+      bonuses: "Материалы, шаблоны и разбор ваших кейсов в формате тарифа.",
+      tariffs: [
+        { id: "start", name: "START", price: "от 10 000 ₽", blurb: "База и первые результаты" },
+        { id: "practice", name: "PRACTICE", price: "от 25 000 ₽", blurb: "Практика и закрепление", featured: true },
+        { id: "vip", name: "VIP", price: "от 80 000 ₽", blurb: "Индивидуально и глубоко" }
+      ],
+      ctaChoose: "Выбрать тариф",
+      ctaRequest: "Оставить заявку"
+    },
+    uncertaintyBlock: {
+      title: "Не знаете, что выбрать?",
+      body: "Оставьте заявку — соберу решение под вас.",
+      cta: "Оставить заявку"
     },
     diagnosticCalculator: {
       kicker: "Диагностика",
@@ -362,19 +500,22 @@ export const messagesByLang: Record<Lang, Messages> = {
           name: "Ольга Н.",
           niche: "Эксперт, образование",
           outcome: "Контент стал процессом, а не хаотичными постами; GPT-агент снял рутину.",
-          text: "Анастасия собрала мне систему: контент перестал быть «раз в неделю» и превратился в процесс. Плюс GPT-агент реально снял рутину."
+          text: "Анастасия собрала мне систему: контент перестал быть «раз в неделю» и превратился в процесс. Плюс GPT-агент реально снял рутину.",
+          photo: "https://picsum.photos/seed/neiro-review-1/112/112"
         },
         {
           name: "Алексей С.",
           niche: "Предприниматель, услуги",
           outcome: "После разбора и стратегии воронка начала стабильно отдавать заявки.",
-          text: "Очень практичный подход. Никаких абстракций: мы разобрали задачи, сделали стратегию, и дальше пошла сборка системы. Результат — воронка начала работать."
+          text: "Очень практичный подход. Никаких абстракций: мы разобрали задачи, сделали стратегию, и дальше пошла сборка системы. Результат — воронка начала работать.",
+          photo: "https://picsum.photos/seed/neiro-review-2/112/112"
         },
         {
           name: "Мария К.",
           niche: "Digital-проект",
           outcome: "Сайт и контент выстроены в одну линию; визуально premium tech, по смыслу — по делу.",
-          text: "Понравилось, что сайт и контент начали «разговаривать» друг с другом. Визуально — premium tech, по смыслу — чётко и по делу."
+          text: "Понравилось, что сайт и контент начали «разговаривать» друг с другом. Визуально — premium tech, по смыслу — чётко и по делу.",
+          photo: "https://picsum.photos/seed/neiro-review-3/112/112"
         }
       ]
     },
@@ -426,13 +567,13 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Следующий шаг",
       title: "Если вы хотите систему, а не хаос — давайте соберём её",
       subtitle: "Обычно начинаем с диагностики и собираем решение под вас",
-      cta: "Получить разбор"
+      cta: "Оставить заявку"
     },
     leadForm: {
       badge: "Связь",
-      title: "Заявка и консультация",
-      intro: "Откройте диалог в боте и кратко опишите задачу — так быстрее согласуем запрос и следующий шаг.",
-      hint: "Напишите в Telegram — так быстрее согласуем задачу и следующий шаг",
+      title: "Заявка",
+      intro: "Напишите на почту кратко о задаче — отвечу и предложу следующий шаг.",
+      hint: "Или напишите в Telegram, если так удобнее",
       name: "Имя",
       namePh: "Как к вам обращаться?",
       contact: "Telegram / Email / Телефон",
@@ -442,6 +583,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       message: "Коротко о задаче",
       messagePh: "Напишите 2–4 предложения: что есть сейчас, что не получается, какой результат нужен.",
       submit: "Отправить заявку",
+      ctaEmail: "Оставить заявку",
       ctaTelegram: "Написать в Telegram",
       sending: "Отправляем...",
       successTitle: "Заявка отправлена",
@@ -471,7 +613,8 @@ export const messagesByLang: Record<Lang, Messages> = {
     nav: {
       about: "About",
       portfolio: "Portfolio",
-      services: "Products",
+      services: "Services",
+      education: "Training",
       calculator: "Estimator",
       audience: "Audience",
       cases: "Cases",
@@ -485,10 +628,17 @@ export const messagesByLang: Record<Lang, Messages> = {
       title: "I build AI-powered growth systems\nfor business, experts, and creative work",
       subtitle:
         "Website, content, automation, and AI tools —\none connected system that drives outcomes",
+      whatYouGet: "What you get:",
+      bullets: JSON.stringify([
+        "a website that brings clients",
+        "content that sells",
+        "process automation"
+      ]),
       trust1: "15+ years of experience",
-      trust2: "implementation for your tasks, not generic training",
+      trust2: "hands-on implementation",
       trust3: "real case studies",
-      ctaConsult: "Get a system for your business",
+      ctaConsult: "Build a system for me",
+      ctaRequest: "Request a quote",
       ctaTg: "Telegram"
     },
     about: {
@@ -526,12 +676,14 @@ export const messagesByLang: Record<Lang, Messages> = {
         "AI accelerates execution",
         "the system runs as one mechanism"
       ],
-      cta: "Review my situation"
+      cta: "Break down my case"
     },
     portfolio: {
       kicker: "Portfolio",
       title: "Visuals, motion, and sound",
       intro: "Focus areas where I ship cohesive work at the intersection of craft and AI.",
+      listenTrack: "Listen to the track",
+      watchClip: "Watch the clip",
       items: [
         {
           title: "Neuro photography",
@@ -638,9 +790,96 @@ export const messagesByLang: Record<Lang, Messages> = {
       }
     },
     calculatorSection: {
-      kicker: "Diagnostics",
-      title: "Quick request check-in",
-      hint: "Three questions to understand context and suggest a system format."
+      kicker: "Estimate",
+      title: "Build your stack",
+      hint: "Check what you need — I’ll share a budget range."
+    },
+    serviceOffers: {
+      kicker: "Services",
+      title: "Choose what you need",
+      expand: "Details",
+      collapse: "Hide",
+      cards: [
+        {
+          id: "sites",
+          emoji: "💻",
+          title: "Websites",
+          priceLine: "from 80,000 ₽",
+          details: [
+            { name: "Landing page", price: "80,000 ₽" },
+            { name: "Full system", price: "150,000–250,000 ₽" },
+            { name: "Custom", price: "on request" }
+          ]
+        },
+        {
+          id: "automation",
+          emoji: "⚙️",
+          title: "Automation",
+          priceLine: "from 50,000 ₽",
+          details: [
+            { name: "Flows & integrations", price: "from 50,000 ₽" },
+            { name: "End-to-end for a process", price: "on request" }
+          ]
+        },
+        {
+          id: "content",
+          emoji: "🎨",
+          title: "Content & visuals",
+          priceLine: "from 30,000 ₽",
+          details: [
+            { name: "Content pack", price: "from 30,000 ₽" },
+            { name: "Visuals & layout", price: "on request" }
+          ]
+        },
+        {
+          id: "training",
+          emoji: "🎓",
+          title: "Training",
+          priceLine: "from 10,000 ₽",
+          details: [
+            { name: "Start / practice", price: "from 10,000 ₽" },
+            { name: "1:1", price: "on request" }
+          ]
+        },
+        {
+          id: "creative",
+          emoji: "🎬",
+          title: "Creative",
+          priceLine: "from 20,000 ₽",
+          details: [
+            { name: "Music / video / ideas", price: "from 20,000 ₽" },
+            { name: "Full project", price: "on request" }
+          ]
+        }
+      ]
+    },
+    simpleCalculator: {
+      kicker: "Estimate",
+      title: "Build your stack",
+      site: "website",
+      content: "content",
+      automation: "automation",
+      training: "training",
+      emptyHint: "Select what goes into the system",
+      estimate: "Ballpark: 120,000 – 250,000 ₽"
+    },
+    educationSection: {
+      kicker: "Training",
+      title: "Neural networks for your real tasks",
+      lead: "A calm on-ramp: from first steps to steady outcomes.",
+      bonuses: "Templates, materials, and case reviews tailored to your tier.",
+      tariffs: [
+        { id: "start", name: "START", price: "from 10,000 ₽", blurb: "Foundations and first wins" },
+        { id: "practice", name: "PRACTICE", price: "from 25,000 ₽", blurb: "Practice and momentum", featured: true },
+        { id: "vip", name: "VIP", price: "from 80,000 ₽", blurb: "1:1 and deep work" }
+      ],
+      ctaChoose: "Choose a tier",
+      ctaRequest: "Request a quote"
+    },
+    uncertaintyBlock: {
+      title: "Not sure what to pick?",
+      body: "Leave a request — I’ll build a solution for you.",
+      cta: "Request a quote"
     },
     diagnosticCalculator: {
       kicker: "Diagnostics",
@@ -738,19 +977,22 @@ export const messagesByLang: Record<Lang, Messages> = {
           name: "Olga N.",
           niche: "Expert, education",
           outcome: "Content turned into a process; the GPT agent removed repetitive work.",
-          text: "Anastasia gave me a real system—content became a process, not a random weekly post. The GPT agent removed so much grunt work."
+          text: "Anastasia gave me a real system—content became a process, not a random weekly post. The GPT agent removed so much grunt work.",
+          photo: "https://picsum.photos/seed/neiro-review-1/112/112"
         },
         {
           name: "Alex S.",
           niche: "Entrepreneur, services",
           outcome: "After discovery and strategy, the funnel started delivering steady inquiries.",
-          text: "Practical and concrete. We clarified the jobs to be done, set the strategy, then built the stack. The funnel finally moved."
+          text: "Practical and concrete. We clarified the jobs to be done, set the strategy, then built the stack. The funnel finally moved.",
+          photo: "https://picsum.photos/seed/neiro-review-2/112/112"
         },
         {
           name: "Maria K.",
           niche: "Digital project",
           outcome: "Site and content aligned; premium-tech look with sharp messaging.",
-          text: "Site and content finally feel connected. Visually premium-tech, verbally sharp and to the point."
+          text: "Site and content finally feel connected. Visually premium-tech, verbally sharp and to the point.",
+          photo: "https://picsum.photos/seed/neiro-review-3/112/112"
         }
       ]
     },
@@ -802,13 +1044,13 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Next step",
       title: "If you want a system—not chaos—let’s build it together",
       subtitle: "We usually start with diagnostics and tailor the solution to you",
-      cta: "Get a review session"
+      cta: "Request a quote"
     },
     leadForm: {
       badge: "Contact",
-      title: "Requests & consultations",
-      intro: "Open the bot chat and share a short brief — we’ll align faster on scope and next steps.",
-      hint: "Message on Telegram — fastest way to align on the brief and next steps",
+      title: "Request",
+      intro: "Email a short brief — I’ll reply with the next step.",
+      hint: "Or message on Telegram if that’s easier",
       name: "Name",
       namePh: "How should we address you?",
       contact: "Telegram / Email / Phone",
@@ -818,6 +1060,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       message: "Brief context",
       messagePh: "2–4 sentences: current state, blockers, desired outcome.",
       submit: "Send request",
+      ctaEmail: "Request a quote",
       ctaTelegram: "Message on Telegram",
       sending: "Sending...",
       successTitle: "Request received",

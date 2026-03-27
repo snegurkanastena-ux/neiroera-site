@@ -15,8 +15,8 @@ export default {
         onAccent: "#020617"
       },
       boxShadow: {
-        glow: "0 0 28px rgba(94, 231, 255, 0.42)",
-        "glow-soft": "0 0 48px rgba(155, 125, 255, 0.18)"
+        glow: "0 0 20px rgba(94, 231, 255, 0.22)",
+        "glow-soft": "0 0 24px rgba(155, 125, 255, 0.12)"
       }
     }
   },

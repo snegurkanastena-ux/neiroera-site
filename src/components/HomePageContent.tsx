@@ -6,12 +6,14 @@
  */
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
+import { LeadForm } from "./LeadForm";
 import { Portrait } from "./Portrait";
 import { Reveal } from "./Reveal";
 import { ServiceCalculator } from "./ServiceCalculator";
+import { ServiceOfferGrid } from "./ServiceOfferGrid";
 import { Button } from "./ui/Button";
 
 /** Треки в `public/portfolio/music` (имена файлов из репозитория). */
@@ -30,14 +32,42 @@ const PORTFOLIO_PHOTOS = [
   "/portfolio/photos/photo-04.jpg.png"
 ] as const;
 
+function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string[]; listenLabel: string }) {
+  const [active, setActive] = useState<string | null>(null);
+  return (
+    <div className="space-y-3">
+      {tracks.map((src) => {
+        const isOn = active === src;
+        return (
+          <div
+            key={src}
+            className={`rounded-xl border px-4 py-3 transition-colors ${
+              isOn ? "border-accent/40 bg-accent/[0.07]" : "border-border/12 bg-bg/[0.2] hover:border-border/22"
+            }`}
+          >
+            <div className="mb-2 text-sm font-semibold text-text">{listenLabel}</div>
+            <audio
+              controls
+              preload="metadata"
+              className="h-11 w-full max-w-xl rounded-lg accent-accent"
+              onPlay={() => setActive(src)}
+              onPause={() => setActive((a) => (a === src ? null : a))}
+            >
+              <source src={src} type="audio/mpeg" />
+            </audio>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
   const { t } = useI18n();
   return (
-    <div className="mb-5 sm:mb-8">
-      <div className="text-xs sm:text-sm text-text/65 uppercase tracking-widest">{t(kickerKey)}</div>
-      <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold leading-tight">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent via-accent2 to-warm">{t(titleKey)}</span>
-      </h2>
+    <div className="mb-6 sm:mb-10">
+      <div className="text-xs sm:text-sm font-medium uppercase tracking-widest text-text/55">{t(kickerKey)}</div>
+      <h2 className="mt-2 text-2xl font-extrabold leading-tight text-text sm:text-3xl">{t(titleKey)}</h2>
     </div>
   );
 }
@@ -88,76 +118,140 @@ export function HomePageContent() {
   const processSteps = messages.process.steps;
   const reviewItems = messages.reviews.items;
   const portfolioItems = messages.portfolio.items;
-  const productItems = messages.productsSection.items;
   const painCards = messages.pain.cards;
   const solutionBullets = messages.solution.bullets;
 
+  const heroBullets = useMemo(() => {
+    try {
+      return JSON.parse(t("hero.bullets")) as string[];
+    } catch {
+      return [];
+    }
+  }, [t]);
+
   return (
-    <div id="top" className="pb-10 pt-10 sm:pb-14 sm:pt-16">
+    <div id="top" className="pb-12 pt-6 sm:pb-16 sm:pt-14">
       {/* HERO */}
       <section className="relative">
-        <div className="grid grid-cols-1 items-start gap-2 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-8">
-          <div className="order-1 flex min-w-0 flex-col gap-2 lg:order-none lg:gap-6">
+        <div className="grid grid-cols-1 items-start gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-10">
+          <div className="order-1 flex min-w-0 flex-col gap-3 sm:gap-5 lg:order-none">
             <div>
               <Reveal>
-                <h1 className="whitespace-pre-line text-[1.65rem] font-black leading-[1.08] sm:text-3xl md:text-4xl lg:text-[2.7rem] lg:leading-[1.05]">
+                <h1 className="whitespace-pre-line text-[1.6rem] font-black leading-[1.12] text-text sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.06]">
                   {t("hero.title")}
                 </h1>
               </Reveal>
 
               <Reveal delayMs={90}>
-                <p className="mt-1.5 max-w-xl whitespace-pre-line text-base leading-snug text-text/88 sm:mt-4 sm:text-lg lg:mt-4 lg:text-xl">
+                <p className="mt-2 max-w-xl whitespace-pre-line text-base leading-relaxed text-text/90 sm:mt-4 sm:text-lg lg:text-xl">
                   {t("hero.subtitle")}
                 </p>
               </Reveal>
 
-              <Reveal delayMs={160}>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-text/78 sm:mt-4 sm:gap-x-3 sm:gap-y-2 sm:text-sm lg:mt-6">
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
-                    {t("hero.trust1")}
-                  </span>
-                  <span className="hidden text-text/35 sm:inline" aria-hidden>
-                    ·
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
-                    {t("hero.trust2")}
-                  </span>
-                  <span className="hidden text-text/35 sm:inline" aria-hidden>
-                    ·
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
-                    {t("hero.trust3")}
-                  </span>
-                </div>
+              <Reveal delayMs={130}>
+                <p className="mt-4 text-sm font-semibold text-text sm:mt-5 sm:text-base">{t("hero.whatYouGet")}</p>
+                <ul className="mt-2 max-w-xl space-y-1.5 text-sm leading-relaxed text-text/88 sm:text-base">
+                  {heroBullets.map((line) => (
+                    <li key={line} className="flex gap-2.5">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+
+              <Reveal delayMs={180}>
+                <p className="mt-4 text-xs leading-relaxed text-text/65 sm:mt-5 sm:text-sm">
+                  <span>{t("hero.trust1")}</span>
+                  <span className="text-text/35"> · </span>
+                  <span>{t("hero.trust2")}</span>
+                  <span className="text-text/35"> · </span>
+                  <span>{t("hero.trust3")}</span>
+                </p>
               </Reveal>
             </div>
 
-            <div className="mt-1 lg:mt-0">
-              <Reveal delayMs={220}>
+            <Reveal delayMs={220}>
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
-                  href={siteLinks.telegramBot}
+                  href="#services"
                   variant="primary"
-                  className="!w-auto !py-2.5 !px-5 !text-sm sm:!py-3 sm:!px-5 sm:!text-base"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  className="min-h-[48px] w-full px-6 text-base sm:w-auto sm:min-w-[220px]"
                 >
                   {t("hero.ctaConsult")}
                 </Button>
-              </Reveal>
-            </div>
+                <Button href={siteLinks.email} variant="ghost" className="min-h-[48px] w-full border-border/18 px-6 text-base sm:w-auto">
+                  {t("hero.ctaRequest")}
+                </Button>
+              </div>
+            </Reveal>
           </div>
 
-          <Reveal className="relative order-2 mt-2 flex w-full justify-center lg:order-none lg:mt-0 lg:justify-self-end lg:justify-end">
+          <Reveal className="relative order-2 mt-2 flex w-full justify-center sm:mt-3 lg:order-none lg:mt-0 lg:justify-end">
             <Portrait />
           </Reveal>
         </div>
       </section>
 
+      {/* УСЛУГИ */}
+      <section id="services" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
+        <SectionTitle kickerKey="serviceOffers.kicker" titleKey="serviceOffers.title" />
+        <Reveal>
+          <ServiceOfferGrid />
+        </Reveal>
+        <Reveal delayMs={120}>
+          <div className="mt-10 rounded-2xl border border-border/14 bg-bg/[0.22] px-5 py-6 sm:px-8 sm:py-8">
+            <h3 className="text-lg font-bold text-text sm:text-xl">{messages.uncertaintyBlock.title}</h3>
+            <p className="mt-2 max-w-2xl text-base leading-relaxed text-text/80">{messages.uncertaintyBlock.body}</p>
+            <div className="mt-5">
+              <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
+                {messages.uncertaintyBlock.cta}
+              </Button>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* КАЛЬКУЛЯТОР */}
+      <section id="calculator" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
+        <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
+        <ServiceCalculator />
+      </section>
+
+      {/* ОБУЧЕНИЕ */}
+      <section id="education" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
+        <SectionTitle kickerKey="educationSection.kicker" titleKey="educationSection.title" />
+        <p className="mb-8 max-w-2xl text-base leading-relaxed text-text/85">{messages.educationSection.lead}</p>
+        <p className="mb-8 text-sm font-medium text-text/70">{messages.educationSection.bonuses}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {messages.educationSection.tariffs.map((tariff) => (
+            <Reveal key={tariff.id}>
+              <div
+                className={`flex h-full flex-col rounded-2xl border p-5 sm:p-6 ${
+                  tariff.featured
+                    ? "border-accent/45 bg-accent/[0.08] ring-1 ring-accent/25"
+                    : "border-border/12 bg-bg/[0.18]"
+                }`}
+              >
+                <div className="text-xs font-bold uppercase tracking-widest text-text/55">{tariff.name}</div>
+                <div className="mt-3 text-3xl font-black tracking-tight text-text sm:text-4xl">{tariff.price}</div>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-text/75">{tariff.blurb}</p>
+                <div className="mt-6 flex flex-col gap-2">
+                  <Button href={`${siteLinks.email}?subject=${encodeURIComponent(tariff.name)}`} variant="primary" className="min-h-[46px] w-full text-base">
+                    {messages.educationSection.ctaChoose}
+                  </Button>
+                  <Button href={siteLinks.email} variant="ghost" className="min-h-[44px] w-full text-base">
+                    {messages.educationSection.ctaRequest}
+                  </Button>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* ABOUT */}
-      <section id="about" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
+      <section id="about" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
           <motion.img
@@ -179,7 +273,7 @@ export function HomePageContent() {
                 <ul className="mt-3 space-y-2 text-sm leading-relaxed text-text/80">
                   {aboutListItems.map((line) => (
                     <li key={line} className="flex gap-2">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent shadow-glow" aria-hidden />
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
                       <span>{line}</span>
                     </li>
                   ))}
@@ -199,7 +293,7 @@ export function HomePageContent() {
         <div className="grid gap-3 md:grid-cols-2">
           {painCards.map((card, idx) => (
             <Reveal key={card} delayMs={idx * 70}>
-              <div className="h-full rounded-3xl border border-border/[0.07] bg-bg/[0.18] p-4 transition-all duration-300 hover:border-accent/22 hover:shadow-[0_0_40px_rgba(155,125,255,0.12)] sm:border-border/12 sm:p-5 md:p-6">
+              <div className="h-full rounded-2xl border border-border/12 bg-bg/[0.14] p-4 transition-colors hover:border-border/22 sm:p-5 md:p-6">
                 <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
               </div>
             </Reveal>
@@ -216,18 +310,18 @@ export function HomePageContent() {
       <section id="solution" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="solution.kicker" titleKey="solution.title" />
         <Reveal>
-          <div className="rounded-3xl border border-border/[0.08] bg-bg/[0.22] p-4 shadow-[0_16px_48px_rgba(0,0,0,0.2)] backdrop-blur-sm sm:border-border/14 sm:p-6 sm:shadow-[0_20px_60px_rgba(0,0,0,0.25)] md:p-8">
+          <div className="rounded-2xl border border-border/12 bg-bg/[0.2] p-5 sm:p-7 md:p-8">
             <div className="text-center text-sm font-semibold tracking-wide text-accent sm:text-base">{messages.solution.flow}</div>
-            <ul className="mx-auto mt-8 max-w-xl space-y-3 text-sm leading-relaxed text-text/78 sm:text-[0.95rem]">
+            <ul className="mx-auto mt-8 max-w-xl space-y-3 text-base leading-relaxed text-text/85">
               {solutionBullets.map((line) => (
                 <li key={line} className="flex gap-3">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent2 shadow-glow-soft" aria-hidden />
+                  <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
                   <span>{line}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-8 flex justify-center">
-              <Button href={siteLinks.telegramBot} variant="primary" target="_blank" rel="noopener noreferrer">
+              <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
                 {messages.solution.cta}
               </Button>
             </div>
@@ -244,12 +338,8 @@ export function HomePageContent() {
             <Reveal key={item.title} delayMs={idx * 70}>
               <a
                 href={`#${item.anchor}`}
-                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/[0.07] bg-surface/[0.03] p-4 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.03] hover:border-accent/35 hover:shadow-[0_0_56px_rgba(94,231,255,0.2)] focus-visible:ring-2 focus-visible:ring-accent/40 sm:border-border/12 sm:p-6"
+                className="group relative block h-full cursor-pointer rounded-2xl border border-border/12 bg-bg/[0.12] p-4 no-underline outline-none transition-colors hover:border-accent/30 hover:bg-bg/[0.18] focus-visible:ring-2 focus-visible:ring-accent/40 sm:p-6"
               >
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent/12 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-                />
                 <article className="relative flex h-full flex-col">
                   <h3 className="text-lg font-black text-text">{item.title}</h3>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text/72">{item.desc}</p>
@@ -284,10 +374,11 @@ export function HomePageContent() {
 
                   {item.anchor === "portfolio-video" && item.casesCta ? (
                     <div className="mt-6">
+                      <div className="mb-3 text-sm font-semibold text-text">{t("portfolio.watchClip")}</div>
                       <Button
                         href={siteLinks.telegramPortfolioCases}
                         variant="primary"
-                        className="w-full sm:w-auto"
+                        className="min-h-[48px] w-full transition-transform hover:brightness-110 active:scale-[0.99] sm:w-auto"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -300,17 +391,8 @@ export function HomePageContent() {
                   ) : null}
 
                   {item.anchor === "portfolio-music" ? (
-                    <div className="mt-6 space-y-3">
-                      {PORTFOLIO_MUSIC_TRACKS.map((src) => (
-                        <audio
-                          key={src}
-                          controls
-                          preload="metadata"
-                          className="h-10 w-full max-w-xl rounded-lg accent-accent"
-                        >
-                          <source src={src} type="audio/mpeg" />
-                        </audio>
-                      ))}
+                    <div className="mt-6">
+                      <PortfolioMusicTracks tracks={PORTFOLIO_MUSIC_TRACKS} listenLabel={t("portfolio.listenTrack")} />
                     </div>
                   ) : null}
                 </div>
@@ -318,28 +400,6 @@ export function HomePageContent() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* ПРОДУКТЫ */}
-      <section id="services" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <SectionTitle kickerKey="productsSection.kicker" titleKey="productsSection.title" />
-        <p className="mb-5 max-w-2xl text-sm text-text/70 sm:mb-8">{t("servicesSection.intro")}</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {productItems.map((item, idx) => (
-            <Reveal key={item.title} delayMs={idx * 70}>
-              <article className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.14] p-4 transition-all duration-300 hover:border-accent/24 hover:shadow-[0_0_40px_rgba(155,125,255,0.1)] sm:border-border/12 sm:p-6">
-                <h3 className="text-lg font-black">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-text/74">{item.desc}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* КАЛЬКУЛЯТОР / ДИАГНОСТИКА */}
-      <section id="calculator" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
-        <ServiceCalculator />
       </section>
 
       {/* AUDIENCE */}
@@ -398,7 +458,7 @@ export function HomePageContent() {
                     <div className="mt-1 text-lg font-black">{x.title}</div>
                     <div className="mt-2 text-sm leading-relaxed text-text/70">{x.desc}</div>
                   </div>
-                  <div className="grid h-12 w-12 place-items-center rounded-3xl border border-accent/30 bg-accent/15 shadow-glow">
+                  <div className="grid h-12 w-12 place-items-center rounded-3xl border border-accent/25 bg-accent/12">
                     <span className="font-black text-accent">{x.step}</span>
                   </div>
                 </div>
@@ -411,35 +471,37 @@ export function HomePageContent() {
       {/* REVIEWS */}
       <section id="reviews" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="reviews.kicker" titleKey="reviews.title" />
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {reviewItems.map((r, idx) => (
             <Reveal key={r.name} delayMs={idx * 80}>
-              <div className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.12] p-4 sm:border-border/12 sm:p-6">
-                <div className="flex items-start gap-3">
-                  {r.photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={r.photo}
-                      alt=""
-                      className="h-12 w-12 shrink-0 rounded-2xl border border-border/12 object-cover"
-                    />
-                  ) : (
-                    <div
-                      className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/15 to-accent2/15 text-sm font-black text-accent"
-                      aria-hidden
-                    >
-                      {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
+              <div className="flex h-full flex-col rounded-xl border border-border/12 bg-bg/[0.08] p-1 sm:p-1.5">
+                <div className="flex flex-1 flex-col rounded-lg border border-border/10 bg-bg/[0.35] p-4 sm:p-5">
+                  <div className="flex items-start gap-3 border-b border-border/10 pb-3">
+                    {r.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={r.photo}
+                        alt=""
+                        className="h-11 w-11 shrink-0 rounded-full border border-border/15 object-cover"
+                      />
+                    ) : (
+                      <div
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border/15 bg-gradient-to-br from-accent/12 to-accent2/12 text-sm font-black text-text"
+                        aria-hidden
+                      >
+                        {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="font-bold text-text">{r.name}</div>
+                      <div className="mt-0.5 text-xs font-medium text-text/55">{r.niche}</div>
                     </div>
-                  )}
-                  <div className="min-w-0">
-                    <div className="font-bold">{r.name}</div>
-                    <div className="mt-0.5 text-xs font-medium uppercase tracking-wide text-accent/85">{r.niche}</div>
                   </div>
-                </div>
-                <div className="mt-3 text-sm text-text/65">{t("reviews.label")}</div>
-                <div className="mt-2 flex-1 text-sm leading-relaxed text-text/82">{r.text}</div>
-                <div className="mt-4 rounded-2xl border border-border/10 bg-surface/[0.04] px-3 py-2.5 text-xs font-semibold leading-snug text-text/80">
-                  {r.outcome}
+                  <div className="mt-3 text-xs font-medium uppercase tracking-wide text-text/45">{t("reviews.label")}</div>
+                  <p className="mt-2 flex-1 text-base leading-relaxed text-text/90">{r.text}</p>
+                  <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] px-3 py-2.5 text-sm font-medium leading-snug text-text/85">
+                    {r.outcome}
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -455,15 +517,14 @@ export function HomePageContent() {
 
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {/* Telegram-канал — акцент */}
-            <div className="relative overflow-hidden rounded-3xl border border-accent/30 bg-accent/10 p-4 sm:border-accent/35 sm:p-6 lg:col-span-2">
-              <div aria-hidden="true" className="gradient-orb absolute -left-24 -top-24 h-64 w-64 opacity-90" />
+            <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-accent/[0.06] p-4 sm:p-6 lg:col-span-2">
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.tgChannelTitle")}</div>
                   <div className="mt-1 text-lg font-black">{t("socials.tgChannelSubtitle")}</div>
                   <p className="mt-2 max-w-xl text-sm text-text/80">{t("socials.tgChannelText")}</p>
                 </div>
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-3xl border border-border/12 bg-bg/30 text-accent shadow-glow">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-3xl border border-border/12 bg-bg/30 text-accent">
                   <SocialGlyph label="Telegram" />
                 </div>
               </div>
@@ -605,34 +666,19 @@ export function HomePageContent() {
 
       {/* ФИНАЛ */}
       <section id="consultation" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <div className="relative rounded-[28px] border border-border/[0.08] bg-bg/[0.18] sm:rounded-[32px] sm:border-border/14">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[28px] sm:rounded-[32px]"
-          >
-            <div className="animated-gradient absolute inset-0 opacity-[0.22]" />
-            <div className="gradient-orb purple absolute -right-24 -top-24 h-64 w-64 opacity-75" />
-          </div>
-          <div className="relative z-10 p-5 sm:p-10">
-            <div className="min-w-0 max-w-3xl">
-              <Reveal>
-                <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
-              </Reveal>
-              <Reveal delayMs={100}>
-                <Button
-                  href={siteLinks.telegramBot}
-                  variant="primary"
-                  className="mt-6 w-full sm:w-auto"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("final.cta")}
-                </Button>
-              </Reveal>
-              <Reveal delayMs={160}>
-                <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
-              </Reveal>
-            </div>
+        <div className="rounded-2xl border border-border/12 bg-bg/[0.16] p-5 sm:p-10">
+          <div className="min-w-0 max-w-3xl">
+            <Reveal>
+              <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
+            </Reveal>
+            <Reveal delayMs={100}>
+              <p className="mt-2 text-base leading-relaxed text-text/80">{t("final.subtitle")}</p>
+            </Reveal>
+            <Reveal delayMs={140}>
+              <div className="mt-8 max-w-xl">
+                <LeadForm />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

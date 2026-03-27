@@ -17,6 +17,7 @@ const NAV_KEYS = [
   { labelKey: "nav.portfolio", href: "#portfolio" },
   { labelKey: "nav.services", href: "#services" },
   { labelKey: "nav.calculator", href: "#calculator" },
+  { labelKey: "nav.education", href: "#education" },
   { labelKey: "nav.audience", href: "#audience" },
   { labelKey: "nav.cases", href: "#cases" },
   { labelKey: "nav.process", href: "#process" },

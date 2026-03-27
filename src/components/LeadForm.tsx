@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Заявка: основной сценарий — переход в Telegram-бот (тексты в src/lib/messages.ts).
+ * Заявка: основной сценарий — почта; Telegram — дополнительно (тексты в src/lib/messages.ts).
  */
 
 import { siteLinks } from "../lib/links";
@@ -13,31 +13,33 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
 
   return (
     <div
-      className={`overflow-hidden rounded-3xl border border-border/12 bg-surface/[0.04] backdrop-blur-sm transition-colors duration-300 ${compact ? "" : "p-5 sm:p-6"}`}
+      className={`overflow-hidden rounded-3xl border border-border/14 bg-surface/[0.04] transition-colors duration-300 ${compact ? "" : "p-5 sm:p-6"}`}
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <div className="text-sm text-text/70">{t("leadForm.badge")}</div>
+          <div className="text-sm text-text/75">{t("leadForm.badge")}</div>
           <div className="text-lg font-bold leading-tight">{t("leadForm.title")}</div>
         </div>
         <div className="hidden max-w-[12rem] text-right text-xs text-text/60 sm:block">{t("leadForm.hint")}</div>
       </div>
 
-      <p className="text-sm leading-relaxed text-text/80">{t("leadForm.intro")}</p>
+      <p className="text-sm leading-relaxed text-text/85">{t("leadForm.intro")}</p>
 
-      <div className="mt-5">
-        <Button
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <Button href={siteLinks.email} variant="primary" className="min-h-[48px] w-full px-6 text-base sm:w-auto">
+          {t("leadForm.ctaEmail")}
+        </Button>
+        <a
           href={siteLinks.telegramBot}
-          variant="primary"
-          className="w-full sm:w-auto"
           target="_blank"
           rel="noopener noreferrer"
+          className="text-center text-sm font-semibold text-accent/90 underline-offset-4 hover:text-accent hover:underline sm:text-left"
         >
           {t("leadForm.ctaTelegram")}
-        </Button>
+        </a>
       </div>
 
-      <p className="mt-4 text-xs text-text/55">{t("leadForm.consent")}</p>
+      <p className="mt-4 text-xs text-text/50">{t("leadForm.consent")}</p>
     </div>
   );
 }
