@@ -38,9 +38,8 @@ export type Messages = {
     intro: string;
     listenTrack: string;
     watchClip: string;
-    lanyardHint: string;
-    lanyardLoading: string;
-    lanyardReducedMotion: string;
+    neuroPhotoHint: string;
+    neuroPhotoReduced: string;
     items: {
       title: string;
       desc: string;
@@ -215,10 +214,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       intro: "Направления, в которых собираю цельные решения на стыке креатива и AI.",
       listenTrack: "Слушать трек",
       watchClip: "Смотреть клип",
-      lanyardHint: "Интерактив: потяните любую карточку за край — на каждой пример работы.",
-      lanyardLoading: "Загрузка сцены…",
-      lanyardReducedMotion:
-        "Интерактивная сцена скрыта: в системе включено уменьшение анимации.",
+      neuroPhotoHint:
+        "Лёгкое покачивание для атмосферы — наведите на работу, чтобы чуть сильнее подсветить кадр.",
+      neuroPhotoReduced:
+        "Анимация движения отключена в соответствии с настройками доступности — галерея статична.",
       items: [
         {
           title: "Нейрофото",
@@ -701,9 +700,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       intro: "Focus areas where I ship cohesive work at the intersection of craft and AI.",
       listenTrack: "Listen to the track",
       watchClip: "Watch the clip",
-      lanyardHint: "Interactive: drag any card — each one shows a sample from the portfolio.",
-      lanyardLoading: "Loading scene…",
-      lanyardReducedMotion: "Interactive scene is hidden while “reduce motion” is enabled.",
+      neuroPhotoHint:
+        "A subtle sway adds atmosphere — hover a piece to lift and emphasize the frame.",
+      neuroPhotoReduced:
+        "Motion is reduced per your accessibility settings — the gallery is static.",
       items: [
         {
           title: "Neuro photography",
