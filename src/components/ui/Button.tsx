@@ -1,7 +1,14 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import type { ReactNode } from "react";
+
+const MotionLink = motion(Link);
+const MotionA = motion.a;
+const MotionButton = motion.button;
+
+const tapTransition = { type: "spring" as const, stiffness: 520, damping: 30, mass: 0.35 };
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -43,34 +50,48 @@ export function Button({
     variant
   )} ${className}`;
 
+  const motionProps = disabled
+    ? {}
+    : {
+        whileTap: { scale: 0.97 },
+        whileHover: { scale: 1.012 },
+        transition: tapTransition
+      };
+
   if (href) {
     const isHash = href.startsWith("#");
     const isInternal = href.startsWith("/");
     if (isHash) {
       return (
-        <a href={href} className={cls} onClick={onClick}>
+        <MotionA href={href} className={cls} onClick={onClick} {...motionProps}>
           {children}
-        </a>
+        </MotionA>
       );
     }
     if (isInternal) {
       return (
-        <Link href={href} className={cls} onClick={onClick}>
+        <MotionLink href={href} className={cls} onClick={onClick} {...motionProps}>
           {children}
-        </Link>
+        </MotionLink>
       );
     }
     return (
-      <a href={href} className={cls} target={target ?? "_blank"} rel={rel ?? "noopener noreferrer"} onClick={onClick}>
+      <MotionA
+        href={href}
+        className={cls}
+        target={target ?? "_blank"}
+        rel={rel ?? "noopener noreferrer"}
+        onClick={onClick}
+        {...motionProps}
+      >
         {children}
-      </a>
+      </MotionA>
     );
   }
 
   return (
-    <button type={type} className={cls} onClick={onClick} disabled={disabled}>
+    <MotionButton type={type} className={cls} onClick={onClick} disabled={disabled} {...motionProps}>
       {children}
-    </button>
+    </MotionButton>
   );
 }
-

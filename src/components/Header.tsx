@@ -5,7 +5,7 @@
  */
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
 import { Button } from "./ui/Button";
@@ -25,14 +25,40 @@ const NAV_KEYS = [
   { labelKey: "nav.socials", href: "#socials" }
 ] as const;
 
+const menuList = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.055, delayChildren: 0.02 }
+  }
+};
+
+const menuItem = {
+  hidden: { opacity: 0, x: -12 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const } }
+};
+
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [dense, setDense] = useState(false);
   const { t } = useI18n();
   const telegramHref = useMemo(() => siteLinks.telegramBot, []);
 
+  useEffect(() => {
+    const onScroll = () => setDense(window.scrollY > 14);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/10 bg-bg/[0.72] backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300 supports-[backdrop-filter]:bg-bg/55">
-      <Container className="flex items-center justify-between py-3">
+    <header
+      className={`sticky top-0 z-50 border-b backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:backdrop-blur-2xl ${
+        dense
+          ? "border-border/14 bg-bg/[0.88] shadow-[0_12px_40px_rgb(0_0_0/0.22)] supports-[backdrop-filter]:bg-bg/[0.78]"
+          : "border-border/10 bg-bg/[0.72] supports-[backdrop-filter]:bg-bg/55"
+      }`}
+    >
+      <Container className={`flex items-center justify-between transition-[padding] duration-300 ${dense ? "py-2" : "py-3"}`}>
         <a href="#top" className="group inline-flex items-center gap-2.5">
           <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/20 to-accent2/15 shadow-glow">
             <span className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden>
@@ -99,28 +125,36 @@ export default function Header() {
             className="border-t border-border/8 lg:hidden"
           >
             <Container className="py-3">
-              <div className="flex flex-col gap-2">
+              <motion.div
+                className="flex flex-col gap-2"
+                initial="hidden"
+                animate="show"
+                variants={menuList}
+              >
                 {NAV_KEYS.map((item) => (
-                  <a
+                  <motion.a
                     key={item.href}
+                    variants={menuItem}
                     href={item.href}
                     onClick={() => setOpen(false)}
                     className="rounded-2xl border border-border/12 bg-transparent px-4 py-3 text-sm transition-colors duration-300 hover:bg-surface/8"
                   >
                     {t(item.labelKey)}
-                  </a>
+                  </motion.a>
                 ))}
-                <Button
-                  href={telegramHref}
-                  variant="primary"
-                  className="w-full"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                >
-                  {t("hero.ctaConsult")}
-                </Button>
-              </div>
+                <motion.div variants={menuItem} className="pt-1">
+                  <Button
+                    href={telegramHref}
+                    variant="primary"
+                    className="w-full"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setOpen(false)}
+                  >
+                    {t("hero.ctaConsult")}
+                  </Button>
+                </motion.div>
+              </motion.div>
             </Container>
           </motion.div>
         )}

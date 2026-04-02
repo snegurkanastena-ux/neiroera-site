@@ -5,7 +5,7 @@
  * Тексты — централизованно в src/lib/messages.ts; ссылки — в src/lib/links.ts.
  */
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -115,17 +115,32 @@ function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string
 
 function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: string }) {
   const { t } = useI18n();
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className="mb-6 sm:mb-10">
+    <motion.div
+      className="mb-6 sm:mb-10"
+      initial={reduceMotion ? undefined : { opacity: 0, y: 14, filter: "blur(5px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
       <div className="flex items-center gap-3">
-        <span className="h-px w-8 shrink-0 bg-gradient-to-r from-accent to-accent2 sm:w-10" aria-hidden />
+        <motion.span
+          className="block h-px w-8 shrink-0 origin-left bg-gradient-to-r from-accent to-accent2 sm:w-10"
+          aria-hidden
+          initial={reduceMotion ? undefined : { scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
+        />
         <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">{t(kickerKey)}</div>
       </div>
       <h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
         <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">{t(titleKey)}</span>
         <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" aria-hidden />
       </h2>
-    </div>
+    </motion.div>
   );
 }
 
@@ -161,6 +176,42 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 
 export function HomePageContent() {
   const { t, messages, lang } = useI18n();
+  const reduceMotion = useReducedMotion();
+
+  const heroList = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: reduceMotion ? 0 : 0.09,
+        delayChildren: reduceMotion ? 0 : 0.1
+      }
+    }
+  };
+
+  const heroBlock = {
+    hidden: reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const heroBullet = {
+    hidden: reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.44, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const heroBulletList = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: reduceMotion ? 0 : 0.065 }
+    }
+  };
 
   const aboutListItems = useMemo(() => {
     try {
@@ -228,36 +279,48 @@ export function HomePageContent() {
                 />
               </div>
 
-              <Reveal delayMs={90}>
-                <p className="mt-2 max-w-xl whitespace-pre-line text-base leading-relaxed text-text/90 sm:mt-4 sm:text-lg lg:text-xl">
+              <motion.div
+                className="mt-2 sm:mt-0"
+                initial="hidden"
+                animate="visible"
+                variants={heroList}
+              >
+                <motion.p
+                  variants={heroBlock}
+                  className="mt-2 max-w-xl whitespace-pre-line text-base leading-relaxed text-text/90 sm:mt-4 sm:text-lg lg:text-xl"
+                >
                   {t("hero.subtitle")}
-                </p>
-              </Reveal>
+                </motion.p>
 
-              <Reveal delayMs={130}>
-                <p className="mt-4 text-sm font-semibold text-text sm:mt-5 sm:text-base">{t("hero.whatYouGet")}</p>
-                <ul className="mt-2 max-w-xl space-y-1.5 text-sm leading-relaxed text-text/88 sm:text-base">
-                  {heroBullets.map((line) => (
-                    <li key={line} className="flex gap-2.5">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
-                      <span>{line}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
+                <motion.div variants={heroBlock} className="mt-4 sm:mt-5">
+                  <p className="text-sm font-semibold text-text sm:text-base">{t("hero.whatYouGet")}</p>
+                  <motion.ul
+                    variants={heroBulletList}
+                    className="mt-2 max-w-xl space-y-1.5 text-sm leading-relaxed text-text/88 sm:text-base"
+                  >
+                    {heroBullets.map((line) => (
+                      <motion.li key={line} variants={heroBullet} className="flex gap-2.5">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
+                        <span>{line}</span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
 
-              <Reveal delayMs={180}>
-                <p className="mt-4 text-xs leading-relaxed text-text/65 sm:mt-5 sm:text-sm">
+                <motion.p
+                  variants={heroBlock}
+                  className="mt-4 text-xs leading-relaxed text-text/65 sm:mt-5 sm:text-sm"
+                >
                   <span>{t("hero.trust1")}</span>
                   <span className="text-text/35"> · </span>
                   <span>{t("hero.trust2")}</span>
                   <span className="text-text/35"> · </span>
                   <span>{t("hero.trust3")}</span>
-                </p>
-              </Reveal>
+                </motion.p>
+              </motion.div>
             </div>
 
-            <Reveal delayMs={220}>
+            <Reveal delayMs={120} blur={false}>
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
                   href="#services"
