@@ -13,7 +13,7 @@ import {
   useSphericalJoint
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import "./Lanyard.css";
 
@@ -22,7 +22,16 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 const CARD_URL = "/lanyard/card.glb";
 const LANYARD_TEX = "/lanyard/lanyard.png";
 
+function bandXOffsets(count: number, spread: number): number[] {
+  if (count <= 0) return [];
+  if (count === 1) return [0];
+  const mid = (count - 1) / 2;
+  return Array.from({ length: count }, (_, i) => (i - mid) * spread);
+}
+
 export type LanyardSceneProps = {
+  /** URL картинок для лицевой стороны каждой карточки (по одному шнурку на URL). */
+  photoUrls: readonly string[];
   position?: [number, number, number];
   gravity?: [number, number, number];
   fov?: number;
@@ -31,9 +40,10 @@ export type LanyardSceneProps = {
 };
 
 export function LanyardScene({
-  position = [0, 0, 22],
+  photoUrls,
+  position,
   gravity = [0, -40, 0],
-  fov = 20,
+  fov,
   transparent = true,
   className = ""
 }: LanyardSceneProps) {
@@ -47,19 +57,35 @@ export function LanyardScene({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const count = photoUrls.length;
+  const spread = isMobile ? 2.45 : 3.05;
+  const offsets = useMemo(() => bandXOffsets(count, spread), [count, spread]);
+
+  const camera = useMemo(() => {
+    const z = isMobile ? (count > 2 ? 32 : 28) : count > 2 ? 28 : 24;
+    const y = count > 2 ? 0.45 : 0.2;
+    const pos = position ?? [0, y, z];
+    const f = fov ?? (count > 2 ? 22 : 20);
+    return { position: pos as [number, number, number], fov: f };
+  }, [count, isMobile, position, fov]);
+
+  if (count === 0) return null;
+
   return (
     <div className={`lanyard-neuro-wrapper ${className}`.trim()}>
       <Canvas
-        camera={{ position, fov }}
+        camera={camera}
         dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: transparent, antialias: true, powerPreference: "high-performance" }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
         <Suspense fallback={null}>
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
-            <Band isMobile={isMobile} />
-          </Physics>
+          {photoUrls.map((src, i) => (
+            <Physics key={src} gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+              <Band photoSrc={src} xOffset={offsets[i] ?? 0} isMobile={isMobile} />
+            </Physics>
+          ))}
         </Suspense>
         <Environment blur={0.75}>
           <Lightformer
@@ -97,12 +123,14 @@ export function LanyardScene({
 }
 
 type BandProps = {
+  photoSrc: string;
+  xOffset: number;
   maxSpeed?: number;
   minSpeed?: number;
   isMobile?: boolean;
 };
 
-function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
+function Band({ photoSrc, xOffset, maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
   const band = useRef<THREE.Mesh>(null);
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<RapierRigidBody>(null);
@@ -129,7 +157,15 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     materials: { base: THREE.MeshStandardMaterial; metal: THREE.Material };
   };
 
-  const texture = useTexture(LANYARD_TEX);
+  const lanyardTex = useTexture(LANYARD_TEX);
+  const photoMap = useTexture(photoSrc);
+
+  useLayoutEffect(() => {
+    photoMap.colorSpace = THREE.SRGBColorSpace;
+    photoMap.wrapS = photoMap.wrapT = THREE.ClampToEdgeWrapping;
+    photoMap.needsUpdate = true;
+  }, [photoMap]);
+
   const [curve] = useState(
     () => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
   );
@@ -200,13 +236,13 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
   });
 
   curve.curveType = "chordal";
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  lanyardTex.wrapS = lanyardTex.wrapT = THREE.RepeatWrapping;
 
-  const resX = 1000;
-  const resY = isMobile ? 2000 : 1000;
+  const resX = isMobile ? 1200 : 1600;
+  const resY = isMobile ? 2000 : 1100;
 
   return (
-    <>
+    <group position={[xOffset, 0, 0]}>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
@@ -244,11 +280,11 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
           >
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
-                map={materials.base.map}
-                clearcoat={isMobile ? 0 : 1}
-                clearcoatRoughness={0.15}
-                roughness={0.9}
-                metalness={0.8}
+                map={photoMap}
+                clearcoat={isMobile ? 0 : 0.85}
+                clearcoatRoughness={0.2}
+                roughness={0.65}
+                metalness={0.15}
               />
             </mesh>
             <mesh geometry={nodes.clip.geometry} material={materials.metal} />
@@ -263,12 +299,12 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
           depthTest={false}
           resolution={[resX, resY]}
           useMap
-          map={texture}
+          map={lanyardTex}
           repeat={[-4, 1]}
           lineWidth={1}
         />
       </mesh>
-    </>
+    </group>
   );
 }
 

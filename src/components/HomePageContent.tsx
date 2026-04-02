@@ -179,7 +179,7 @@ function PortfolioLanyardLoading() {
   const { t } = useI18n();
   return (
     <div
-      className="flex h-[min(52vh,520px)] min-h-[360px] max-h-[640px] w-full items-center justify-center rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.12] text-sm text-text/50 sm:border-border/12 max-[640px]:h-[min(48vh,440px)] max-[640px]:min-h-[300px]"
+      className="flex h-[min(56vh,560px)] min-h-[380px] max-h-[680px] w-full items-center justify-center rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.12] text-sm text-text/50 sm:border-border/12 max-[640px]:h-[min(48vh,440px)] max-[640px]:min-h-[300px]"
       role="status"
       aria-busy="true"
     >
@@ -437,28 +437,28 @@ export function HomePageContent() {
               }}
             >
               <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
-                {/* Та же логика, что у hero: тёмная подложка + multiply, чтобы белый фон студии ушёл в цвет сайта */}
+                {/* Лёгкая виньетка без multiply — портрет остаётся читаемым, края чуть уходат в фон */}
                 <div className="relative overflow-hidden rounded-[16px] bg-bg sm:rounded-[18px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/images/anastasia-about.png"
                     alt={t("footer.name")}
-                    className="relative z-0 mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center opacity-[0.93] mix-blend-multiply contrast-[1.03] sm:max-h-none lg:mx-0"
+                    className="relative z-0 mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center brightness-[1.06] contrast-[1.02] sm:max-h-none lg:mx-0"
                   />
                   <div
                     className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit]"
                     style={{
                       background:
-                        "radial-gradient(ellipse 90% 80% at 50% 42%, transparent 25%, rgb(var(--bg-rgb) / 0.72) 100%)"
+                        "radial-gradient(ellipse 95% 90% at 50% 45%, transparent 52%, rgb(var(--bg-rgb) / 0.22) 100%)"
                     }}
                     aria-hidden
                   />
                   <div
-                    className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-gradient-to-b from-bg/55 via-transparent to-bg/75 opacity-90"
+                    className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-gradient-to-b from-bg/18 via-transparent to-bg/28 opacity-80"
                     aria-hidden
                   />
                   <div
-                    className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] opacity-[0.07] mix-blend-overlay"
+                    className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] opacity-[0.04] mix-blend-overlay"
                     aria-hidden
                     style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
@@ -566,26 +566,28 @@ export function HomePageContent() {
                   {item.anchor === "portfolio-photos" ? (
                     <div className="mt-6 space-y-6">
                       {reduceMotion === true ? (
-                        <div className="rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.08] px-4 py-8 text-center text-sm leading-relaxed text-text/60 sm:border-border/12 sm:px-6">
-                          {t("portfolio.lanyardReducedMotion")}
+                        <div className="space-y-6">
+                          <div className="rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.08] px-4 py-6 text-center text-sm leading-relaxed text-text/60 sm:border-border/12 sm:px-6">
+                            {t("portfolio.lanyardReducedMotion")}
+                          </div>
+                          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+                            {PORTFOLIO_PHOTOS.map((src) => (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                key={src}
+                                src={src}
+                                alt=""
+                                className="aspect-[3/4] w-full rounded-2xl border border-border/[0.08] object-cover shadow-[0_12px_28px_rgba(0,0,0,0.28)] sm:border-border/12 sm:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                              />
+                            ))}
+                          </div>
                         </div>
                       ) : (
                         <div>
                           <p className="mb-3 text-xs text-text/55 sm:text-sm">{t("portfolio.lanyardHint")}</p>
-                          <PortfolioLanyard position={[0, 0, 22]} gravity={[0, -40, 0]} />
+                          <PortfolioLanyard photoUrls={PORTFOLIO_PHOTOS} gravity={[0, -40, 0]} />
                         </div>
                       )}
-                      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-                        {PORTFOLIO_PHOTOS.map((src) => (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            key={src}
-                            src={src}
-                            alt=""
-                            className="aspect-[3/4] w-full rounded-2xl border border-border/[0.08] object-cover shadow-[0_12px_28px_rgba(0,0,0,0.28)] sm:border-border/12 sm:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
-                          />
-                        ))}
-                      </div>
                     </div>
                   ) : null}
 

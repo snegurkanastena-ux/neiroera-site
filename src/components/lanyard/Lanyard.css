@@ -2,9 +2,9 @@
   position: relative;
   z-index: 0;
   width: 100%;
-  min-height: 360px;
-  height: min(52vh, 520px);
-  max-height: 640px;
+  min-height: 380px;
+  height: min(56vh, 560px);
+  max-height: 680px;
   border-radius: 1.25rem;
   overflow: hidden;
   background: rgb(var(--bg-rgb) / 0.35);

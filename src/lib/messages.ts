@@ -215,7 +215,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       intro: "Направления, в которых собираю цельные решения на стыке креатива и AI.",
       listenTrack: "Слушать трек",
       watchClip: "Смотреть клип",
-      lanyardHint: "Интерактив: потяните карточку за край.",
+      lanyardHint: "Интерактив: потяните любую карточку за край — на каждой пример работы.",
       lanyardLoading: "Загрузка сцены…",
       lanyardReducedMotion:
         "Интерактивная сцена скрыта: в системе включено уменьшение анимации.",
@@ -701,7 +701,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       intro: "Focus areas where I ship cohesive work at the intersection of craft and AI.",
       listenTrack: "Listen to the track",
       watchClip: "Watch the clip",
-      lanyardHint: "Interactive: drag the card from the edge.",
+      lanyardHint: "Interactive: drag any card — each one shows a sample from the portfolio.",
       lanyardLoading: "Loading scene…",
       lanyardReducedMotion: "Interactive scene is hidden while “reduce motion” is enabled.",
       items: [

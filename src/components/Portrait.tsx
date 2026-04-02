@@ -58,12 +58,12 @@ export function Portrait() {
             background: "linear-gradient(135deg, rgb(var(--accent-rgb) / 0.55), rgb(var(--accent2-rgb) / 0.4), rgb(var(--warm-rgb) / 0.35))"
           }}
         >
-          <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
+          <div className="rounded-[20px] bg-bg/15 p-1 ring-1 ring-white/12 sm:rounded-[22px] sm:p-1.5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/anastasia-hero.png"
               alt="Анастасия Мельникова"
-              className="mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center rounded-[16px] sm:max-h-none lg:mx-0 lg:rounded-[18px]"
+              className="mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center rounded-[16px] brightness-[1.05] contrast-[1.02] sm:max-h-none lg:mx-0 lg:rounded-[18px]"
             />
           </div>
         </div>
