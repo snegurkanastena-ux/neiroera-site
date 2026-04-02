@@ -1,0 +1,26 @@
+.lanyard-neuro-wrapper {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  min-height: 360px;
+  height: min(52vh, 520px);
+  max-height: 640px;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: rgb(var(--bg-rgb) / 0.35);
+  border: 1px solid rgb(var(--border-rgb) / 0.08);
+}
+
+.lanyard-neuro-wrapper canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 640px) {
+  .lanyard-neuro-wrapper {
+    min-height: 300px;
+    height: min(48vh, 440px);
+    border-radius: 1rem;
+  }
+}

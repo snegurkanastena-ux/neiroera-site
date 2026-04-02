@@ -6,6 +6,7 @@
  */
 
 import { motion, useReducedMotion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -173,6 +174,24 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
     </svg>
   );
 }
+
+function PortfolioLanyardLoading() {
+  const { t } = useI18n();
+  return (
+    <div
+      className="flex h-[min(52vh,520px)] min-h-[360px] max-h-[640px] w-full items-center justify-center rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.12] text-sm text-text/50 sm:border-border/12 max-[640px]:h-[min(48vh,440px)] max-[640px]:min-h-[300px]"
+      role="status"
+      aria-busy="true"
+    >
+      {t("portfolio.lanyardLoading")}
+    </div>
+  );
+}
+
+const PortfolioLanyard = dynamic(
+  () => import("./lanyard/LanyardScene").then((mod) => ({ default: mod.LanyardScene })),
+  { ssr: false, loading: PortfolioLanyardLoading }
+);
 
 export function HomePageContent() {
   const { t, messages, lang } = useI18n();
@@ -545,16 +564,28 @@ export function HomePageContent() {
                   <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
 
                   {item.anchor === "portfolio-photos" ? (
-                    <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-                      {PORTFOLIO_PHOTOS.map((src) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          key={src}
-                          src={src}
-                          alt=""
-                          className="aspect-[3/4] w-full rounded-2xl border border-border/[0.08] object-cover shadow-[0_12px_28px_rgba(0,0,0,0.28)] sm:border-border/12 sm:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
-                        />
-                      ))}
+                    <div className="mt-6 space-y-6">
+                      {reduceMotion === true ? (
+                        <div className="rounded-[1.25rem] border border-border/[0.08] bg-bg/[0.08] px-4 py-8 text-center text-sm leading-relaxed text-text/60 sm:border-border/12 sm:px-6">
+                          {t("portfolio.lanyardReducedMotion")}
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="mb-3 text-xs text-text/55 sm:text-sm">{t("portfolio.lanyardHint")}</p>
+                          <PortfolioLanyard position={[0, 0, 22]} gravity={[0, -40, 0]} />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+                        {PORTFOLIO_PHOTOS.map((src) => (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            key={src}
+                            src={src}
+                            alt=""
+                            className="aspect-[3/4] w-full rounded-2xl border border-border/[0.08] object-cover shadow-[0_12px_28px_rgba(0,0,0,0.28)] sm:border-border/12 sm:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                          />
+                        ))}
+                      </div>
                     </div>
                   ) : null}
 
