@@ -149,6 +149,11 @@ export const messagesByLang: Record<Lang, Messages> = {
     hero: {
       title:
         "Создаю системы роста на базе ИИ\nдля бизнеса, экспертов и творчества",
+      typingLines: JSON.stringify([
+        "Создаю системы роста на базе ИИ\nдля бизнеса, экспертов и творчества",
+        "Сайт, контент, автоматизация и AI — в одной системе с результатом",
+        "Системный AI-архитектор для вашего роста"
+      ]),
       subtitle:
         "Сайт, контент, автоматизация и AI-инструменты —\nвсё в одной системе, которая приносит результат",
       whatYouGet: "Что вы получите:",
@@ -626,6 +631,11 @@ export const messagesByLang: Record<Lang, Messages> = {
     },
     hero: {
       title: "I build AI-powered growth systems\nfor business, experts, and creative work",
+      typingLines: JSON.stringify([
+        "I build AI-powered growth systems\nfor business, experts, and creative work",
+        "Website, content, automation — one system that delivers outcomes",
+        "Systems-first AI architect for your growth"
+      ]),
       subtitle:
         "Website, content, automation, and AI tools —\none connected system that drives outcomes",
       whatYouGet: "What you get:",

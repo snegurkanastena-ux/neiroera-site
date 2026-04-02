@@ -13,6 +13,8 @@ import { Portrait } from "./Portrait";
 import { Reveal } from "./Reveal";
 import { ServiceCalculator } from "./ServiceCalculator";
 import { ServiceOfferGrid } from "./ServiceOfferGrid";
+import { ElectricBorder } from "./ElectricBorder";
+import { TextType } from "./TextType";
 import { Button } from "./ui/Button";
 
 /** Треки в `public/portfolio/music` (имена файлов из репозитория). */
@@ -108,7 +110,7 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 }
 
 export function HomePageContent() {
-  const { t, messages } = useI18n();
+  const { t, messages, lang } = useI18n();
 
   const aboutListItems = useMemo(() => {
     try {
@@ -134,6 +136,19 @@ export function HomePageContent() {
     }
   }, [t]);
 
+  const heroTypingLines = useMemo(() => {
+    try {
+      const raw = t("hero.typingLines");
+      const parsed = JSON.parse(raw) as unknown;
+      if (Array.isArray(parsed) && parsed.length > 0 && parsed.every((x) => typeof x === "string")) {
+        return parsed as string[];
+      }
+    } catch {
+      /* fallthrough */
+    }
+    return [t("hero.title")];
+  }, [t]);
+
   return (
     <div id="top" className="pb-12 pt-6 sm:pb-16 sm:pt-14">
       {/* HERO */}
@@ -141,17 +156,27 @@ export function HomePageContent() {
         <div className="grid grid-cols-1 items-start gap-4 sm:gap-6 lg:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] lg:items-center lg:gap-10">
           <div className="order-1 flex min-w-0 flex-col gap-3 sm:gap-5 lg:order-none">
             <div>
-              <Reveal>
-                <div className="relative">
-                  <span
-                    className="hero-accent-line absolute -left-1 top-1 hidden h-[min(100%,4.5rem)] w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block"
-                    aria-hidden
-                  />
-                  <h1 className="font-display whitespace-pre-line text-[1.6rem] font-bold leading-[1.06] tracking-tight sm:pl-5 sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.04]">
-                    {t("hero.title")}
-                  </h1>
-                </div>
-              </Reveal>
+              <div className="relative">
+                <span
+                  className="hero-accent-line absolute -left-1 top-1 hidden h-[min(100%,4.5rem)] w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block"
+                  aria-hidden
+                />
+                <TextType
+                  key={lang}
+                  as="h1"
+                  text={heroTypingLines}
+                  typingSpeed={52}
+                  pauseDuration={2400}
+                  deletingSpeed={42}
+                  showCursor
+                  cursorCharacter="_"
+                  cursorBlinkDuration={0.5}
+                  cursorClassName="text-accent align-baseline"
+                  loop
+                  initialDelay={280}
+                  className="font-display whitespace-pre-line text-[1.6rem] font-bold leading-[1.06] tracking-tight text-text sm:pl-5 sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.04]"
+                />
+              </div>
 
               <Reveal delayMs={90}>
                 <p className="mt-2 max-w-xl whitespace-pre-line text-base leading-relaxed text-text/90 sm:mt-4 sm:text-lg lg:text-xl">
@@ -265,15 +290,61 @@ export function HomePageContent() {
       <section id="about" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
         <SectionTitle kickerKey="about.kicker" titleKey="about.title" />
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
-          <motion.img
-            src="/images/anastasia-about.png"
-            alt={t("footer.name")}
-            className="h-auto w-full max-h-[320px] rounded-2xl object-contain object-center sm:max-h-none lg:rounded-3xl"
+          <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.985 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
-          />
+            className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none"
+          >
+            <div
+              className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px] lg:shadow-[0_24px_72px_rgb(0_0_0/0.5)]"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgb(var(--accent-rgb) / 0.55), rgb(var(--accent2-rgb) / 0.4), rgb(var(--warm-rgb) / 0.35))"
+              }}
+            >
+              <div className="relative overflow-hidden rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
+                <span
+                  className="hero-accent-line pointer-events-none absolute left-0 top-6 z-[2] hidden h-16 w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 z-[1] rounded-[16px] sm:rounded-[18px]"
+                  aria-hidden
+                  style={{
+                    background:
+                      "linear-gradient(152deg, rgb(var(--accent-rgb) / 0.14) 0%, transparent 38%, transparent 62%, rgb(var(--accent2-rgb) / 0.1) 100%)"
+                  }}
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 z-[2] rounded-[16px] opacity-[0.11] mix-blend-overlay sm:rounded-[18px]"
+                  aria-hidden
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E")`
+                  }}
+                />
+                <div className="pointer-events-none absolute bottom-2 left-2 z-[3] sm:bottom-3 sm:left-3" aria-hidden>
+                  <div
+                    className="h-9 w-9 border-b-2 border-l-2 border-accent/55 sm:h-11 sm:w-11"
+                    style={{ borderBottomLeftRadius: 3 }}
+                  />
+                </div>
+                <div className="pointer-events-none absolute right-2 top-2 z-[3] sm:right-3 sm:top-3" aria-hidden>
+                  <div
+                    className="h-7 w-7 border-r-2 border-t-2 border-accent2/45 sm:h-9 sm:w-9"
+                    style={{ borderTopRightRadius: 3 }}
+                  />
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/anastasia-about.png"
+                  alt={t("footer.name")}
+                  className="relative z-0 mx-auto block h-auto max-h-[320px] w-full rounded-[16px] object-contain object-center sm:max-h-[min(72vh,520px)] sm:rounded-[18px] lg:max-h-[560px]"
+                />
+              </div>
+            </div>
+          </motion.div>
 
           <div className="space-y-6">
             <Reveal delayMs={60}>
@@ -442,14 +513,23 @@ export function HomePageContent() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {caseItems.map((c, idx) => (
             <Reveal key={idx} delayMs={idx * 70}>
-              <div className="rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-colors duration-300 hover:border-border/20 sm:border-border/12 sm:p-6">
-                <div className="text-sm text-text/65">{t("cases.task")}</div>
-                <div className="mt-2 font-bold leading-relaxed">{c.task}</div>
-                <div className="mt-5 text-sm text-text/65">{t("cases.solution")}</div>
-                <div className="mt-2 text-sm leading-relaxed text-text/70">{c.solution}</div>
-                <div className="mt-5 text-sm text-text/65">{t("cases.result")}</div>
-                <div className="mt-2 text-sm leading-relaxed text-text/80">{c.result}</div>
-              </div>
+              <ElectricBorder
+                borderRadius={24}
+                className="h-full min-h-0"
+                accentVariant="accent"
+                speed={0.88}
+                chaos={0.11}
+                contentClassName="h-full"
+              >
+                <div className="h-full rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] transition-colors duration-300 sm:p-6">
+                  <div className="text-sm text-text/65">{t("cases.task")}</div>
+                  <div className="mt-2 font-bold leading-relaxed">{c.task}</div>
+                  <div className="mt-5 text-sm text-text/65">{t("cases.solution")}</div>
+                  <div className="mt-2 text-sm leading-relaxed text-text/70">{c.solution}</div>
+                  <div className="mt-5 text-sm text-text/65">{t("cases.result")}</div>
+                  <div className="mt-2 text-sm leading-relaxed text-text/80">{c.result}</div>
+                </div>
+              </ElectricBorder>
             </Reveal>
           ))}
         </div>
@@ -658,17 +738,26 @@ export function HomePageContent() {
               ).map((item) => {
                 const block = messages.referrals[item.key];
                 return (
-                  <a
+                  <ElectricBorder
                     key={item.key}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-2xl border border-border/[0.08] bg-surface/5 p-4 transition-all duration-300 hover:border-accent2/30 hover:bg-surface/8 sm:border-border/12 sm:p-5"
+                    borderRadius={16}
+                    className="h-full min-h-0"
+                    accentVariant="accent2"
+                    speed={0.85}
+                    chaos={0.1}
+                    contentClassName="h-full"
                   >
-                    <div className="font-bold">{block.title}</div>
-                    <p className="mt-2 text-sm text-text/65">{block.desc}</p>
-                    <span className="mt-3 inline-block text-sm font-semibold text-accent2">{block.cta} →</span>
-                  </a>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full rounded-2xl bg-surface/[0.06] p-4 no-underline transition-colors duration-300 hover:bg-surface/[0.1] sm:p-5"
+                    >
+                      <div className="font-bold text-text">{block.title}</div>
+                      <p className="mt-2 text-sm text-text/65">{block.desc}</p>
+                      <span className="mt-3 inline-block text-sm font-semibold text-accent2">{block.cta} →</span>
+                    </a>
+                  </ElectricBorder>
                 );
               })}
             </div>
