@@ -66,19 +66,18 @@ function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: st
   const { t } = useI18n();
   return (
     <div className="mb-6 sm:mb-10">
-<<<<<<< HEAD
-      <div className="text-xs sm:text-sm font-medium uppercase tracking-widest text-text/55">{t(kickerKey)}</div>
-      <h2 className="mt-2 text-2xl font-extrabold leading-tight text-text sm:text-3xl">{t(titleKey)}</h2>
-=======
-      <div className="flex items-center gap-3">
-        <span className="h-px w-8 shrink-0 bg-gradient-to-r from-accent to-accent2 sm:w-10" aria-hidden />
-        <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">{t(kickerKey)}</div>
-      </div>
-      <h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
-        <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">{t(titleKey)}</span>
-        <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" aria-hidden />
-      </h2>
->>>>>>> 9894876 (frontend update)
+<div className="flex items-center gap-3">
+  <span className="h-px w-8 shrink-0 bg-gradient-to-r from-accent to-accent2 sm:w-10" aria-hidden />
+  <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">
+    {t(kickerKey)}
+  </div>
+</div>
+<h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
+  <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">
+    {t(titleKey)}
+  </span>
+  <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" />
+</h2>
     </div>
   );
 }
