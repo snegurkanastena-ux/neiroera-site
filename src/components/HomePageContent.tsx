@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
-import { LeadForm } from "./LeadForm";
 import { Portrait } from "./Portrait";
 import { Reveal } from "./Reveal";
 import { ServiceCalculator } from "./ServiceCalculator";
@@ -66,18 +65,14 @@ function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: st
   const { t } = useI18n();
   return (
     <div className="mb-6 sm:mb-10">
-<div className="flex items-center gap-3">
-  <span className="h-px w-8 shrink-0 bg-gradient-to-r from-accent to-accent2 sm:w-10" aria-hidden />
-  <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">
-    {t(kickerKey)}
-  </div>
-</div>
-<h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
-  <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">
-    {t(titleKey)}
-  </span>
-  <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" />
-</h2>
+      <div className="flex items-center gap-3">
+        <span className="h-px w-8 shrink-0 bg-gradient-to-r from-accent to-accent2 sm:w-10" aria-hidden />
+        <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">{t(kickerKey)}</div>
+      </div>
+      <h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
+        <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">{t(titleKey)}</span>
+        <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" aria-hidden />
+      </h2>
     </div>
   );
 }
@@ -147,18 +142,15 @@ export function HomePageContent() {
           <div className="order-1 flex min-w-0 flex-col gap-3 sm:gap-5 lg:order-none">
             <div>
               <Reveal>
-<<<<<<< HEAD
-                <h1 className="whitespace-pre-line text-[1.6rem] font-black leading-[1.12] text-text sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.06]">
-                  {t("hero.title")}
-                </h1>
-=======
                 <div className="relative">
-                  <span className="hero-accent-line absolute -left-1 top-1 hidden h-[min(100%,4.5rem)] w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block" aria-hidden />
+                  <span
+                    className="hero-accent-line absolute -left-1 top-1 hidden h-[min(100%,4.5rem)] w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block"
+                    aria-hidden
+                  />
                   <h1 className="font-display whitespace-pre-line text-[1.6rem] font-bold leading-[1.06] tracking-tight sm:pl-5 sm:text-3xl md:text-4xl lg:text-[2.65rem] lg:leading-[1.04]">
                     {t("hero.title")}
                   </h1>
                 </div>
->>>>>>> 9894876 (frontend update)
               </Reveal>
 
               <Reveal delayMs={90}>
@@ -312,11 +304,7 @@ export function HomePageContent() {
         <div className="grid gap-3 md:grid-cols-2">
           {painCards.map((card, idx) => (
             <Reveal key={card} delayMs={idx * 70}>
-<<<<<<< HEAD
-              <div className="h-full rounded-2xl border border-border/12 bg-bg/[0.14] p-4 transition-colors hover:border-border/22 sm:p-5 md:p-6">
-=======
               <div className="h-full rounded-3xl border border-border/[0.07] bg-bg/[0.18] p-4 transition-all duration-300 hover:border-accent/25 hover:shadow-card-hover sm:border-border/12 sm:p-5 md:p-6">
->>>>>>> 9894876 (frontend update)
                 <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
               </div>
             </Reveal>
@@ -361,11 +349,7 @@ export function HomePageContent() {
             <Reveal key={item.title} delayMs={idx * 70}>
               <a
                 href={`#${item.anchor}`}
-<<<<<<< HEAD
-                className="group relative block h-full cursor-pointer rounded-2xl border border-border/12 bg-bg/[0.12] p-4 no-underline outline-none transition-colors hover:border-accent/30 hover:bg-bg/[0.18] focus-visible:ring-2 focus-visible:ring-accent/40 sm:p-6"
-=======
                 className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/[0.07] bg-surface/[0.03] p-4 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.02] hover:border-accent/35 hover:shadow-glow focus-visible:ring-2 focus-visible:ring-accent/40 sm:border-border/12 sm:p-6"
->>>>>>> 9894876 (frontend update)
               >
                 <article className="relative flex h-full flex-col">
                   <h3 className="font-display text-lg font-bold text-text">{item.title}</h3>
@@ -429,31 +413,7 @@ export function HomePageContent() {
         </div>
       </section>
 
-<<<<<<< HEAD
-=======
-      {/* ПРОДУКТЫ */}
-      <section id="services" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <SectionTitle kickerKey="productsSection.kicker" titleKey="productsSection.title" />
-        <p className="mb-5 max-w-2xl text-sm text-text/70 sm:mb-8">{t("servicesSection.intro")}</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {productItems.map((item, idx) => (
-            <Reveal key={item.title} delayMs={idx * 70}>
-              <article className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.14] p-4 transition-all duration-300 hover:border-accent2/28 hover:shadow-glow-soft sm:border-border/12 sm:p-6">
-                <h3 className="font-display text-lg font-bold">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-text/74">{item.desc}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
-      {/* КАЛЬКУЛЯТОР / ДИАГНОСТИКА */}
-      <section id="calculator" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
-        <ServiceCalculator />
-      </section>
-
->>>>>>> 9894876 (frontend update)
       {/* AUDIENCE */}
       <section id="audience" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="audience.kicker" titleKey="audience.title" />
@@ -510,13 +470,8 @@ export function HomePageContent() {
                     <div className="font-display mt-1 text-lg font-bold">{x.title}</div>
                     <div className="mt-2 text-sm leading-relaxed text-text/70">{x.desc}</div>
                   </div>
-<<<<<<< HEAD
-                  <div className="grid h-12 w-12 place-items-center rounded-3xl border border-accent/25 bg-accent/12">
-                    <span className="font-black text-accent">{x.step}</span>
-=======
                   <div className="grid h-12 w-12 place-items-center rounded-3xl border border-accent/30 bg-accent/15 shadow-glow">
                     <span className="font-display font-bold text-accent">{x.step}</span>
->>>>>>> 9894876 (frontend update)
                   </div>
                 </div>
               </div>
@@ -531,29 +486,6 @@ export function HomePageContent() {
         <div className="grid gap-5 md:grid-cols-3">
           {reviewItems.map((r, idx) => (
             <Reveal key={r.name} delayMs={idx * 80}>
-<<<<<<< HEAD
-              <div className="flex h-full flex-col rounded-xl border border-border/12 bg-bg/[0.08] p-1 sm:p-1.5">
-                <div className="flex flex-1 flex-col rounded-lg border border-border/10 bg-bg/[0.35] p-4 sm:p-5">
-                  <div className="flex items-start gap-3 border-b border-border/10 pb-3">
-                    {r.photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={r.photo}
-                        alt=""
-                        className="h-11 w-11 shrink-0 rounded-full border border-border/15 object-cover"
-                      />
-                    ) : (
-                      <div
-                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border/15 bg-gradient-to-br from-accent/12 to-accent2/12 text-sm font-black text-text"
-                        aria-hidden
-                      >
-                        {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <div className="font-bold text-text">{r.name}</div>
-                      <div className="mt-0.5 text-xs font-medium text-text/55">{r.niche}</div>
-=======
               <div className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.12] p-4 sm:border-border/12 sm:p-6">
                 <div className="flex items-start gap-3">
                   {r.photo ? (
@@ -569,14 +501,21 @@ export function HomePageContent() {
                       aria-hidden
                     >
                       {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
->>>>>>> 9894876 (frontend update)
                     </div>
+                  )}
+
+                  <div className="min-w-0">
+                    <div className="font-bold text-text">{r.name}</div>
+                    <div className="mt-0.5 text-xs font-medium text-text/55">{r.niche}</div>
                   </div>
-                  <div className="mt-3 text-xs font-medium uppercase tracking-wide text-text/45">{t("reviews.label")}</div>
-                  <p className="mt-2 flex-1 text-base leading-relaxed text-text/90">{r.text}</p>
-                  <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] px-3 py-2.5 text-sm font-medium leading-snug text-text/85">
-                    {r.outcome}
-                  </div>
+                </div>
+
+                <div className="mt-3 text-xs font-medium uppercase tracking-wide text-text/45">
+                  {t("reviews.label")}
+                </div>
+                <p className="mt-2 flex-1 text-base leading-relaxed text-text/90">{r.text}</p>
+                <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] px-3 py-2.5 text-sm font-medium leading-snug text-text/85">
+                  {r.outcome}
                 </div>
               </div>
             </Reveal>
@@ -741,21 +680,6 @@ export function HomePageContent() {
 
       {/* ФИНАЛ */}
       <section id="consultation" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-<<<<<<< HEAD
-        <div className="rounded-2xl border border-border/12 bg-bg/[0.16] p-5 sm:p-10">
-          <div className="min-w-0 max-w-3xl">
-            <Reveal>
-              <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
-            </Reveal>
-            <Reveal delayMs={100}>
-              <p className="mt-2 text-base leading-relaxed text-text/80">{t("final.subtitle")}</p>
-            </Reveal>
-            <Reveal delayMs={140}>
-              <div className="mt-8 max-w-xl">
-                <LeadForm />
-              </div>
-            </Reveal>
-=======
         <div className="relative rounded-[28px] border border-border/[0.08] bg-bg/[0.18] sm:rounded-[32px] sm:border-border/14">
           <div
             aria-hidden="true"
@@ -784,7 +708,6 @@ export function HomePageContent() {
                 <p className="mt-5 text-sm leading-relaxed text-text/72">{t("final.subtitle")}</p>
               </Reveal>
             </div>
->>>>>>> 9894876 (frontend update)
           </div>
         </div>
       </section>

@@ -2,10 +2,8 @@
 
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useI18n } from "../providers/SiteProviders";
 
 export function Portrait() {
-  const { t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const [tiltEnabled, setTiltEnabled] = useState(false);
@@ -54,14 +52,6 @@ export function Portrait() {
         className="relative mx-auto w-fit max-w-full lg:mx-0 lg:ml-auto"
         style={motionStyle}
       >
-<<<<<<< HEAD
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/anastasia-hero.png"
-          alt={t("footer.name")}
-          className="mx-auto block h-auto max-h-[220px] w-auto max-w-full object-contain object-center rounded-[16px] sm:max-h-[280px] sm:rounded-[18px] lg:max-h-none lg:rounded-[20px]"
-        />
-=======
         <div
           className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px]"
           style={{
@@ -77,7 +67,6 @@ export function Portrait() {
             />
           </div>
         </div>
->>>>>>> 9894876 (frontend update)
       </motion.div>
     </div>
   );

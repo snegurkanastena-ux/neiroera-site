@@ -3,55 +3,50 @@
 @tailwind utilities;
 
 /*
-  Темы: data-theme="dark" | data-theme="light" на <html>.
-  Акценты: холодная мята + тёплый янтарь (без «AI-слайда» cyan+purple).
+  Тема: data-theme на <html> (ThemeProvider). По умолчанию — тёмная палитра в :root.
 */
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  html[data-theme="dark"],
-  html:not([data-theme]) {
-    --bg-rgb: 7 9 14;
-    --text-rgb: 245 247 250;
-    --surface-rgb: 255 255 255;
-    --border-rgb: 255 255 255;
-    --header-bg-rgb: 8 11 18;
-    --accent-rgb: 72 255 207;
-    --accent2-rgb: 255 176 74;
-    --warm-rgb: 255 122 108;
-    --on-accent-rgb: 6 10 16;
-    --orb-primary: 48 220 190;
-    --orb-secondary: 255 168 64;
-  }
-
-  html[data-theme="light"] {
-    --bg-rgb: 236 240 245;
-    --text-rgb: 15 23 42;
-    --surface-rgb: 15 23 42;
-    --border-rgb: 15 23 42;
-    --header-bg-rgb: 252 252 254;
-    --accent-rgb: 0 150 125;
-    --accent2-rgb: 196 110 0;
-    --warm-rgb: 200 72 58;
-    --on-accent-rgb: 255 255 255;
-    --orb-primary: 0 160 140;
-    --orb-secondary: 220 130 20;
-  }
-
-  body {
-    background: rgb(var(--bg-rgb));
-    color: rgb(var(--text-rgb));
-    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.6;
-    transition: background-color 0.35s ease, color 0.35s ease;
-  }
+:root {
+  --bg-rgb: 7 9 14;
+  --text-rgb: 245 247 250;
+  --surface-rgb: 255 255 255;
+  --border-rgb: 255 255 255;
+  --header-bg-rgb: 8 11 18;
+  --accent-rgb: 72 255 207;
+  --accent2-rgb: 255 176 74;
+  --warm-rgb: 255 122 108;
+  --on-accent-rgb: 6 10 16;
+  --orb-primary: 48 220 190;
+  --orb-secondary: 255 168 64;
 }
 
-/* Тонкая плёнка зерна поверх страницы */
+html[data-theme="light"] {
+  --bg-rgb: 236 240 245;
+  --text-rgb: 15 23 42;
+  --surface-rgb: 15 23 42;
+  --border-rgb: 15 23 42;
+  --header-bg-rgb: 252 252 254;
+  --accent-rgb: 0 150 125;
+  --accent2-rgb: 196 110 0;
+  --warm-rgb: 200 72 58;
+  --on-accent-rgb: 255 255 255;
+  --orb-primary: 0 160 140;
+  --orb-secondary: 220 130 20;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: rgb(var(--bg-rgb));
+  color: rgb(var(--text-rgb));
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
 .site-noise {
   pointer-events: none;
   position: fixed;
@@ -70,19 +65,11 @@ html[data-theme="light"] .site-noise {
 .gradient-orb {
   background: radial-gradient(
     closest-side,
-<<<<<<< HEAD
-    rgb(var(--orb-cyan) / 0.45),
-    rgb(var(--orb-cyan) / 0) 72%
-  );
-  filter: blur(20px);
-  opacity: 0.85;
-=======
     rgb(var(--orb-primary) / 0.55),
     rgb(var(--orb-primary) / 0) 72%
   );
   filter: blur(14px);
   opacity: 0.92;
->>>>>>> 9894876 (frontend update)
   transition: opacity 0.35s ease;
 }
 
