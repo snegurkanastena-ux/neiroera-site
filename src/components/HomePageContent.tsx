@@ -6,7 +6,7 @@
  */
 
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
 import { Portrait } from "./Portrait";
@@ -35,28 +35,78 @@ const PORTFOLIO_PHOTOS = [
 
 function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string[]; listenLabel: string }) {
   const [active, setActive] = useState<string | null>(null);
+  const audioBySrc = useRef<Map<string, HTMLAudioElement>>(new Map());
+  /** Игнорируем onPause у трека, который мы сами остановили при переключении */
+  const programmaticPause = useRef<Set<string>>(new Set());
+
+  const registerAudio = useCallback((src: string, el: HTMLAudioElement | null) => {
+    if (el) audioBySrc.current.set(src, el);
+    else audioBySrc.current.delete(src);
+  }, []);
+
+  const stopOthers = useCallback((exceptSrc: string) => {
+    audioBySrc.current.forEach((audio, key) => {
+      if (key !== exceptSrc && !audio.paused) {
+        programmaticPause.current.add(key);
+        audio.pause();
+        queueMicrotask(() => programmaticPause.current.delete(key));
+      }
+    });
+  }, []);
+
+  const handlePlay = useCallback(
+    (src: string) => {
+      stopOthers(src);
+      setActive(src);
+    },
+    [stopOthers]
+  );
+
+  const handlePause = useCallback((src: string) => {
+    if (programmaticPause.current.has(src)) return;
+    setActive((current) => (current === src ? null : current));
+  }, []);
+
+  const handleEnded = useCallback((src: string) => {
+    setActive((current) => (current === src ? null : current));
+  }, []);
+
   return (
-    <div className="space-y-3">
-      {tracks.map((src) => {
-        const isOn = active === src;
+    <div className="space-y-4">
+      {tracks.map((src, idx) => {
+        const isPlaying = active === src;
         return (
-          <div
-            key={src}
-            className={`rounded-xl border px-4 py-3 transition-colors ${
-              isOn ? "border-accent/40 bg-accent/[0.07]" : "border-border/12 bg-bg/[0.2] hover:border-border/22"
-            }`}
-          >
-            <div className="mb-2 text-sm font-semibold text-text">{listenLabel}</div>
-            <audio
-              controls
-              preload="metadata"
-              className="h-11 w-full max-w-xl rounded-lg accent-accent"
-              onPlay={() => setActive(src)}
-              onPause={() => setActive((a) => (a === src ? null : a))}
+          <Reveal key={src} delayMs={idx * 70}>
+            <ElectricBorder
+              borderRadius={24}
+              className="min-h-0 w-full"
+              accentVariant="accent"
+              speed={isPlaying ? 1.05 : 0.88}
+              chaos={isPlaying ? 0.13 : 0.11}
+              contentClassName="w-full"
             >
-              <source src={src} type="audio/mpeg" />
-            </audio>
-          </div>
+              <div
+                className={`rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] transition-[box-shadow,background-color] duration-300 sm:p-5 ${
+                  isPlaying ? "bg-accent/[0.09] ring-1 ring-accent/40" : ""
+                }`}
+              >
+                <div className="mb-3 text-sm font-semibold text-text">
+                  {listenLabel} <span className="text-text/55">· {idx + 1}</span>
+                </div>
+                <audio
+                  ref={(el) => registerAudio(src, el)}
+                  controls
+                  preload="metadata"
+                  className="h-11 w-full max-w-xl rounded-lg accent-accent"
+                  onPlay={() => handlePlay(src)}
+                  onPause={() => handlePause(src)}
+                  onEnded={() => handleEnded(src)}
+                >
+                  <source src={src} type="audio/mpeg" />
+                </audio>
+              </div>
+            </ElectricBorder>
+          </Reveal>
         );
       })}
     </div>
@@ -295,53 +345,44 @@ export function HomePageContent() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none"
+            className="relative mx-auto w-full max-w-[min(100%,18rem)] sm:max-w-[min(100%,20rem)] lg:mx-0 lg:max-w-none"
           >
             <div
-              className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px] lg:shadow-[0_24px_72px_rgb(0_0_0/0.5)]"
+              className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px]"
               style={{
                 background:
                   "linear-gradient(135deg, rgb(var(--accent-rgb) / 0.55), rgb(var(--accent2-rgb) / 0.4), rgb(var(--warm-rgb) / 0.35))"
               }}
             >
-              <div className="relative overflow-hidden rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
-                <span
-                  className="hero-accent-line pointer-events-none absolute left-0 top-6 z-[2] hidden h-16 w-1 rounded-full bg-gradient-to-b from-accent via-accent2 to-warm sm:block"
-                  aria-hidden
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 z-[1] rounded-[16px] sm:rounded-[18px]"
-                  aria-hidden
-                  style={{
-                    background:
-                      "linear-gradient(152deg, rgb(var(--accent-rgb) / 0.14) 0%, transparent 38%, transparent 62%, rgb(var(--accent2-rgb) / 0.1) 100%)"
-                  }}
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 z-[2] rounded-[16px] opacity-[0.11] mix-blend-overlay sm:rounded-[18px]"
-                  aria-hidden
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E")`
-                  }}
-                />
-                <div className="pointer-events-none absolute bottom-2 left-2 z-[3] sm:bottom-3 sm:left-3" aria-hidden>
+              <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
+                {/* Та же логика, что у hero: тёмная подложка + multiply, чтобы белый фон студии ушёл в цвет сайта */}
+                <div className="relative overflow-hidden rounded-[16px] bg-bg sm:rounded-[18px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/anastasia-about.png"
+                    alt={t("footer.name")}
+                    className="relative z-0 mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center opacity-[0.93] mix-blend-multiply contrast-[1.03] sm:max-h-none lg:mx-0"
+                  />
                   <div
-                    className="h-9 w-9 border-b-2 border-l-2 border-accent/55 sm:h-11 sm:w-11"
-                    style={{ borderBottomLeftRadius: 3 }}
+                    className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit]"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse 90% 80% at 50% 42%, transparent 25%, rgb(var(--bg-rgb) / 0.72) 100%)"
+                    }}
+                    aria-hidden
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-gradient-to-b from-bg/55 via-transparent to-bg/75 opacity-90"
+                    aria-hidden
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] opacity-[0.07] mix-blend-overlay"
+                    aria-hidden
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+                    }}
                   />
                 </div>
-                <div className="pointer-events-none absolute right-2 top-2 z-[3] sm:right-3 sm:top-3" aria-hidden>
-                  <div
-                    className="h-7 w-7 border-r-2 border-t-2 border-accent2/45 sm:h-9 sm:w-9"
-                    style={{ borderTopRightRadius: 3 }}
-                  />
-                </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/anastasia-about.png"
-                  alt={t("footer.name")}
-                  className="relative z-0 mx-auto block h-auto max-h-[320px] w-full rounded-[16px] object-contain object-center sm:max-h-[min(72vh,520px)] sm:rounded-[18px] lg:max-h-[560px]"
-                />
               </div>
             </div>
           </motion.div>
