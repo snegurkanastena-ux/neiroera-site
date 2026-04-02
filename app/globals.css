@@ -4,7 +4,7 @@
 
 /*
   Темы: data-theme="dark" | data-theme="light" на <html>.
-  Цвета через RGB + opacity в Tailwind (border-border/10 и т.д.).
+  Акценты: холодная мята + тёплый янтарь (без «AI-слайда» cyan+purple).
 */
 
 @layer base {
@@ -12,79 +12,124 @@
     scroll-behavior: smooth;
   }
 
-  /* Тёмная тема — по умолчанию (как на исходном сайте) */
   html[data-theme="dark"],
   html:not([data-theme]) {
-    --bg-rgb: 3 5 12;
-    --text-rgb: 248 250 252;
-    /* «Стекло» и границы: светлый оттенок поверх тёмного фона */
+    --bg-rgb: 7 9 14;
+    --text-rgb: 245 247 250;
     --surface-rgb: 255 255 255;
     --border-rgb: 255 255 255;
-    --header-bg-rgb: 6 9 14;
-    --orb-cyan: 55 230 255;
-    --orb-purple: 139 92 255;
+    --header-bg-rgb: 8 11 18;
+    --accent-rgb: 72 255 207;
+    --accent2-rgb: 255 176 74;
+    --warm-rgb: 255 122 108;
+    --on-accent-rgb: 6 10 16;
+    --orb-primary: 48 220 190;
+    --orb-secondary: 255 168 64;
   }
 
   html[data-theme="light"] {
-    --bg-rgb: 241 245 249;
+    --bg-rgb: 236 240 245;
     --text-rgb: 15 23 42;
     --surface-rgb: 15 23 42;
     --border-rgb: 15 23 42;
-    --header-bg-rgb: 248 250 252;
-    --orb-cyan: 6 182 212;
-    --orb-purple: 124 58 237;
+    --header-bg-rgb: 252 252 254;
+    --accent-rgb: 0 150 125;
+    --accent2-rgb: 196 110 0;
+    --warm-rgb: 200 72 58;
+    --on-accent-rgb: 255 255 255;
+    --orb-primary: 0 160 140;
+    --orb-secondary: 220 130 20;
   }
 
   body {
     background: rgb(var(--bg-rgb));
     color: rgb(var(--text-rgb));
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
-      "Segoe UI Emoji";
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
     font-size: 1.0625rem;
     line-height: 1.6;
     transition: background-color 0.35s ease, color 0.35s ease;
   }
 }
 
+/* Тонкая плёнка зерна поверх страницы */
+.site-noise {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+html[data-theme="light"] .site-noise {
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+}
+
 .gradient-orb {
   background: radial-gradient(
     closest-side,
+<<<<<<< HEAD
     rgb(var(--orb-cyan) / 0.45),
     rgb(var(--orb-cyan) / 0) 72%
   );
   filter: blur(20px);
   opacity: 0.85;
+=======
+    rgb(var(--orb-primary) / 0.55),
+    rgb(var(--orb-primary) / 0) 72%
+  );
+  filter: blur(14px);
+  opacity: 0.92;
+>>>>>>> 9894876 (frontend update)
   transition: opacity 0.35s ease;
 }
 
-.gradient-orb.purple {
+.gradient-orb.warm {
   background: radial-gradient(
     closest-side,
-    rgb(var(--orb-purple) / 0.58),
-    rgb(var(--orb-purple) / 0) 72%
+    rgb(var(--orb-secondary) / 0.5),
+    rgb(var(--orb-secondary) / 0) 72%
   );
 }
 
 .animated-gradient {
   background: linear-gradient(
-    125deg,
-    rgb(var(--orb-cyan) / 0.34),
-    rgb(var(--orb-purple) / 0.32),
-    rgb(243 201 182 / 0.12),
-    rgb(var(--orb-cyan) / 0.2)
+    118deg,
+    rgb(var(--orb-primary) / 0.28),
+    rgb(var(--orb-secondary) / 0.22),
+    rgb(var(--warm-rgb) / 0.08),
+    rgb(var(--orb-primary) / 0.18)
   );
-  background-size: 280% 280%;
-  animation: gradientShift 16s ease-in-out infinite;
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease-in-out infinite;
 }
 
 @keyframes gradientShift {
   0% {
-    background-position: 0% 40%;
+    background-position: 0% 35%;
   }
   50% {
-    background-position: 100% 60%;
+    background-position: 100% 65%;
   }
   100% {
-    background-position: 0% 40%;
+    background-position: 0% 35%;
   }
+}
+
+@keyframes heroLine {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.hero-accent-line {
+  animation: heroLine 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+  transform: scaleX(0);
 }

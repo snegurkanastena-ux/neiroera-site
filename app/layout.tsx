@@ -1,10 +1,23 @@
 import type { Metadata } from "next";
+import { Onest, Unbounded } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Header from "../src/components/Header";
 import { Container } from "../src/components/Container";
 import { SiteFooter } from "../src/components/SiteFooter";
 import { ThemeToggle } from "../src/components/ThemeToggle";
+
+const fontDisplay = Unbounded({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-display",
+  weight: ["600", "700", "800"]
+});
+
+const fontBody = Onest({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"]
+});
 
 export const metadata: Metadata = {
   title: "Анастасия Мельникова — AI-креатор и AI-архитектор",
@@ -14,25 +27,36 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <body>
+    <html lang="ru" className={`${fontDisplay.variable} ${fontBody.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <Providers>
           <div className="relative min-h-screen overflow-hidden">
             {/* Фоновые градиенты (не перехватывают клики) */}
+<<<<<<< HEAD
             <div aria-hidden="true" className="pointer-events-none absolute inset-0">
               <div className="absolute left-1/2 top-0 h-[28rem] w-[28rem] -translate-x-1/2 gradient-orb opacity-50" />
               <div className="absolute bottom-0 right-0 h-[20rem] w-[20rem] opacity-35 gradient-orb purple" />
               <div className="animated-gradient absolute inset-0 opacity-[0.14]" />
+=======
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+              <div className="absolute left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2 gradient-orb opacity-90" />
+              <div className="absolute -left-36 top-1/4 h-[24rem] w-[24rem] gradient-orb warm opacity-85" />
+              <div className="absolute bottom-0 right-0 h-[28rem] w-[28rem] opacity-65 gradient-orb warm" />
+              <div className="animated-gradient absolute inset-0 opacity-[0.38]" />
+>>>>>>> 9894876 (frontend update)
             </div>
 
-            <Header />
+            <div className="site-noise" aria-hidden="true" />
 
-            <Container className="relative">{children}</Container>
+            <div className="relative z-10">
+              <Header />
 
-            <SiteFooter />
+              <Container className="relative">{children}</Container>
 
-            {/* Плавающая смена темы: правый нижний угол */}
-            <ThemeToggle />
+              <SiteFooter />
+
+              <ThemeToggle />
+            </div>
           </div>
         </Providers>
       </body>

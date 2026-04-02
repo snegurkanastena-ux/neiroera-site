@@ -6,7 +6,7 @@ export default function CasesPage() {
   return (
     <div className="py-10 sm:py-14">
       <Reveal>
-        <h1 className="text-3xl sm:text-4xl font-black">Кейсы</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Кейсы</h1>
         <p className="mt-3 text-text/70 max-w-2xl">
           Заглушка под полноценную витрину кейсов. Сейчас на главной уже есть “карточки-истории” — здесь можно расширить под статьи.
         </p>

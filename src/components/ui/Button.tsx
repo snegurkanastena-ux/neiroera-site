@@ -20,9 +20,9 @@ export type ButtonProps = {
 function buttonClasses(variant: ButtonVariant) {
   switch (variant) {
     case "primary":
-      return "bg-accent text-onAccent shadow-glow hover:brightness-110 border border-accent/70";
+      return "bg-gradient-to-br from-accent via-accent to-accent2/95 text-onAccent shadow-glow hover:brightness-[1.06] border border-white/20";
     case "secondary":
-      return "bg-accent2/20 text-text border border-accent2/35 hover:bg-accent2/25";
+      return "bg-accent2/15 text-text border border-accent2/40 hover:bg-accent2/22 backdrop-blur-sm";
     case "ghost":
       return "bg-transparent text-text/90 border border-border/12 hover:bg-surface/8";
   }
@@ -39,7 +39,7 @@ export function Button({
   rel,
   disabled
 }: ButtonProps) {
-  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:pointer-events-none disabled:opacity-45 ${buttonClasses(
+  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:pointer-events-none disabled:opacity-45 ${buttonClasses(
     variant
   )} ${className}`;
 

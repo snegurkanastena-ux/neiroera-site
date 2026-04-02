@@ -31,24 +31,27 @@ export default function Header() {
   const telegramHref = useMemo(() => siteLinks.telegramBot, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/8 bg-bg/75 backdrop-blur-xl transition-colors duration-300">
+    <header className="sticky top-0 z-50 border-b border-border/10 bg-bg/[0.72] backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-300 supports-[backdrop-filter]:bg-bg/55">
       <Container className="flex items-center justify-between py-3">
-        <a href="#top" className="group inline-flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-2xl border border-accent/35 bg-accent/15 shadow-glow">
-            <span className="text-sm font-black text-accent">AI</span>
+        <a href="#top" className="group inline-flex items-center gap-2.5">
+          <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/20 to-accent2/15 shadow-glow">
+            <span className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden>
+              <span className="absolute inset-0 bg-gradient-to-tr from-accent/25 to-transparent" />
+            </span>
+            <span className="font-display relative text-xs font-bold tracking-tight text-accent">AI</span>
           </span>
           <span className="hidden sm:block">
-            <span className="block font-semibold leading-3">{t("footer.tag")}</span>
-            <span className="block text-xs leading-3 text-text/70">{t("footer.name")}</span>
+            <span className="block text-sm font-semibold leading-3 tracking-tight">{t("footer.tag")}</span>
+            <span className="block text-xs leading-3 text-text/65">{t("footer.name")}</span>
           </span>
         </a>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {NAV_KEYS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="rounded-xl px-3 py-2 text-sm text-text/80 transition-colors duration-300 hover:bg-surface/8 hover:text-text"
+              className="rounded-xl px-3 py-2 text-sm text-text/78 transition-colors duration-300 hover:bg-surface/[0.07] hover:text-text"
             >
               {t(item.labelKey)}
             </a>

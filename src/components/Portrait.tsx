@@ -54,12 +54,30 @@ export function Portrait() {
         className="relative mx-auto w-fit max-w-full lg:mx-0 lg:ml-auto"
         style={motionStyle}
       >
+<<<<<<< HEAD
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/anastasia-hero.png"
           alt={t("footer.name")}
           className="mx-auto block h-auto max-h-[220px] w-auto max-w-full object-contain object-center rounded-[16px] sm:max-h-[280px] sm:rounded-[18px] lg:max-h-none lg:rounded-[20px]"
         />
+=======
+        <div
+          className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px]"
+          style={{
+            background: "linear-gradient(135deg, rgb(var(--accent-rgb) / 0.55), rgb(var(--accent2-rgb) / 0.4), rgb(var(--warm-rgb) / 0.35))"
+          }}
+        >
+          <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/anastasia-hero.png"
+              alt="Анастасия Мельникова"
+              className="mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center rounded-[16px] sm:max-h-none lg:mx-0 lg:rounded-[18px]"
+            />
+          </div>
+        </div>
+>>>>>>> 9894876 (frontend update)
       </motion.div>
     </div>
   );

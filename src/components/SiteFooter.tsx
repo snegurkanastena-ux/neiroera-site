@@ -49,7 +49,7 @@ export function SiteFooter() {
     <footer className="relative border-t border-border/8 py-10 transition-colors duration-300">
       <Container className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="font-bold">{t("footer.name")}</div>
+            <div className="font-display text-lg font-bold tracking-tight">{t("footer.name")}</div>
             <div className="text-sm text-text/70">{t("footer.tag")}</div>
             <div className="mt-2 text-xs text-text/50">© 2026 NeuroEra by Anastasia Melnikova</div>
           </div>

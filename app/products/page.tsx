@@ -6,7 +6,7 @@ export default function ProductsPage() {
   return (
     <div className="py-10 sm:py-14">
       <Reveal>
-        <h1 className="text-3xl sm:text-4xl font-black">Продукты</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Продукты</h1>
         <p className="mt-3 text-text/70 max-w-2xl">
           Заглушка: здесь будут пакеты и лид-магниты (например, “Контент-система под Telegram”, “GPT-агент под задачу”, “AI-внедрение в бизнес”).
         </p>
