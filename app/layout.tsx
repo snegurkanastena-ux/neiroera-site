@@ -44,7 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="relative z-10">
               <Header />
 
-              <Container className="relative">{children}</Container>
+              {/* pt: резерв под fixed header (~56–68px), чтобы контент не уходил под шапку */}
+              <Container className="relative pt-14 sm:pt-16">{children}</Container>
 
               <SiteFooter />
 

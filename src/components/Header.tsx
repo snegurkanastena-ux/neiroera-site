@@ -53,10 +53,10 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:backdrop-blur-2xl ${
+      className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:backdrop-blur-2xl ${
         dense
-          ? "border-border/14 bg-bg/[0.88] shadow-[0_12px_40px_rgb(0_0_0/0.22)] supports-[backdrop-filter]:bg-bg/[0.78]"
-          : "border-border/10 bg-bg/[0.72] supports-[backdrop-filter]:bg-bg/55"
+          ? "border-border/14 bg-bg/[0.92] shadow-[0_12px_40px_rgb(0_0_0/0.28)] supports-[backdrop-filter]:bg-bg/[0.82]"
+          : "border-border/10 bg-bg/[0.82] supports-[backdrop-filter]:bg-bg/[0.62]"
       }`}
     >
       <Container className={`flex items-center justify-between transition-[padding] duration-300 ${dense ? "py-2" : "py-3"}`}>
