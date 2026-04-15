@@ -138,17 +138,14 @@ export const messagesByLang: Record<Lang, Messages> = {
   ru: {
     nav: {
       about: "Обо мне",
-      portfolio: "Портфолио",
       services: "Услуги",
-      education: "Обучение",
-      calculator: "Калькулятор",
-      audience: "Для кого",
       cases: "Кейсы",
-      process: "Как работаю",
       reviews: "Отзывы",
-      socials: "Соцсети",
+      contacts: "Контакты",
+      payment: "Оплата",
       toTelegram: "В Telegram",
-      openMenu: "Открыть меню"
+      openMenu: "Открыть меню",
+      ariaLabel: "Основная навигация"
     },
     hero: {
       title:
@@ -634,17 +631,14 @@ export const messagesByLang: Record<Lang, Messages> = {
   en: {
     nav: {
       about: "About",
-      portfolio: "Portfolio",
       services: "Services",
-      education: "Training",
-      calculator: "Estimator",
-      audience: "Audience",
       cases: "Cases",
-      process: "Process",
       reviews: "Reviews",
-      socials: "Social",
+      contacts: "Contacts",
+      payment: "Payment",
       toTelegram: "Telegram",
-      openMenu: "Open menu"
+      openMenu: "Open menu",
+      ariaLabel: "Primary navigation"
     },
     hero: {
       title: "I build AI-powered growth systems\nfor business, experts, and creative work",

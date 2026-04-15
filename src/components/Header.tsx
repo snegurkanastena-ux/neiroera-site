@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * Шапка: навигация (якоря), переключатель языка (RU/EN), CTA в Telegram.
+ * Шапка: компактная навигация, переключатель языка (RU/EN), CTA «Оплата» и Telegram.
  */
 
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -12,17 +13,12 @@ import { Button } from "./ui/Button";
 import { Container } from "./Container";
 import { LanguageSwitch } from "./LanguageSwitch";
 
-const NAV_KEYS = [
-  { labelKey: "nav.about", href: "#about" },
-  { labelKey: "nav.portfolio", href: "#portfolio" },
-  { labelKey: "nav.services", href: "#services" },
-  { labelKey: "nav.calculator", href: "#calculator" },
-  { labelKey: "nav.education", href: "#education" },
-  { labelKey: "nav.audience", href: "#audience" },
-  { labelKey: "nav.cases", href: "#cases" },
-  { labelKey: "nav.process", href: "#process" },
-  { labelKey: "nav.reviews", href: "#reviews" },
-  { labelKey: "nav.socials", href: "#socials" }
+/** Якоря главной — через `/#…`, чтобы работало со всех страниц */
+const NAV_HASH = [
+  { labelKey: "nav.about", href: "/#about" },
+  { labelKey: "nav.services", href: "/#services" },
+  { labelKey: "nav.cases", href: "/#cases" },
+  { labelKey: "nav.reviews", href: "/#reviews" }
 ] as const;
 
 const menuList = {
@@ -37,6 +33,9 @@ const menuItem = {
   show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const } }
 };
 
+const navLinkClass =
+  "rounded-xl px-2.5 py-2 text-sm text-text/78 transition-colors duration-300 hover:bg-surface/[0.07] hover:text-text xl:px-3";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [dense, setDense] = useState(false);
@@ -50,16 +49,18 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const closeMenu = () => setOpen(false);
+
   return (
     <header
-      className={`sticky top-0 z-50 border-b backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:backdrop-blur-2xl ${
+      className={`sticky top-0 z-50 w-full border-b backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:backdrop-blur-2xl ${
         dense
           ? "border-border/14 bg-bg/[0.88] shadow-[0_12px_40px_rgb(0_0_0/0.22)] supports-[backdrop-filter]:bg-bg/[0.78]"
           : "border-border/10 bg-bg/[0.72] supports-[backdrop-filter]:bg-bg/55"
       }`}
     >
       <Container className={`flex items-center justify-between transition-[padding] duration-300 ${dense ? "py-2" : "py-3"}`}>
-        <a href="#top" className="group inline-flex items-center gap-2.5">
+        <Link href="/" className="group inline-flex shrink-0 items-center gap-2.5" onClick={closeMenu}>
           <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/20 to-accent2/15 shadow-glow">
             <span className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden>
               <span className="absolute inset-0 bg-gradient-to-tr from-accent/25 to-transparent" />
@@ -70,21 +71,26 @@ export default function Header() {
             <span className="block text-sm font-semibold leading-3 tracking-tight">{t("footer.tag")}</span>
             <span className="block text-xs leading-3 text-text/65">{t("footer.name")}</span>
           </span>
-        </a>
+        </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex">
-          {NAV_KEYS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="rounded-xl px-3 py-2 text-sm text-text/78 transition-colors duration-300 hover:bg-surface/[0.07] hover:text-text"
-            >
+        <nav
+          className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex xl:gap-1"
+          aria-label={t("nav.ariaLabel")}
+        >
+          {NAV_HASH.map((item) => (
+            <a key={item.href} href={item.href} className={navLinkClass}>
               {t(item.labelKey)}
             </a>
           ))}
-          <div className="ml-2 flex items-center gap-2">
+          <Link href="/contacts" className={navLinkClass}>
+            {t("nav.contacts")}
+          </Link>
+          <div className="ml-1 flex shrink-0 items-center gap-1.5 pl-1 xl:ml-2 xl:gap-2">
+            <Button href="/payment" variant="primary" className="!px-3 !py-2 text-sm">
+              {t("nav.payment")}
+            </Button>
             <LanguageSwitch />
-            <Button href={telegramHref} variant="primary" className="!px-4" target="_blank" rel="noopener noreferrer">
+            <Button href={telegramHref} variant="primary" className="!px-3.5 !py-2 text-sm" target="_blank" rel="noopener noreferrer">
               {t("nav.toTelegram")}
             </Button>
           </div>
@@ -125,23 +131,32 @@ export default function Header() {
             className="border-t border-border/8 lg:hidden"
           >
             <Container className="py-3">
-              <motion.div
-                className="flex flex-col gap-2"
-                initial="hidden"
-                animate="show"
-                variants={menuList}
-              >
-                {NAV_KEYS.map((item) => (
+              <motion.div className="flex flex-col gap-2" initial="hidden" animate="show" variants={menuList}>
+                {NAV_HASH.map((item) => (
                   <motion.a
                     key={item.href}
                     variants={menuItem}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                     className="rounded-2xl border border-border/12 bg-transparent px-4 py-3 text-sm transition-colors duration-300 hover:bg-surface/8"
                   >
                     {t(item.labelKey)}
                   </motion.a>
                 ))}
+                <motion.div variants={menuItem}>
+                  <Link
+                    href="/contacts"
+                    onClick={closeMenu}
+                    className="block rounded-2xl border border-border/12 bg-transparent px-4 py-3 text-sm transition-colors duration-300 hover:bg-surface/8"
+                  >
+                    {t("nav.contacts")}
+                  </Link>
+                </motion.div>
+                <motion.div variants={menuItem}>
+                  <Button href="/payment" variant="primary" className="w-full" onClick={closeMenu}>
+                    {t("nav.payment")}
+                  </Button>
+                </motion.div>
                 <motion.div variants={menuItem} className="pt-1">
                   <Button
                     href={telegramHref}
@@ -149,9 +164,9 @@ export default function Header() {
                     className="w-full"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                   >
-                    {t("hero.ctaConsult")}
+                    {t("nav.toTelegram")}
                   </Button>
                 </motion.div>
               </motion.div>

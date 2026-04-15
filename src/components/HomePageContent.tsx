@@ -601,7 +601,7 @@ export function HomePageContent() {
       </section>
 
       {/* CASES */}
-      <section id="cases" className="mt-12 sm:mt-16 md:mt-20">
+      <section id="cases" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="cases.kicker" titleKey="cases.title" />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {caseItems.map((c, idx) => (

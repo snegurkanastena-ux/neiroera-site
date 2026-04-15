@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" className={`${fontDisplay.variable} ${fontBody.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <Providers>
-          <div className="relative min-h-screen overflow-hidden">
+          <div className="relative min-h-screen overflow-x-hidden">
             {/* Фоновые градиенты (не перехватывают клики) */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
               <div className="orb-drift-1 absolute left-1/2 top-0 h-[34rem] w-[34rem] gradient-orb will-change-transform" />
