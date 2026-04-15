@@ -113,6 +113,8 @@ export type Messages = {
   final: Record<string, string>;
   leadForm: Record<string, string>;
   footer: Record<string, string>;
+  /** Компактный блок онлайн-оплаты на главной */
+  paymentBlock: { title: string; text: string; cta: string; promo: string };
   meta: { title: string; description: string };
   theme: { toLight: string; toDark: string; titleLight: string; titleDark: string };
 };
@@ -606,7 +608,16 @@ export const messagesByLang: Record<Lang, Messages> = {
     footer: {
       name: "Анастасия Мельникова",
       tag: "НейроЭра",
-      rights: "Все права защищены"
+      rights: "Все права защищены",
+      linkPayment: "Оплата",
+      linkOffer: "Оферта",
+      linkContacts: "Контакты"
+    },
+    paymentBlock: {
+      title: "Онлайн-оплата",
+      text: "Оплатите услугу через защищенную форму",
+      cta: "Оплатить",
+      promo: "НЕЙРОЭРА2026 — скидка 10%"
     },
     meta: {
       title: "Анастасия Мельникова — AI-креатор и AI-архитектор",
@@ -1092,7 +1103,16 @@ export const messagesByLang: Record<Lang, Messages> = {
     footer: {
       name: "Anastasia Melnikova",
       tag: "NeuroEra",
-      rights: "All rights reserved"
+      rights: "All rights reserved",
+      linkPayment: "Payment",
+      linkOffer: "Public offer",
+      linkContacts: "Contacts"
+    },
+    paymentBlock: {
+      title: "Online payment",
+      text: "Pay for services via a secure checkout form",
+      cta: "Pay now",
+      promo: "НЕЙРОЭРА2026 — 10% off"
     },
     meta: {
       title: "Anastasia Melnikova — AI creator & architect",

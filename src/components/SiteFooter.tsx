@@ -4,6 +4,7 @@
  * Подвал сайта: копирайт и быстрые соцкнопки (переводы через i18n).
  */
 
+import Link from "next/link";
 import { socialLinks } from "../lib/socials";
 import { useI18n } from "../providers/SiteProviders";
 import { Container } from "./Container";
@@ -52,6 +53,17 @@ export function SiteFooter() {
             <div className="font-display text-lg font-bold tracking-tight">{t("footer.name")}</div>
             <div className="text-sm text-text/70">{t("footer.tag")}</div>
             <div className="mt-2 text-xs text-text/50">© 2026 NeuroEra by Anastasia Melnikova</div>
+            <nav className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-text/60" aria-label="Юридическая информация и оплата">
+              <Link href="/payment" className="transition-colors hover:text-accent">
+                {t("footer.linkPayment")}
+              </Link>
+              <Link href="/offer" className="transition-colors hover:text-accent">
+                {t("footer.linkOffer")}
+              </Link>
+              <Link href="/contacts" className="transition-colors hover:text-accent">
+                {t("footer.linkContacts")}
+              </Link>
+            </nav>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">

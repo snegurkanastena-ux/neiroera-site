@@ -894,6 +894,30 @@ export function HomePageContent() {
         </div>
       </section>
 
+      {/* Онлайн-оплата (Prodamus / payform) */}
+      <section className="mt-12 sm:mt-16 md:mt-20" aria-labelledby="payment-block-title">
+        <Reveal>
+          <div className="rounded-2xl border border-border/14 bg-bg/[0.2] px-5 py-6 sm:px-8 sm:py-7">
+            <h2 id="payment-block-title" className="font-display text-xl font-bold tracking-tight text-text sm:text-2xl">
+              {messages.paymentBlock.title}
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text/80 sm:text-base">{messages.paymentBlock.text}</p>
+            <p className="mt-3 text-sm font-medium text-accent/95">{messages.paymentBlock.promo}</p>
+            <div className="mt-5">
+              <Button
+                href="https://neuroera.payform.ru"
+                variant="primary"
+                className="min-h-[48px] px-6 text-base"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {messages.paymentBlock.cta}
+              </Button>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       <div className="h-10" />
     </div>
   );
