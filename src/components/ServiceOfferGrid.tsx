@@ -33,7 +33,7 @@ export function ServiceOfferGrid() {
                 {card.emoji}
               </span>
               <span className="mt-3 text-lg font-bold leading-tight">{card.title}</span>
-              <span className="mt-2 text-base font-semibold text-accent">{card.priceLine}</span>
+              <span className="mt-2 text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">{card.priceLine}</span>
               <span className="mt-3 text-xs font-medium text-text/55">
                 {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
               </span>
@@ -49,21 +49,38 @@ export function ServiceOfferGrid() {
                   transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div
-                    className="mt-2 rounded-xl border border-border/12 bg-bg/[0.55] px-4 py-3 text-sm"
+                    className="mt-2 rounded-xl border border-border/12 bg-bg/[0.55] px-3.5 py-3.5 sm:px-4 sm:py-4"
                     role="region"
                     aria-label={card.title}
                   >
-                    <ul className="space-y-2.5">
+                    <ul className="space-y-3">
                       {card.details.map((row, i) => (
                         <motion.li
-                          key={row.name}
+                          key={`${card.id}-${row.name}-${i}`}
                           initial={reduceMotion ? false : { opacity: 0, x: -6 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: reduceMotion ? 0 : 0.04 + i * 0.04, duration: 0.28 }}
-                          className="flex items-baseline justify-between gap-3 border-b border-border/8 pb-2 last:border-0 last:pb-0"
+                          className="border-b border-border/8 pb-3 last:border-0 last:pb-0"
                         >
-                          <span className="text-text/85">{row.name}</span>
-                          <span className="shrink-0 font-semibold text-text">{row.price}</span>
+                          <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+                            <span className="text-base font-semibold leading-snug text-text sm:text-lg">{row.name}</span>
+                            <span className="shrink-0 text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">
+                              {row.price}
+                            </span>
+                          </div>
+                          {row.linkHref ? (
+                            <a
+                              href={row.linkHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-2 inline-flex max-w-full items-center gap-1 text-sm font-medium text-accent/95 underline decoration-accent/35 underline-offset-[3px] transition-colors hover:text-accent hover:decoration-accent sm:text-base"
+                            >
+                              {row.linkLabel ?? row.linkHref}
+                              <span aria-hidden className="text-xs opacity-80">
+                                ↗
+                              </span>
+                            </a>
+                          ) : null}
                         </motion.li>
                       ))}
                     </ul>

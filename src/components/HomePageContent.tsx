@@ -145,6 +145,73 @@ function SectionTitle({ kickerKey, titleKey }: { kickerKey: string; titleKey: st
   );
 }
 
+/** Заголовок секции услуг: тот же визуальный каркас, что у SectionTitle, плюс «печать» как в hero */
+function ServicesSectionTitle() {
+  const { t, lang } = useI18n();
+  const reduceMotion = useReducedMotion();
+
+  const kickerLine = (
+    <div className="flex items-center gap-3">
+      <motion.span
+        className="block h-px w-8 shrink-0 origin-left bg-gradient-to-r from-accent to-accent2 sm:w-10"
+        aria-hidden
+        initial={reduceMotion ? undefined : { scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
+      />
+      <div className="text-[0.7rem] sm:text-xs text-text/60 uppercase tracking-[0.22em]">{t("serviceOffers.kicker")}</div>
+    </div>
+  );
+
+  const underline = (
+    <span className="mt-1 block h-1 w-16 rounded-full bg-gradient-to-r from-accent via-accent2 to-warm sm:w-20" aria-hidden />
+  );
+
+  if (reduceMotion) {
+    return (
+      <div className="mb-6 sm:mb-10">
+        {kickerLine}
+        <h2 className="font-display mt-3 max-w-3xl text-2xl font-bold leading-[1.12] tracking-tight sm:mt-4 sm:text-3xl md:text-[2.1rem]">
+          <span className="bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75">{t("serviceOffers.title")}</span>
+          {underline}
+        </h2>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      className="mb-6 sm:mb-10"
+      initial={{ opacity: 0, y: 14, filter: "blur(5px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {kickerLine}
+      <div className="mt-3 sm:mt-4">
+        <TextType
+          key={lang}
+          as="h2"
+          text={t("serviceOffers.title")}
+          loop={false}
+          startOnVisible
+          typingSpeed={52}
+          deletingSpeed={42}
+          pauseDuration={2400}
+          initialDelay={280}
+          showCursor
+          cursorCharacter="_"
+          cursorBlinkDuration={0.5}
+          cursorClassName="text-accent align-baseline"
+          className="font-display max-w-3xl whitespace-pre-line text-2xl font-bold leading-[1.12] tracking-tight sm:text-3xl md:text-[2.1rem] bg-clip-text text-transparent bg-gradient-to-br from-text via-text to-text/75"
+        />
+        {underline}
+      </div>
+    </motion.div>
+  );
+}
+
 function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail" }) {
   if (label === "Telegram")
     return (
@@ -345,7 +412,7 @@ export function HomePageContent() {
 
       {/* УСЛУГИ */}
       <section id="services" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
-        <SectionTitle kickerKey="serviceOffers.kicker" titleKey="serviceOffers.title" />
+        <ServicesSectionTitle />
         <Reveal>
           <ServiceOfferGrid />
         </Reveal>

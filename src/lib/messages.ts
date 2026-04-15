@@ -10,12 +10,20 @@ type ReviewItem = { name: string; text: string; niche: string; outcome: string; 
 type AudienceItem = { title: string; desc: string };
 type ProcessStep = { step: string; title: string; desc: string };
 
+export type ServiceOfferDetail = {
+  name: string;
+  price: string;
+  /** Внешняя ссылка (например, музыкальный проект) */
+  linkHref?: string;
+  linkLabel?: string;
+};
+
 export type ServiceOfferCard = {
   id: string;
   emoji: string;
   title: string;
   priceLine: string;
-  details: { name: string; price: string }[];
+  details: ServiceOfferDetail[];
 };
 
 export type Messages = {
@@ -337,32 +345,25 @@ export const messagesByLang: Record<Lang, Messages> = {
           id: "sites",
           emoji: "💻",
           title: "Сайты",
-          priceLine: "от 80 000 ₽",
+          priceLine: "от 20 000 ₽",
           details: [
-            { name: "Лендинг", price: "80 000 ₽" },
-            { name: "Система под ключ", price: "150–250 000 ₽" },
-            { name: "Индивидуально", price: "заявка" }
+            { name: "Лендинг", price: "от 20 000 ₽" },
+            { name: "Под ключ", price: "от 50 000 ₽" }
           ]
         },
         {
           id: "automation",
           emoji: "⚙️",
           title: "Автоматизация",
-          priceLine: "от 50 000 ₽",
-          details: [
-            { name: "Сценарии и интеграции", price: "от 50 000 ₽" },
-            { name: "Под ключ под процесс", price: "заявка" }
-          ]
+          priceLine: "от 15 000 ₽",
+          details: [{ name: "Боты / агенты", price: "от 15 000 ₽" }]
         },
         {
           id: "content",
           emoji: "🎨",
           title: "Контент и визуал",
-          priceLine: "от 30 000 ₽",
-          details: [
-            { name: "Пакет контента", price: "от 30 000 ₽" },
-            { name: "Визуал и оформление", price: "заявка" }
-          ]
+          priceLine: "от 5 000 ₽",
+          details: [{ name: "Визуал", price: "от 5 000 ₽" }]
         },
         {
           id: "training",
@@ -378,10 +379,15 @@ export const messagesByLang: Record<Lang, Messages> = {
           id: "creative",
           emoji: "🎬",
           title: "Творчество",
-          priceLine: "от 20 000 ₽",
+          priceLine: "от 3 000 ₽",
           details: [
-            { name: "Музыка / видео / идеи", price: "от 20 000 ₽" },
-            { name: "Проект целиком", price: "заявка" }
+            { name: "Видео", price: "от 3 000 ₽" },
+            {
+              name: "Музыка",
+              price: "от 3 000 ₽",
+              linkHref: "https://melanomusic.ru/",
+              linkLabel: "Смотреть музыкальный проект"
+            }
           ]
         }
       ]
@@ -829,32 +835,25 @@ export const messagesByLang: Record<Lang, Messages> = {
           id: "sites",
           emoji: "💻",
           title: "Websites",
-          priceLine: "from 80,000 ₽",
+          priceLine: "from 20,000 ₽",
           details: [
-            { name: "Landing page", price: "80,000 ₽" },
-            { name: "Full system", price: "150,000–250,000 ₽" },
-            { name: "Custom", price: "on request" }
+            { name: "Landing page", price: "from 20,000 ₽" },
+            { name: "Full build", price: "from 50,000 ₽" }
           ]
         },
         {
           id: "automation",
           emoji: "⚙️",
           title: "Automation",
-          priceLine: "from 50,000 ₽",
-          details: [
-            { name: "Flows & integrations", price: "from 50,000 ₽" },
-            { name: "End-to-end for a process", price: "on request" }
-          ]
+          priceLine: "from 15,000 ₽",
+          details: [{ name: "Bots / agents", price: "from 15,000 ₽" }]
         },
         {
           id: "content",
           emoji: "🎨",
           title: "Content & visuals",
-          priceLine: "from 30,000 ₽",
-          details: [
-            { name: "Content pack", price: "from 30,000 ₽" },
-            { name: "Visuals & layout", price: "on request" }
-          ]
+          priceLine: "from 5,000 ₽",
+          details: [{ name: "Visuals", price: "from 5,000 ₽" }]
         },
         {
           id: "training",
@@ -870,10 +869,15 @@ export const messagesByLang: Record<Lang, Messages> = {
           id: "creative",
           emoji: "🎬",
           title: "Creative",
-          priceLine: "from 20,000 ₽",
+          priceLine: "from 3,000 ₽",
           details: [
-            { name: "Music / video / ideas", price: "from 20,000 ₽" },
-            { name: "Full project", price: "on request" }
+            { name: "Video", price: "from 3,000 ₽" },
+            {
+              name: "Music",
+              price: "from 3,000 ₽",
+              linkHref: "https://melanomusic.ru/",
+              linkLabel: "View music project"
+            }
           ]
         }
       ]
