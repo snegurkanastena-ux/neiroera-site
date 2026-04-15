@@ -20,8 +20,10 @@ export default function BlogPage() {
         </Button>
       </div>
 
-      <div className="mt-10 rounded-3xl border border-border/12 bg-bg/20 p-6 text-sm text-text/70">
-        Заглушка под расширение: со временем подключим статьи/рубрики, лид-магнит и воронку в Telegram.
+      <div className="ne-card-hover mt-10 p-6 text-sm text-text/70">
+        <div className="ne-card-hover__inner">
+          Заглушка под расширение: со временем подключим статьи/рубрики, лид-магнит и воронку в Telegram.
+        </div>
       </div>
     </div>
   );

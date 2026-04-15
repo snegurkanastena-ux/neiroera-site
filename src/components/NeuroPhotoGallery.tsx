@@ -74,11 +74,6 @@ function NeuroPhotoPendulum({
         className="neuro-photo-pendulum__swing flex w-full max-w-[220px] flex-col items-center sm:max-w-[240px]"
         style={{ transformOrigin: "50% 0" }}
         animate={swing}
-        whileHover={
-          reduceMotion
-            ? undefined
-            : { scale: 1.025, y: -6, transition: { type: "spring", stiffness: 380, damping: 28 } }
-        }
       >
         {/* Шнур */}
         <div
@@ -95,16 +90,18 @@ function NeuroPhotoPendulum({
           <span className="h-px w-[0.65rem] rounded-full bg-white/25" />
         </div>
 
-        {/* Карточка */}
-        <div className="neuro-photo-pendulum__card mt-2 w-full overflow-hidden rounded-2xl ring-1 ring-white/[0.1] shadow-[0_20px_48px_-14px_rgba(0,0,0,0.65)] sm:rounded-[1.1rem] sm:shadow-[0_24px_56px_-16px_rgba(0,0,0,0.7)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt=""
-            className="aspect-[3/4] h-auto w-full object-cover object-center"
-            loading="lazy"
-            decoding="async"
-          />
+        {/* Карточка — общий hover с сайтом */}
+        <div className="neuro-photo-pendulum__card ne-card-hover-sm mt-2 w-full overflow-hidden ring-1 ring-white/[0.1] shadow-[0_20px_48px_-14px_rgba(0,0,0,0.65)] sm:shadow-[0_24px_56px_-16px_rgba(0,0,0,0.7)]">
+          <div className="ne-card-hover__inner overflow-hidden rounded-2xl sm:rounded-[1.1rem]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={src}
+              alt=""
+              className="aspect-[3/4] h-auto w-full object-cover object-center"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </motion.div>
     </div>

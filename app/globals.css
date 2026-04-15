@@ -207,4 +207,67 @@ html[data-theme="light"] .site-noise {
   .site-noise {
     animation: none;
   }
+
+  .ne-card-hover:hover,
+  .ne-card-hover-sm:hover {
+    transform: none;
+  }
+
+  .ne-card-hover:hover .ne-card-hover__inner,
+  .ne-card-hover-sm:hover .ne-card-hover__inner {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Единый hover для карточек/плашек главной */
+@layer components {
+  .ne-card-hover {
+    @apply relative rounded-3xl border border-border/10 bg-bg/[0.3] transition-all duration-300 ease-out;
+  }
+
+  .ne-card-hover:hover {
+    @apply border-accent/40;
+    box-shadow: 0 0 40px rgba(0, 255, 200, 0.15);
+    transform: translateY(-0.25rem);
+  }
+
+  .ne-card-hover__inner {
+    @apply transition-all duration-300;
+  }
+
+  .ne-card-hover:hover .ne-card-hover__inner {
+    transform: scale(1.01);
+    filter: brightness(1.1);
+  }
+
+  .ne-card-hover:hover .ne-card-hover__glyph {
+    border-color: rgb(var(--accent-rgb) / 0.3);
+  }
+
+  .ne-card-hover-sm {
+    @apply relative rounded-2xl border border-border/10 bg-bg/[0.3] transition-all duration-300 ease-out;
+  }
+
+  .ne-card-hover-sm:hover {
+    @apply border-accent/40;
+    box-shadow: 0 0 40px rgba(0, 255, 200, 0.15);
+    transform: translateY(-0.25rem);
+  }
+
+  .ne-card-hover-sm:hover .ne-card-hover__inner {
+    transform: scale(1.01);
+    filter: brightness(1.1);
+  }
+
+  /* Финальный CTA: свои скругления вместо rounded-3xl */
+  .ne-card-hover--consult {
+    border-radius: 28px;
+  }
+
+  @media (min-width: 640px) {
+    .ne-card-hover--consult {
+      border-radius: 32px;
+    }
+  }
 }

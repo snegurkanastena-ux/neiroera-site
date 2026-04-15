@@ -18,6 +18,8 @@ export const siteLinks = {
   email: "mailto:neuroera@yandex.com",
   /** Instagram (сохранён из прежней версии сайта) */
   instagram: "https://instagram.com/snegurka_nastena",
+  /** MelanoMusic — музыкальный проект */
+  melanoMusic: "https://melanomusic.ru/",
   referrals: {
     /** DEMO-реферал: Syntx Bot */
     syntxBot: "https://t.me/syntxaibot?start=aff_1950103999",

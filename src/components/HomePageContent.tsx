@@ -80,17 +80,18 @@ function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string
           <Reveal key={src} delayMs={idx * 70}>
             <ElectricBorder
               borderRadius={24}
-              className="min-h-0 w-full"
+              className="ne-card-hover min-h-0 w-full"
               accentVariant="accent"
               speed={isPlaying ? 1.05 : 0.88}
               chaos={isPlaying ? 0.13 : 0.11}
               contentClassName="w-full"
             >
               <div
-                className={`rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] transition-[box-shadow,background-color] duration-300 sm:p-5 ${
+                className={`rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] sm:p-5 ${
                   isPlaying ? "bg-accent/[0.09] ring-1 ring-accent/40" : ""
                 }`}
               >
+                <div className="ne-card-hover__inner">
                 <div className="mb-3 text-sm font-semibold text-text">
                   {listenLabel} <span className="text-text/55">· {idx + 1}</span>
                 </div>
@@ -105,6 +106,7 @@ function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string
                 >
                   <source src={src} type="audio/mpeg" />
                 </audio>
+                </div>
               </div>
             </ElectricBorder>
           </Reveal>
@@ -209,6 +211,22 @@ function ServicesSectionTitle() {
         {underline}
       </div>
     </motion.div>
+  );
+}
+
+function MusicGlyph() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M9 18V5l12-2v13"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
   );
 }
 
@@ -417,13 +435,15 @@ export function HomePageContent() {
           <ServiceOfferGrid />
         </Reveal>
         <Reveal delayMs={120}>
-          <div className="mt-10 rounded-2xl border border-border/14 bg-bg/[0.22] px-5 py-6 sm:px-8 sm:py-8">
-            <h3 className="text-lg font-bold text-text sm:text-xl">{messages.uncertaintyBlock.title}</h3>
-            <p className="mt-2 max-w-2xl text-base leading-relaxed text-text/80">{messages.uncertaintyBlock.body}</p>
-            <div className="mt-5">
-              <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
-                {messages.uncertaintyBlock.cta}
-              </Button>
+          <div className="ne-card-hover mt-10 px-5 py-6 sm:px-8 sm:py-8">
+            <div className="ne-card-hover__inner">
+              <h3 className="text-lg font-bold text-text sm:text-xl">{messages.uncertaintyBlock.title}</h3>
+              <p className="mt-2 max-w-2xl text-base leading-relaxed text-text/80">{messages.uncertaintyBlock.body}</p>
+              <div className="mt-5">
+                <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
+                  {messages.uncertaintyBlock.cta}
+                </Button>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -444,12 +464,11 @@ export function HomePageContent() {
           {messages.educationSection.tariffs.map((tariff) => (
             <Reveal key={tariff.id}>
               <div
-                className={`flex h-full flex-col rounded-2xl border p-5 sm:p-6 ${
-                  tariff.featured
-                    ? "border-accent/45 bg-accent/[0.08] ring-1 ring-accent/25"
-                    : "border-border/12 bg-bg/[0.18]"
+                className={`ne-card-hover flex h-full flex-col p-5 sm:p-6 ${
+                  tariff.featured ? "border-accent/45 bg-accent/[0.08] ring-1 ring-accent/25" : ""
                 }`}
               >
+                <div className="ne-card-hover__inner flex h-full flex-col">
                 <div className="text-xs font-bold uppercase tracking-widest text-text/55">{tariff.name}</div>
                 <div className="mt-3 text-3xl font-black tracking-tight text-text sm:text-4xl">{tariff.price}</div>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-text/75">{tariff.blurb}</p>
@@ -460,6 +479,7 @@ export function HomePageContent() {
                   <Button href={siteLinks.email} variant="ghost" className="min-h-[44px] w-full text-base">
                     {messages.educationSection.ctaRequest}
                   </Button>
+                </div>
                 </div>
               </div>
             </Reveal>
@@ -520,7 +540,8 @@ export function HomePageContent() {
 
           <div className="space-y-6">
             <Reveal delayMs={60}>
-              <div className="rounded-3xl border border-border/[0.07] bg-transparent p-4 sm:border-border/12 sm:p-6">
+              <div className="ne-card-hover p-4 sm:p-6">
+                <div className="ne-card-hover__inner">
                 <p className="whitespace-pre-line leading-relaxed text-text/88">{t("about.p1")}</p>
                 <p className="mt-4 whitespace-pre-line leading-relaxed text-text/88">{t("about.p2")}</p>
                 <p className="mt-6 text-sm font-semibold text-text/90">{t("about.listLabel")}</p>
@@ -535,6 +556,7 @@ export function HomePageContent() {
                 <p className="mt-8 whitespace-pre-line border-t border-border/10 pt-6 text-base font-bold leading-snug text-text">
                   {t("about.thesis")}
                 </p>
+                </div>
               </div>
             </Reveal>
           </div>
@@ -547,8 +569,10 @@ export function HomePageContent() {
         <div className="grid gap-3 md:grid-cols-2">
           {painCards.map((card, idx) => (
             <Reveal key={card} delayMs={idx * 70}>
-              <div className="h-full rounded-3xl border border-border/[0.07] bg-bg/[0.18] p-4 transition-all duration-300 hover:border-accent/25 hover:shadow-card-hover sm:border-border/12 sm:p-5 md:p-6">
-                <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
+              <div className="ne-card-hover h-full p-4 sm:p-5 md:p-6">
+                <div className="ne-card-hover__inner">
+                  <div className="text-sm font-bold leading-snug text-text/90 sm:text-base">{card}</div>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -564,23 +588,32 @@ export function HomePageContent() {
       <section id="solution" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="solution.kicker" titleKey="solution.title" />
         <Reveal>
-          <div className="rounded-2xl border border-border/12 bg-bg/[0.2] p-5 sm:p-7 md:p-8">
-            <div className="text-center text-sm font-semibold tracking-wide text-accent sm:text-base">{messages.solution.flow}</div>
-            <ul className="mx-auto mt-8 max-w-xl space-y-3 text-base leading-relaxed text-text/85">
-              {solutionBullets.map((line) => (
-                <li key={line} className="flex gap-3">
-                  <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent2/90" aria-hidden />
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex justify-center">
-              <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
-                {messages.solution.cta}
-              </Button>
-            </div>
-          </div>
-        </Reveal>
+  <div className="ne-card-hover p-5 sm:p-7 md:p-8">
+    <div className="ne-card-hover__inner">
+    <div className="text-center text-sm font-semibold tracking-wide text-accent sm:text-base">
+      {messages.solution.flow}
+    </div>
+
+    <ul className="mx-auto mt-10 max-w-2xl space-y-5 text-xl sm:text-2xl leading-snug text-text">
+      {solutionBullets.map((line) => (
+        <li key={line} className="flex items-start gap-4 text-xl sm:text-2xl font-medium">
+          <span
+            className="mt-3 h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_10px_rgba(0,255,200,0.35)]"
+            aria-hidden
+          />
+          <span>{line}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div className="mt-8 flex justify-center">
+      <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
+        {messages.solution.cta}
+      </Button>
+    </div>
+    </div>
+  </div>
+</Reveal>
       </section>
 
       {/* PORTFOLIO */}
@@ -592,9 +625,9 @@ export function HomePageContent() {
             <Reveal key={item.title} delayMs={idx * 70}>
               <a
                 href={`#${item.anchor}`}
-                className="group relative block h-full cursor-pointer overflow-hidden rounded-3xl border border-border/[0.07] bg-surface/[0.03] p-4 no-underline outline-none transition-all duration-500 ease-out will-change-transform hover:scale-[1.02] hover:border-accent/35 hover:shadow-glow focus-visible:ring-2 focus-visible:ring-accent/40 sm:border-border/12 sm:p-6"
+                className="ne-card-hover relative block h-full cursor-pointer overflow-hidden p-4 no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/40 sm:p-6"
               >
-                <article className="relative flex h-full flex-col">
+                <article className="ne-card-hover__inner relative flex h-full flex-col">
                   <h3 className="font-display text-lg font-bold text-text">{item.title}</h3>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text/72">{item.desc}</p>
                   <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent/90">↓</span>
@@ -608,7 +641,8 @@ export function HomePageContent() {
           {portfolioItems.map((item, idx) => (
             <div key={item.anchor} id={item.anchor} className="scroll-mt-28">
               <Reveal delayMs={idx * 40}>
-                <div className="rounded-3xl border border-border/[0.08] bg-bg/[0.15] p-4 sm:border-border/12 sm:p-6 md:p-8">
+                <div className="ne-card-hover p-4 sm:p-6 md:p-8">
+                  <div className="ne-card-hover__inner">
                   <h3 className="font-display text-xl font-bold">{item.title}</h3>
                   <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
 
@@ -620,7 +654,7 @@ export function HomePageContent() {
                       <Button
                         href={siteLinks.telegramPortfolioCases}
                         variant="primary"
-                        className="min-h-[48px] w-full transition-transform hover:brightness-110 active:scale-[0.99] sm:w-auto"
+                        className="min-h-[48px] w-full sm:w-auto"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -637,6 +671,7 @@ export function HomePageContent() {
                       <PortfolioMusicTracks tracks={PORTFOLIO_MUSIC_TRACKS} listenLabel={t("portfolio.listenTrack")} />
                     </div>
                   ) : null}
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -651,7 +686,8 @@ export function HomePageContent() {
         <div className="grid gap-4 md:grid-cols-2">
           {audienceItems.map((x, idx) => (
             <Reveal key={x.title} delayMs={idx * 80}>
-              <div className="rounded-3xl border border-border/[0.07] bg-bg/20 p-4 transition-all duration-300 hover:border-accent/15 sm:border-border/12 sm:p-6">
+              <div className="ne-card-hover p-4 sm:p-6">
+                <div className="ne-card-hover__inner">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="font-display text-lg font-bold">{x.title}</div>
@@ -660,6 +696,7 @@ export function HomePageContent() {
                   <div className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 bg-transparent">
                     <span className="font-display font-bold text-accent">{idx + 1}</span>
                   </div>
+                </div>
                 </div>
               </div>
             </Reveal>
@@ -675,19 +712,21 @@ export function HomePageContent() {
             <Reveal key={idx} delayMs={idx * 70}>
               <ElectricBorder
                 borderRadius={24}
-                className="h-full min-h-0"
+                className="ne-card-hover h-full min-h-0"
                 accentVariant="accent"
                 speed={0.88}
                 chaos={0.11}
                 contentClassName="h-full"
               >
-                <div className="h-full rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] transition-colors duration-300 sm:p-6">
+                <div className="h-full rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] sm:p-6">
+                  <div className="ne-card-hover__inner h-full">
                   <div className="text-sm text-text/65">{t("cases.task")}</div>
                   <div className="mt-2 font-bold leading-relaxed">{c.task}</div>
                   <div className="mt-5 text-sm text-text/65">{t("cases.solution")}</div>
                   <div className="mt-2 text-sm leading-relaxed text-text/70">{c.solution}</div>
                   <div className="mt-5 text-sm text-text/65">{t("cases.result")}</div>
                   <div className="mt-2 text-sm leading-relaxed text-text/80">{c.result}</div>
+                  </div>
                 </div>
               </ElectricBorder>
             </Reveal>
@@ -701,7 +740,8 @@ export function HomePageContent() {
         <div className="grid gap-4 md:grid-cols-2">
           {processSteps.map((x, idx) => (
             <Reveal key={x.step} delayMs={idx * 90}>
-              <div className="rounded-3xl border border-border/[0.07] bg-bg/20 p-4 transition-all duration-300 hover:border-accent/20 sm:border-border/12 sm:p-6">
+              <div className="ne-card-hover p-4 sm:p-6">
+                <div className="ne-card-hover__inner">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-sm text-text/70">
@@ -713,6 +753,7 @@ export function HomePageContent() {
                   <div className="grid h-12 w-12 place-items-center rounded-3xl border border-accent/30 bg-accent/15 shadow-glow">
                     <span className="font-display font-bold text-accent">{x.step}</span>
                   </div>
+                </div>
                 </div>
               </div>
             </Reveal>
@@ -726,7 +767,8 @@ export function HomePageContent() {
         <div className="grid gap-5 md:grid-cols-3">
           {reviewItems.map((r, idx) => (
             <Reveal key={r.name} delayMs={idx * 80}>
-              <div className="flex h-full flex-col rounded-3xl border border-border/[0.07] bg-bg/[0.12] p-4 sm:border-border/12 sm:p-6">
+              <div className="ne-card-hover flex h-full flex-col p-4 sm:p-6">
+                <div className="ne-card-hover__inner flex h-full flex-col">
                 <div className="flex items-start gap-3">
                   {r.photo ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -757,6 +799,7 @@ export function HomePageContent() {
                 <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] px-3 py-2.5 text-sm font-medium leading-snug text-text/85">
                   {r.outcome}
                 </div>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -771,7 +814,8 @@ export function HomePageContent() {
 
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {/* Telegram-канал — акцент */}
-            <div className="relative overflow-hidden rounded-3xl border border-accent/25 bg-accent/[0.06] p-4 sm:p-6 lg:col-span-2">
+            <div className="ne-card-hover relative overflow-hidden border-accent/25 bg-accent/[0.06] p-4 sm:p-6 lg:col-span-2">
+              <div className="ne-card-hover__inner">
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.tgChannelTitle")}</div>
@@ -787,6 +831,7 @@ export function HomePageContent() {
                   {t("socials.tgCta")}
                 </Button>
               </div>
+              </div>
             </div>
 
             {/* Бот */}
@@ -794,18 +839,20 @@ export function HomePageContent() {
               href={siteLinks.telegramBot}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 hover:bg-surface/5 sm:border-border/12 sm:p-6"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
             >
+              <div className="ne-card-hover__inner flex flex-col">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.tgBotTitle")}</div>
                   <p className="mt-1 text-sm text-text/75">{t("socials.tgBotText")}</p>
                 </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent transition-colors group-hover:border-accent/30">
+                <span className="ne-card-hover__glyph grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent transition-colors">
                   <SocialGlyph label="Telegram" />
                 </span>
               </div>
               <span className="mt-4 text-sm font-semibold text-accent">{t("socials.write")} →</span>
+              </div>
             </a>
 
             {/* VK страница */}
@@ -813,8 +860,9 @@ export function HomePageContent() {
               href={siteLinks.vkPage}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
             >
+              <div className="ne-card-hover__inner flex flex-col">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.vkPageTitle")}</div>
@@ -825,6 +873,7 @@ export function HomePageContent() {
                 </span>
               </div>
               <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
+              </div>
             </a>
 
             {/* VK канал */}
@@ -832,8 +881,9 @@ export function HomePageContent() {
               href={siteLinks.vkChannel}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
             >
+              <div className="ne-card-hover__inner flex flex-col">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.vkChannelTitle")}</div>
@@ -844,13 +894,15 @@ export function HomePageContent() {
                 </span>
               </div>
               <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
+              </div>
             </a>
 
             {/* Email */}
             <a
               href={siteLinks.email}
-              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
             >
+              <div className="ne-card-hover__inner flex flex-col">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.emailTitle")}</div>
@@ -861,6 +913,7 @@ export function HomePageContent() {
                 </span>
               </div>
               <span className="mt-4 truncate text-sm font-semibold text-accent">neuroera@yandex.com</span>
+              </div>
             </a>
 
             {/* Instagram */}
@@ -868,8 +921,9 @@ export function HomePageContent() {
               href={siteLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col rounded-3xl border border-border/[0.07] bg-transparent p-4 transition-all duration-300 hover:border-accent/25 sm:border-border/12 sm:p-6 lg:col-span-2"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6 lg:col-span-2"
             >
+              <div className="ne-card-hover__inner flex flex-col">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-sm text-text/70">{t("socials.instagramTitle")}</div>
@@ -880,6 +934,28 @@ export function HomePageContent() {
                 </span>
               </div>
               <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
+              </div>
+            </a>
+
+            {/* MelanoMusic */}
+            <a
+              href={siteLinks.melanoMusic}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
+            >
+              <div className="ne-card-hover__inner flex flex-col">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-sm text-text/70">{t("socials.melanoTitle")}</div>
+                  <p className="mt-1 text-sm text-text/75">{t("socials.melanoText")}</p>
+                </div>
+                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
+                  <MusicGlyph />
+                </span>
+              </div>
+              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
+              </div>
             </a>
           </div>
 
@@ -901,7 +977,7 @@ export function HomePageContent() {
                   <ElectricBorder
                     key={item.key}
                     borderRadius={16}
-                    className="h-full min-h-0"
+                    className="ne-card-hover-sm h-full min-h-0"
                     accentVariant="accent2"
                     speed={0.85}
                     chaos={0.1}
@@ -911,11 +987,13 @@ export function HomePageContent() {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block h-full rounded-2xl bg-surface/[0.06] p-4 no-underline transition-colors duration-300 hover:bg-surface/[0.1] sm:p-5"
+                      className="block h-full rounded-2xl bg-surface/[0.06] p-4 no-underline sm:p-5"
                     >
+                      <div className="ne-card-hover__inner">
                       <div className="font-bold text-text">{block.title}</div>
                       <p className="mt-2 text-sm text-text/65">{block.desc}</p>
                       <span className="mt-3 inline-block text-sm font-semibold text-accent2">{block.cta} →</span>
+                      </div>
                     </a>
                   </ElectricBorder>
                 );
@@ -929,7 +1007,7 @@ export function HomePageContent() {
 
       {/* ФИНАЛ */}
       <section id="consultation" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
-        <div className="relative rounded-[28px] border border-border/[0.08] bg-bg/[0.18] sm:rounded-[32px] sm:border-border/14">
+        <div className="ne-card-hover ne-card-hover--consult relative border-border/[0.08] bg-bg/[0.18] sm:border-border/14">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 overflow-hidden rounded-[28px] sm:rounded-[32px]"
@@ -938,7 +1016,7 @@ export function HomePageContent() {
             <div className="gradient-orb warm absolute -right-24 -top-24 h-64 w-64 opacity-75" />
           </div>
           <div className="relative z-10 p-5 sm:p-10">
-            <div className="min-w-0 max-w-3xl">
+            <div className="ne-card-hover__inner min-w-0 max-w-3xl">
               <Reveal>
                 <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
               </Reveal>
@@ -964,7 +1042,8 @@ export function HomePageContent() {
       {/* Онлайн-оплата (Prodamus / payform) */}
       <section className="mt-12 sm:mt-16 md:mt-20" aria-labelledby="payment-block-title">
         <Reveal>
-          <div className="rounded-2xl border border-border/14 bg-bg/[0.2] px-5 py-6 sm:px-8 sm:py-7">
+          <div className="ne-card-hover px-5 py-6 sm:px-8 sm:py-7">
+            <div className="ne-card-hover__inner">
             <h2 id="payment-block-title" className="font-display text-xl font-bold tracking-tight text-text sm:text-2xl">
               {messages.paymentBlock.title}
             </h2>
@@ -980,6 +1059,7 @@ export function HomePageContent() {
               >
                 {messages.paymentBlock.cta}
               </Button>
+            </div>
             </div>
           </div>
         </Reveal>

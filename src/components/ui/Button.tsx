@@ -46,7 +46,7 @@ export function Button({
   rel,
   disabled
 }: ButtonProps) {
-  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold tracking-tight transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:pointer-events-none disabled:opacity-45 ${buttonClasses(
+  const cls = `inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm sm:text-base font-semibold tracking-tight transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,255,200,0.22)] focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:pointer-events-none disabled:opacity-45 ${buttonClasses(
     variant
   )} ${className}`;
 
@@ -54,7 +54,6 @@ export function Button({
     ? {}
     : {
         whileTap: { scale: 0.97 },
-        whileHover: { scale: 1.012 },
         transition: tapTransition
       };
 

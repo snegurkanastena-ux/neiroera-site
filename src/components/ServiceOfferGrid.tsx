@@ -23,19 +23,19 @@ export function ServiceOfferGrid() {
               onClick={() => setOpenId((prev) => (prev === card.id ? null : card.id))}
               whileTap={reduceMotion ? undefined : { scale: 0.985 }}
               transition={{ type: "spring", stiffness: 480, damping: 28 }}
-              className={`flex w-full flex-col items-start rounded-2xl border px-4 py-5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:min-h-[140px] sm:px-5 sm:py-6 ${
-                isSelected
-                  ? "border-accent/50 bg-accent/[0.08] text-text"
-                  : "border-border/14 bg-bg/[0.35] text-text/95 hover:border-border/25 hover:bg-bg/[0.5]"
+              className={`ne-card-hover-sm flex w-full flex-col items-start px-4 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:min-h-[140px] sm:px-5 sm:py-6 ${
+                isSelected ? "border-accent/50 bg-accent/[0.08] text-text" : "text-text/95"
               }`}
             >
-              <span className="text-2xl leading-none" aria-hidden>
-                {card.emoji}
-              </span>
-              <span className="mt-3 text-lg font-bold leading-tight">{card.title}</span>
-              <span className="mt-2 text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">{card.priceLine}</span>
-              <span className="mt-3 text-xs font-medium text-text/55">
-                {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
+              <span className="ne-card-hover__inner flex w-full flex-col items-start text-left">
+                <span className="text-2xl leading-none" aria-hidden>
+                  {card.emoji}
+                </span>
+                <span className="mt-3 text-lg font-bold leading-tight">{card.title}</span>
+                <span className="mt-2 text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">{card.priceLine}</span>
+                <span className="mt-3 text-xs font-medium text-text/55">
+                  {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
+                </span>
               </span>
             </motion.button>
 
@@ -63,8 +63,10 @@ export function ServiceOfferGrid() {
                           className="border-b border-border/8 pb-3 last:border-0 last:pb-0"
                         >
                           <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
-                            <span className="text-base font-semibold leading-snug text-text sm:text-lg">{row.name}</span>
-                            <span className="shrink-0 text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">
+                            <span className="text-lg font-semibold leading-snug text-text sm:text-xl sm:leading-snug">
+                              {row.name}
+                            </span>
+                            <span className="shrink-0 text-xl font-bold tabular-nums leading-tight tracking-tight text-accent sm:text-2xl sm:leading-tight">
                               {row.price}
                             </span>
                           </div>
@@ -73,10 +75,10 @@ export function ServiceOfferGrid() {
                               href={row.linkHref}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="mt-2 inline-flex max-w-full items-center gap-1 text-sm font-medium text-accent/95 underline decoration-accent/35 underline-offset-[3px] transition-colors hover:text-accent hover:decoration-accent sm:text-base"
+                              className="mt-2 inline-flex max-w-full items-center gap-1 text-base font-medium leading-snug text-accent/95 underline decoration-accent/35 underline-offset-[3px] transition-colors hover:text-accent hover:decoration-accent sm:text-lg sm:leading-snug"
                             >
                               {row.linkLabel ?? row.linkHref}
-                              <span aria-hidden className="text-xs opacity-80">
+                              <span aria-hidden className="text-sm opacity-80">
                                 ↗
                               </span>
                             </a>

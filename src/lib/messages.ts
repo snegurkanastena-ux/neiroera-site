@@ -209,10 +209,10 @@ export const messagesByLang: Record<Lang, Messages> = {
       title: "Я собираю систему, где всё работает вместе",
       flow: "Трафик → Контент → Сайт → AI → Заявка",
       bullets: [
-        "сайт приводит",
-        "контент прогревает",
-        "AI ускоряет",
-        "система работает как единый механизм"
+        "сайт приводит клиентов",
+        "визуал усиливает восприятие",
+        "автоматизация ускоряет процессы",
+        "творчество и AI работают как единая система"
       ],
       cta: "Разобрать мой кейс"
     },
@@ -556,6 +556,8 @@ export const messagesByLang: Record<Lang, Messages> = {
       open: "Открыть",
       instagramTitle: "Instagram",
       instagramText: "Визуальные фрагменты и настроение бренда.",
+      melanoTitle: "MelanoMusic",
+      melanoText: "Музыкальный проект",
       note: "Ссылки централизованы в коде (`src/lib/links.ts`) — при смене URL правьте там."
     },
     referralSection: {
@@ -1046,6 +1048,8 @@ export const messagesByLang: Record<Lang, Messages> = {
       open: "Open",
       instagramTitle: "Instagram",
       instagramText: "Visual snippets and brand mood.",
+      melanoTitle: "MelanoMusic",
+      melanoText: "Music project",
       note: "All URLs live in `src/lib/links.ts` for easy updates."
     },
     referralSection: {

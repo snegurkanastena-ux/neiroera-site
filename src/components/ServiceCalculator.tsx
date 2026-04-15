@@ -48,44 +48,52 @@ export function ServiceCalculator() {
   return (
     <div className="rounded-2xl border border-border/14 bg-bg/[0.28] p-5 sm:p-7">
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/12 bg-bg/[0.2] px-4 py-3.5 transition-colors hover:border-border/20 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
-          <input
-            type="checkbox"
-            className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
-            checked={site}
-            onChange={(e) => setSite(e.target.checked)}
-          />
-          <span className="text-base font-semibold text-text">{c.site}</span>
+        <label className="ne-card-hover-sm flex cursor-pointer items-center gap-3 px-4 py-3.5 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
+          <span className="ne-card-hover__inner flex w-full items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
+              checked={site}
+              onChange={(e) => setSite(e.target.checked)}
+            />
+            <span className="text-base font-semibold text-text">{c.site}</span>
+          </span>
         </label>
 
-        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/12 bg-bg/[0.2] px-4 py-3.5 transition-colors hover:border-border/20 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
-          <input
-            type="checkbox"
-            className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
-            checked={automation}
-            onChange={(e) => setAutomation(e.target.checked)}
-          />
-          <span className="text-base font-semibold text-text">{c.automation}</span>
+        <label className="ne-card-hover-sm flex cursor-pointer items-center gap-3 px-4 py-3.5 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
+          <span className="ne-card-hover__inner flex w-full items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
+              checked={automation}
+              onChange={(e) => setAutomation(e.target.checked)}
+            />
+            <span className="text-base font-semibold text-text">{c.automation}</span>
+          </span>
         </label>
 
-        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/12 bg-bg/[0.2] px-4 py-3.5 transition-colors hover:border-border/20 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
-          <input
-            type="checkbox"
-            className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
-            checked={visual}
-            onChange={(e) => setVisual(e.target.checked)}
-          />
-          <span className="text-base font-semibold text-text">{c.visual}</span>
+        <label className="ne-card-hover-sm flex cursor-pointer items-center gap-3 px-4 py-3.5 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
+          <span className="ne-card-hover__inner flex w-full items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
+              checked={visual}
+              onChange={(e) => setVisual(e.target.checked)}
+            />
+            <span className="text-base font-semibold text-text">{c.visual}</span>
+          </span>
         </label>
 
-        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/12 bg-bg/[0.2] px-4 py-3.5 transition-colors hover:border-border/20 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
-          <input
-            type="checkbox"
-            className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
-            checked={creative}
-            onChange={(e) => setCreative(e.target.checked)}
-          />
-          <span className="text-base font-semibold text-text">{c.creative}</span>
+        <label className="ne-card-hover-sm flex cursor-pointer items-center gap-3 px-4 py-3.5 has-[:checked]:border-accent/35 has-[:checked]:bg-accent/[0.06]">
+          <span className="ne-card-hover__inner flex w-full items-center gap-3">
+            <input
+              type="checkbox"
+              className="h-5 w-5 shrink-0 rounded border-border/30 accent-accent"
+              checked={creative}
+              onChange={(e) => setCreative(e.target.checked)}
+            />
+            <span className="text-base font-semibold text-text">{c.creative}</span>
+          </span>
         </label>
       </div>
 
