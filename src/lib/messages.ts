@@ -71,11 +71,12 @@ export type Messages = {
     kicker: string;
     title: string;
     site: string;
-    content: string;
     automation: string;
-    training: string;
+    visual: string;
+    creative: string;
     emptyHint: string;
-    estimate: string;
+    /** Плейсхолдер {amount} — сумма минимальных ориентиров по выбранным позициям */
+    estimateFrom: string;
   };
   educationSection: {
     kicker: string;
@@ -396,11 +397,11 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Ориентир",
       title: "Соберите свою систему",
       site: "сайт",
-      content: "контент",
       automation: "автоматизация",
-      training: "обучение",
+      visual: "визуал",
+      creative: "творчество",
       emptyHint: "Отметьте, что входит в систему",
-      estimate: "Ориентир: 120 000 – 250 000 ₽"
+      estimateFrom: "Ориентир: от {amount} ₽"
     },
     educationSection: {
       kicker: "Обучение",
@@ -886,11 +887,11 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Estimate",
       title: "Build your stack",
       site: "website",
-      content: "content",
       automation: "automation",
-      training: "training",
+      visual: "visuals",
+      creative: "creative",
       emptyHint: "Select what goes into the system",
-      estimate: "Ballpark: 120,000 – 250,000 ₽"
+      estimateFrom: "Ballpark: from {amount} ₽"
     },
     educationSection: {
       kicker: "Training",
