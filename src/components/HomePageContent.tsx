@@ -16,7 +16,7 @@ import { ServiceCalculator } from "./ServiceCalculator";
 import { ServiceOfferGrid } from "./ServiceOfferGrid";
 import { ElectricBorder } from "./ElectricBorder";
 import { TextType } from "./TextType";
-import { ContactChoiceModal } from "./ContactChoiceModal";
+import { LeadForm } from "./LeadForm";
 import { VkLogoIcon } from "./icons/VkLogoIcon";
 import { Button } from "./ui/Button";
 import { NeuroPhotoGallery } from "./NeuroPhotoGallery";
@@ -260,7 +260,8 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 export function HomePageContent() {
   const { t, messages, lang } = useI18n();
   const reduceMotion = useReducedMotion();
-  const [contactChoiceOpen, setContactChoiceOpen] = useState(false);
+  const [leadFormOpen, setLeadFormOpen] = useState(false);
+  const openLeadForm = useCallback(() => setLeadFormOpen(true), []);
 
   const heroList = {
     hidden: {},
@@ -416,7 +417,7 @@ export function HomePageContent() {
                 <Button
                   variant="ghost"
                   className="min-h-[48px] w-full border-border/18 px-6 text-base sm:w-auto"
-                  onClick={() => setContactChoiceOpen(true)}
+                  onClick={openLeadForm}
                 >
                   {t("hero.ctaRequest")}
                 </Button>
@@ -445,7 +446,7 @@ export function HomePageContent() {
                 <Button
                   variant="primary"
                   className="min-h-[48px] px-6 text-base"
-                  onClick={() => setContactChoiceOpen(true)}
+                  onClick={openLeadForm}
                 >
                   {messages.uncertaintyBlock.cta}
                 </Button>
@@ -458,7 +459,7 @@ export function HomePageContent() {
       {/* КАЛЬКУЛЯТОР */}
       <section id="calculator" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
         <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
-        <ServiceCalculator />
+        <ServiceCalculator onOpenLeadForm={openLeadForm} />
       </section>
 
       {/* ОБУЧЕНИЕ */}
@@ -479,10 +480,10 @@ export function HomePageContent() {
                 <div className="mt-3 text-3xl font-black tracking-tight text-text sm:text-4xl">{tariff.price}</div>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-text/75">{tariff.blurb}</p>
                 <div className="mt-6 flex flex-col gap-2">
-                  <Button href={`${siteLinks.email}?subject=${encodeURIComponent(tariff.name)}`} variant="primary" className="min-h-[46px] w-full text-base">
+                  <Button variant="primary" className="min-h-[46px] w-full text-base" onClick={openLeadForm}>
                     {messages.educationSection.ctaChoose}
                   </Button>
-                  <Button href={siteLinks.email} variant="ghost" className="min-h-[44px] w-full text-base">
+                  <Button variant="ghost" className="min-h-[44px] w-full text-base" onClick={openLeadForm}>
                     {messages.educationSection.ctaRequest}
                   </Button>
                 </div>
@@ -618,7 +619,7 @@ export function HomePageContent() {
       <Button
         variant="primary"
         className="min-h-[48px] px-6 text-base"
-        onClick={() => setContactChoiceOpen(true)}
+        onClick={openLeadForm}
       >
         {messages.solution.cta}
       </Button>
@@ -1036,13 +1037,7 @@ export function HomePageContent() {
                 <SectionTitle kickerKey="final.kicker" titleKey="final.title" />
               </Reveal>
               <Reveal delayMs={100}>
-                <Button
-                  href={siteLinks.telegramBot}
-                  variant="primary"
-                  className="mt-6 w-full sm:w-auto"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Button variant="primary" className="mt-6 w-full sm:w-auto" onClick={openLeadForm}>
                   {t("final.cta")}
                 </Button>
               </Reveal>
@@ -1082,7 +1077,7 @@ export function HomePageContent() {
 
       <div className="h-10" />
 
-      <ContactChoiceModal open={contactChoiceOpen} onClose={() => setContactChoiceOpen(false)} />
+      <LeadForm open={leadFormOpen} onClose={() => setLeadFormOpen(false)} />
     </div>
   );
 }

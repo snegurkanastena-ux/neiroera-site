@@ -92,12 +92,23 @@ export type Messages = {
     body: string;
     cta: string;
   };
-  /** Модалка: Telegram или email (без прямого mailto с первого клика) */
+  /** Модалка заявки (POST /api/send-order) */
   contactChoice: {
     title: string;
+    nameLabel: string;
+    namePh: string;
+    contactLabel: string;
+    contactPh: string;
+    contactHint: string;
+    messageLabel: string;
+    messagePh: string;
+    submit: string;
     telegram: string;
-    email: string;
     close: string;
+    sending: string;
+    success: string;
+    error: string;
+    errorValidation: string;
   };
   diagnosticCalculator: {
     kicker: string;
@@ -429,10 +440,21 @@ export const messagesByLang: Record<Lang, Messages> = {
       cta: "Оставить заявку"
     },
     contactChoice: {
-      title: "Как удобнее связаться?",
+      title: "Заявка с сайта",
+      nameLabel: "Имя",
+      namePh: "Как к вам обращаться",
+      contactLabel: "Как с вами связаться",
+      contactPh: "Telegram, email или телефон",
+      contactHint: "Укажите удобный контакт: Telegram, email или телефон",
+      messageLabel: "Описание задачи",
+      messagePh: "Кратко: что нужно, сроки, контекст",
+      submit: "Отправить заявку",
       telegram: "Написать в Telegram",
-      email: "Отправить на email",
-      close: "Закрыть"
+      close: "Закрыть",
+      sending: "Отправляем...",
+      success: "Заявка отправлена",
+      error: "Не удалось отправить. Попробуйте позже или напишите в Telegram.",
+      errorValidation: "Заполните все поля."
     },
     diagnosticCalculator: {
       kicker: "Диагностика",
@@ -929,10 +951,21 @@ export const messagesByLang: Record<Lang, Messages> = {
       cta: "Request a quote"
     },
     contactChoice: {
-      title: "How would you like to reach out?",
+      title: "Website request",
+      nameLabel: "Name",
+      namePh: "How should we address you",
+      contactLabel: "How to reach you",
+      contactPh: "Telegram, email or phone",
+      contactHint: "Add your preferred contact: Telegram, email or phone",
+      messageLabel: "Project details",
+      messagePh: "Briefly: what you need, timing, context",
+      submit: "Send request",
       telegram: "Message on Telegram",
-      email: "Send an email",
-      close: "Close"
+      close: "Close",
+      sending: "Sending...",
+      success: "Request sent",
+      error: "Could not send. Try again later or use Telegram.",
+      errorValidation: "Please fill in all fields."
     },
     diagnosticCalculator: {
       kicker: "Diagnostics",

@@ -5,7 +5,6 @@
  */
 
 import { useMemo, useState } from "react";
-import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
 import { Button } from "./ui/Button";
 
@@ -21,7 +20,7 @@ function formatAmountRub(n: number): string {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-export function ServiceCalculator() {
+export function ServiceCalculator({ onOpenLeadForm }: { onOpenLeadForm: () => void }) {
   const { messages } = useI18n();
   const c = messages.simpleCalculator;
 
@@ -106,11 +105,7 @@ export function ServiceCalculator() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <Button
-          href={siteLinks.email}
-          variant="primary"
-          className="min-h-[48px] min-w-[200px] px-6 text-base"
-        >
+        <Button variant="primary" className="min-h-[48px] min-w-[200px] px-6 text-base" onClick={onOpenLeadForm}>
           {messages.leadForm.ctaEmail}
         </Button>
       </div>
