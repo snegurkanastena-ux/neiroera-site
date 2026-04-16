@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export function Portrait() {
@@ -59,10 +60,13 @@ export function Portrait() {
           }}
         >
           <div className="rounded-[20px] bg-bg/15 p-1 ring-1 ring-white/12 sm:rounded-[22px] sm:p-1.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/anastasia-hero.png"
               alt="Анастасия Мельникова"
+              width={520}
+              height={680}
+              sizes="(max-width: 1024px) 90vw, 400px"
+              priority
               className="mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center rounded-[16px] brightness-[1.05] contrast-[1.02] sm:max-h-none lg:mx-0 lg:rounded-[18px]"
             />
           </div>

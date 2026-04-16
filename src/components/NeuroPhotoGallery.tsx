@@ -6,6 +6,7 @@
  */
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useI18n } from "../providers/SiteProviders";
 
 const SWING_DEG = 1.35;
@@ -33,7 +34,13 @@ export function NeuroPhotoGallery({ photos }: NeuroPhotoGalleryProps) {
 
       <div className="neuro-photo-gallery__grid grid grid-cols-2 gap-x-6 gap-y-12 pt-3 sm:gap-x-8 sm:gap-y-14 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10">
         {photos.map((src, index) => (
-          <NeuroPhotoPendulum key={src} src={src} index={index} reduceMotion={!!reduceMotion} />
+          <NeuroPhotoPendulum
+            key={src}
+            src={src}
+            index={index}
+            reduceMotion={!!reduceMotion}
+            priority={index < 2}
+          />
         ))}
       </div>
     </div>
@@ -43,11 +50,13 @@ export function NeuroPhotoGallery({ photos }: NeuroPhotoGalleryProps) {
 function NeuroPhotoPendulum({
   src,
   index,
-  reduceMotion
+  reduceMotion,
+  priority
 }: {
   src: string;
   index: number;
   reduceMotion: boolean;
+  priority: boolean;
 }) {
   const duration = DURATION_BASE + index * DURATION_STEP;
 
@@ -92,14 +101,14 @@ function NeuroPhotoPendulum({
 
         {/* Карточка — общий hover с сайтом */}
         <div className="neuro-photo-pendulum__card ne-card-hover-sm mt-2 w-full overflow-hidden ring-1 ring-white/[0.1] shadow-[0_20px_48px_-14px_rgba(0,0,0,0.65)] sm:shadow-[0_24px_56px_-16px_rgba(0,0,0,0.7)]">
-          <div className="ne-card-hover__inner overflow-hidden rounded-2xl sm:rounded-[1.1rem]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="ne-card-hover__inner relative aspect-[3/4] w-full overflow-hidden rounded-2xl sm:rounded-[1.1rem]">
+            <Image
               src={src}
               alt=""
-              className="aspect-[3/4] h-auto w-full object-cover object-center"
-              loading="lazy"
-              decoding="async"
+              fill
+              sizes="(max-width: 640px) 42vw, (max-width: 1024px) 45vw, 220px"
+              className="object-cover object-center"
+              priority={priority}
             />
           </div>
         </div>

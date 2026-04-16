@@ -6,6 +6,7 @@
  */
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
@@ -15,6 +16,8 @@ import { ServiceCalculator } from "./ServiceCalculator";
 import { ServiceOfferGrid } from "./ServiceOfferGrid";
 import { ElectricBorder } from "./ElectricBorder";
 import { TextType } from "./TextType";
+import { ContactChoiceModal } from "./ContactChoiceModal";
+import { VkLogoIcon } from "./icons/VkLogoIcon";
 import { Button } from "./ui/Button";
 import { NeuroPhotoGallery } from "./NeuroPhotoGallery";
 
@@ -237,13 +240,7 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
         <path d="M22 3L2 10.5L9 13L21 5.5L11.2 15.8L10.4 21L13.7 17.7L17.8 20.4L22 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
       </svg>
     );
-  if (label === "VK")
-    return (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 6.5C4 6.5 4 7.7 4 9.2C4 14.2 7 17 10.5 17H12V14.8H10.8C9.6 14.8 8.5 13.8 8.5 12.7V11.8H10.3C11.4 11.8 12 10.6 12 9.7V6.5H8.5V8.7C8.5 9.1 8.2 9.4 7.8 9.4H7.4C7.1 9.4 6.8 9.2 6.7 8.9C6.5 8.6 6.5 8.2 6.5 7.9V6.5H4Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M20 17C18.1 17 16.5 15.4 16.5 13.5V6.5H13.8V13.4C13.8 16 16 18.2 18.6 18.2H20V17Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      </svg>
-    );
+  if (label === "VK") return <VkLogoIcon size={20} className="text-accent" />;
   if (label === "Mail")
     return (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -263,6 +260,7 @@ function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail
 export function HomePageContent() {
   const { t, messages, lang } = useI18n();
   const reduceMotion = useReducedMotion();
+  const [contactChoiceOpen, setContactChoiceOpen] = useState(false);
 
   const heroList = {
     hidden: {},
@@ -415,7 +413,11 @@ export function HomePageContent() {
                 >
                   {t("hero.ctaConsult")}
                 </Button>
-                <Button href={siteLinks.email} variant="ghost" className="min-h-[48px] w-full border-border/18 px-6 text-base sm:w-auto">
+                <Button
+                  variant="ghost"
+                  className="min-h-[48px] w-full border-border/18 px-6 text-base sm:w-auto"
+                  onClick={() => setContactChoiceOpen(true)}
+                >
                   {t("hero.ctaRequest")}
                 </Button>
               </div>
@@ -440,7 +442,11 @@ export function HomePageContent() {
               <h3 className="text-lg font-bold text-text sm:text-xl">{messages.uncertaintyBlock.title}</h3>
               <p className="mt-2 max-w-2xl text-base leading-relaxed text-text/80">{messages.uncertaintyBlock.body}</p>
               <div className="mt-5">
-                <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
+                <Button
+                  variant="primary"
+                  className="min-h-[48px] px-6 text-base"
+                  onClick={() => setContactChoiceOpen(true)}
+                >
                   {messages.uncertaintyBlock.cta}
                 </Button>
               </div>
@@ -508,10 +514,12 @@ export function HomePageContent() {
               <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
                 {/* Лёгкая виньетка без multiply — портрет остаётся читаемым, края чуть уходат в фон */}
                 <div className="relative overflow-hidden rounded-[16px] bg-bg sm:rounded-[18px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src="/images/anastasia-about.png"
                     alt={t("footer.name")}
+                    width={520}
+                    height={680}
+                    sizes="(max-width: 1024px) 90vw, 400px"
                     className="relative z-0 mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center brightness-[1.06] contrast-[1.02] sm:max-h-none lg:mx-0"
                   />
                   <div
@@ -607,7 +615,11 @@ export function HomePageContent() {
     </ul>
 
     <div className="mt-8 flex justify-center">
-      <Button href={siteLinks.email} variant="primary" className="min-h-[48px] px-6 text-base">
+      <Button
+        variant="primary"
+        className="min-h-[48px] px-6 text-base"
+        onClick={() => setContactChoiceOpen(true)}
+      >
         {messages.solution.cta}
       </Button>
     </div>
@@ -917,25 +929,28 @@ export function HomePageContent() {
             </a>
 
             {/* Instagram */}
-            <a
-              href={siteLinks.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6 lg:col-span-2"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.instagramTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.instagramText")}</p>
+            <div className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6 lg:col-span-2">
+              <a
+                href={siteLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col rounded-2xl bg-transparent text-inherit no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+              >
+                <div className="ne-card-hover__inner flex flex-col">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm text-text/70">{t("socials.instagramTitle")}</div>
+                      <p className="mt-1 text-sm text-text/75">{t("socials.instagramText")}</p>
+                    </div>
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
+                      <SocialGlyph label="Instagram" />
+                    </span>
+                  </div>
+                  <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
                 </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
-                  <SocialGlyph label="Instagram" />
-                </span>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
-              </div>
-            </a>
+              </a>
+              <p className="mt-3 text-xs leading-relaxed text-text/65">{t("socials.instagramLegal")}</p>
+            </div>
 
             {/* MelanoMusic */}
             <a
@@ -1066,6 +1081,8 @@ export function HomePageContent() {
       </section>
 
       <div className="h-10" />
+
+      <ContactChoiceModal open={contactChoiceOpen} onClose={() => setContactChoiceOpen(false)} />
     </div>
   );
 }

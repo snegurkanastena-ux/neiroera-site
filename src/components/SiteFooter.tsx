@@ -8,6 +8,7 @@ import Link from "next/link";
 import { socialLinks } from "../lib/socials";
 import { useI18n } from "../providers/SiteProviders";
 import { Container } from "./Container";
+import { VkLogoIcon } from "./icons/VkLogoIcon";
 import { Button } from "./ui/Button";
 
 function TelegramIcon() {
@@ -19,12 +20,7 @@ function TelegramIcon() {
 }
 
 function VkIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M4 6.5C4 6.5 4 7.7 4 9.2C4 14.2 7 17 10.5 17H12V14.8H10.8C9.6 14.8 8.5 13.8 8.5 12.7V11.8H10.3C11.4 11.8 12 10.6 12 9.7V6.5H8.5V8.7C8.5 9.1 8.2 9.4 7.8 9.4H7.4C7.1 9.4 6.8 9.2 6.7 8.9C6.5 8.6 6.5 8.2 6.5 7.9V6.5H4Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M20 17C18.1 17 16.5 15.4 16.5 13.5V6.5H13.8V13.4C13.8 16 16 18.2 18.6 18.2H20V17Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-    </svg>
-  );
+  return <VkLogoIcon size={18} />;
 }
 
 function InstagramIcon() {

@@ -92,6 +92,13 @@ export type Messages = {
     body: string;
     cta: string;
   };
+  /** Модалка: Telegram или email (без прямого mailto с первого клика) */
+  contactChoice: {
+    title: string;
+    telegram: string;
+    email: string;
+    close: string;
+  };
   diagnosticCalculator: {
     kicker: string;
     title: string;
@@ -421,6 +428,12 @@ export const messagesByLang: Record<Lang, Messages> = {
       body: "Оставьте заявку — соберу решение под вас.",
       cta: "Оставить заявку"
     },
+    contactChoice: {
+      title: "Как удобнее связаться?",
+      telegram: "Написать в Telegram",
+      email: "Отправить на email",
+      close: "Закрыть"
+    },
     diagnosticCalculator: {
       kicker: "Диагностика",
       title: "Понять, какая система вам подходит",
@@ -556,6 +569,8 @@ export const messagesByLang: Record<Lang, Messages> = {
       open: "Открыть",
       instagramTitle: "Instagram",
       instagramText: "Визуальные фрагменты и настроение бренда.",
+      instagramLegal:
+        "Instagram принадлежит Meta Platforms Inc., деятельность которой ограничена на территории РФ.",
       melanoTitle: "MelanoMusic",
       melanoText: "Музыкальный проект",
       note: "Ссылки централизованы в коде (`src/lib/links.ts`) — при смене URL правьте там."
@@ -913,6 +928,12 @@ export const messagesByLang: Record<Lang, Messages> = {
       body: "Leave a request — I’ll build a solution for you.",
       cta: "Request a quote"
     },
+    contactChoice: {
+      title: "How would you like to reach out?",
+      telegram: "Message on Telegram",
+      email: "Send an email",
+      close: "Close"
+    },
     diagnosticCalculator: {
       kicker: "Diagnostics",
       title: "See which system fits you",
@@ -1048,6 +1069,8 @@ export const messagesByLang: Record<Lang, Messages> = {
       open: "Open",
       instagramTitle: "Instagram",
       instagramText: "Visual snippets and brand mood.",
+      instagramLegal:
+        "Instagram is owned by Meta Platforms Inc., whose activities are restricted in the Russian Federation.",
       melanoTitle: "MelanoMusic",
       melanoText: "Music project",
       note: "All URLs live in `src/lib/links.ts` for easy updates."

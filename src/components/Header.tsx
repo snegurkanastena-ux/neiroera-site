@@ -36,6 +36,19 @@ const menuItem = {
 const navLinkClass =
   "rounded-xl px-2.5 py-2 text-sm text-text/78 transition-colors duration-300 hover:bg-surface/[0.07] hover:text-text xl:px-3";
 
+function MobileTelegramGlyph() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M22 3L2 10.5L9 13L21 5.5L11.2 15.8L10.4 21L13.7 17.7L17.8 20.4L22 3Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [dense, setDense] = useState(false);
@@ -96,16 +109,24 @@ export default function Header() {
           </div>
         </nav>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="relative z-[60] flex items-center gap-2 lg:hidden">
           <LanguageSwitch />
-          <Button href={telegramHref} variant="ghost" className="!px-3 !py-2" target="_blank" rel="noopener noreferrer">
-            TG
-          </Button>
+          <a
+            href={telegramHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("nav.toTelegram")}
+            className="inline-flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center rounded-2xl border border-border/12 bg-transparent text-text/90 transition-all duration-300 hover:bg-surface/8 hover:shadow-[0_0_22px_rgba(0,255,200,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
+          >
+            <MobileTelegramGlyph />
+          </a>
 
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 bg-transparent transition-colors duration-300 hover:bg-surface/8"
+            className="grid h-11 w-11 touch-manipulation place-items-center rounded-2xl border border-border/12 bg-transparent transition-colors duration-300 hover:bg-surface/8"
             aria-label={t("nav.openMenu")}
+            aria-expanded={open}
+            aria-controls="mobile-nav-panel"
             onClick={() => setOpen((v) => !v)}
           >
             <span className="relative block h-4 w-5">
@@ -124,11 +145,12 @@ export default function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-nav-panel"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-border/8 lg:hidden"
+            className="relative z-[60] border-t border-border/8 lg:hidden"
           >
             <Container className="py-3">
               <motion.div className="flex flex-col gap-2" initial="hidden" animate="show" variants={menuList}>
