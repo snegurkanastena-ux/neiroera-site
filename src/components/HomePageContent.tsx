@@ -782,35 +782,26 @@ export function HomePageContent() {
   <Reveal key={r.name} delayMs={idx * 80}>
     <div className="ne-card-hover flex h-full flex-col p-4 sm:p-6">
       <div className="ne-card-hover__inner flex h-full flex-col">
-        <div className="flex items-start gap-3">
-          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-border/12 bg-bg/60">
+        <div className="flex items-start gap-4">
+        <div className="relative h-16 w-16 min-h-16 min-w-16 shrink-0 overflow-hidden rounded-full">
             {r.photo ? (
               <>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={r.photo}
                   alt={r.name}
-                  width={48}
-                  height={48}
-                  loading="eager"
-                  decoding="async"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                    const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
-                    if (fallback) fallback.style.display = "grid";
-                  }}
-                  className="h-full w-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
 
                 <div
                   style={{ display: "none" }}
-                  className="h-full w-full place-items-center text-sm font-semibold text-text/70"
+                  className="absolute inset-0 grid place-items-center text-sm font-semibold text-text/70"
                 >
                   {r.name?.slice(0, 1)}
                 </div>
               </>
             ) : (
-              <div className="grid h-full w-full place-items-center text-sm font-semibold text-text/70">
+              <div className="absolute inset-0 grid place-items-center text-sm font-semibold text-text/70">
                 {r.name?.slice(0, 1)}
               </div>
             )}
