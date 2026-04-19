@@ -40,11 +40,7 @@ export default function ContactsPage() {
               neuroera@yandex.com
             </a>
           </Row>
-          <Row label="Телефон">
-            <a href="tel:+79197182132" className={linkClass}>
-              +7 919 718-21-32
-            </a>
-          </Row>
+          
           <Row label="Telegram">
             <a
               href={siteLinks.telegramBot}
