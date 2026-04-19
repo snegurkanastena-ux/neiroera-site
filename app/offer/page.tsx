@@ -147,10 +147,10 @@ export default function OfferPage() {
               </li>
               <li>
                 <span className="font-semibold text-text">ИНН:</span>{" "}
-                <span className="font-mono text-xs sm:text-sm">INN_HERE</span>
+                <span className="font-mono text-xs sm:text-sm">591111416790</span>
               </li>
               <li>
-                <span className="font-semibold text-text">Email:</span> EMAIL_HERE
+              <span className="font-semibold text-text">Email:</span> neuroera@yandex.com
               </li>
             </ul>
           </section>
