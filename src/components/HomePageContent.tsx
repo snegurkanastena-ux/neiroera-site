@@ -778,46 +778,65 @@ export function HomePageContent() {
       <section id="reviews" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
         <SectionTitle kickerKey="reviews.kicker" titleKey="reviews.title" />
         <div className="grid gap-5 md:grid-cols-3">
-          {reviewItems.map((r, idx) => (
-            <Reveal key={r.name} delayMs={idx * 80}>
-              <div className="ne-card-hover flex h-full flex-col p-4 sm:p-6">
-                <div className="ne-card-hover__inner flex h-full flex-col">
-                <div className="flex items-start gap-3">
-                  {r.photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={r.photo}
-                      alt=""
-                      className="h-12 w-12 shrink-0 rounded-2xl border border-border/12 object-cover"
-                    />
-                  ) : (
-                    <div
-                      className="font-display grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/15 to-accent2/15 text-sm font-bold text-accent"
-                      aria-hidden
-                    >
-                      {r.name.replace(/[^A-ZА-ЯЁ]/gi, "").slice(0, 1) || "—"}
-                    </div>
-                  )}
+        {reviewItems.map((r, idx) => (
+  <Reveal key={r.name} delayMs={idx * 80}>
+    <div className="ne-card-hover flex h-full flex-col p-4 sm:p-6">
+      <div className="ne-card-hover__inner flex h-full flex-col">
+        <div className="flex items-start gap-3">
+          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-border/12 bg-bg/60">
+            {r.photo ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={r.photo}
+                  alt={r.name}
+                  width={48}
+                  height={48}
+                  loading="eager"
+                  decoding="async"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
+                    if (fallback) fallback.style.display = "grid";
+                  }}
+                  className="h-full w-full object-cover"
+                />
 
-                  <div className="min-w-0">
-                    <div className="font-bold text-text">{r.name}</div>
-                    <div className="mt-0.5 text-xs font-medium text-text/55">{r.niche}</div>
-                  </div>
+                <div
+                  style={{ display: "none" }}
+                  className="h-full w-full place-items-center text-sm font-semibold text-text/70"
+                >
+                  {r.name?.slice(0, 1)}
                 </div>
-
-                <div className="mt-3 text-xs font-medium uppercase tracking-wide text-text/45">
-                  {t("reviews.label")}
-                </div>
-                <p className="mt-2 flex-1 text-base leading-relaxed text-text/90">{r.text}</p>
-                <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] px-3 py-2.5 text-sm font-medium leading-snug text-text/85">
-                  {r.outcome}
-                </div>
-                </div>
+              </>
+            ) : (
+              <div className="grid h-full w-full place-items-center text-sm font-semibold text-text/70">
+                {r.name?.slice(0, 1)}
               </div>
-            </Reveal>
-          ))}
+            )}
+          </div>
+
+          <div>
+            <div className="font-bold text-text">{r.name}</div>
+            <div className="mt-0.5 text-xs font-medium text-text/55">{r.niche}</div>
+          </div>
         </div>
-      </section>
+
+        <div className="mt-3 text-xs font-medium uppercase tracking-wide text-text/45">
+          {t("reviews.label")}
+        </div>
+
+        <p className="mt-2 flex-1 text-base leading-relaxed text-text/90">{r.text}</p>
+
+        <div className="mt-4 rounded-md border border-dashed border-border/20 bg-bg/[0.25] p-4">
+          {r.outcome}
+        </div>
+      </div>
+    </div>
+  </Reveal>
+))}
+</div>
+</section>
 
       {/* СОЦСЕТИ, КОНТАКТЫ, РЕФЕРАЛЫ */}
       <section id="socials" className="mt-12 sm:mt-16 md:mt-20">
