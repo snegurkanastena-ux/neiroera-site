@@ -20,18 +20,24 @@
   --orb-secondary: 255 168 64;
 }
 
+/*
+  Светлая тема: у «старых» токенов surface/border были в оттенке сланца ~900,
+  поэтому карточки выглядели тёмными плитками на светлом — перенастроили на
+  мягкую схему: фон-облако, поверхности белые, бордеры с холодо-серым, акцент чуть
+  плотнее, чем в dark, с тёмной типографикой на градиенте (как в тёмной теме).
+ */
 html[data-theme="light"] {
-  --bg-rgb: 236 240 245;
-  --text-rgb: 15 23 42;
-  --surface-rgb: 15 23 42;
-  --border-rgb: 15 23 42;
-  --header-bg-rgb: 252 252 254;
-  --accent-rgb: 0 150 125;
-  --accent2-rgb: 196 110 0;
-  --warm-rgb: 200 72 58;
-  --on-accent-rgb: 255 255 255;
-  --orb-primary: 0 160 140;
-  --orb-secondary: 220 130 20;
+  --bg-rgb: 236 241 248;
+  --text-rgb: 17 25 40;
+  --surface-rgb: 255 255 255;
+  --border-rgb: 200 210 222;
+  --header-bg-rgb: 255 255 255;
+  --accent-rgb: 0 160 140;
+  --accent2-rgb: 200 120 0;
+  --warm-rgb: 198 78 62;
+  --on-accent-rgb: 6 10 16;
+  --orb-primary: 32 180 160;
+  --orb-secondary: 240 150 32;
 }
 
 html {
@@ -125,6 +131,47 @@ html[data-theme="light"] .site-noise {
   animation: gradientShift 18s ease-in-out infinite;
 }
 
+/* Мягкая «радуга» (только светлая тема): сильно размазанный conic, не трогает тёмный режим */
+.light-rainbow-mesh {
+  display: none;
+  opacity: 0;
+}
+
+html[data-theme="light"] .light-rainbow-mesh {
+  display: block;
+  pointer-events: none;
+  /* Узел под зелёными орбами, но мультитон */
+  background: conic-gradient(
+    from 200deg at 50% 45%,
+    #ff3cac00 0deg,
+    #ff3cac 55deg,
+    #784ba0 115deg,
+    #2b86c5 175deg,
+    #2af598 250deg,
+    #ffd15c 300deg,
+    #ff3cac 360deg
+  );
+  opacity: 0.2;
+  filter: blur(64px) saturate(1.15);
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="light"] .light-rainbow-mesh {
+    animation: rainbowDrift 42s ease-in-out infinite;
+  }
+}
+
+@keyframes rainbowDrift {
+  0%,
+  100% {
+    transform: scale(1.12) translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) translate3d(-1.5%, 1%, 0) rotate(12deg);
+  }
+}
+
 @keyframes gradientShift {
   0% {
     background-position: 0% 35%;
@@ -204,6 +251,14 @@ html[data-theme="light"] .site-noise {
     animation: none;
   }
 
+  .animated-gradient {
+    animation: none;
+  }
+
+  .light-rainbow-mesh {
+    animation: none;
+  }
+
   .site-noise {
     animation: none;
   }
@@ -270,4 +325,54 @@ html[data-theme="light"] .site-noise {
       border-radius: 32px;
     }
   }
+}
+
+/* Светлая тема: заметные окантовки, цвет — без кислоты */
+html[data-theme="light"] .ne-card-hover,
+html[data-theme="light"] .ne-card-hover-sm {
+  border-width: 2px;
+  border-color: rgb(var(--accent-rgb) / 0.38);
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.95),
+    rgb(241 250 250 / 0.82)
+  );
+  box-shadow:
+    0 0 0 1px rgb(var(--border-rgb) / 0.2),
+    0 6px 22px rgb(15 23 42 / 0.04);
+}
+
+html[data-theme="light"] .ne-card-hover:hover,
+html[data-theme="light"] .ne-card-hover-sm:hover {
+  border-color: rgb(var(--accent-rgb) / 0.58);
+  box-shadow:
+    0 0 0 1px rgb(var(--accent2-rgb) / 0.2),
+    0 10px 36px rgb(var(--accent-rgb) / 0.16),
+    0 2px 10px rgb(15 23 42 / 0.08);
+}
+
+html[data-theme="light"] .ne-btn--primary {
+  border-width: 2px;
+  border-color: rgb(255 255 255 / 0.55);
+  box-shadow:
+    0 0 0 1px rgb(var(--accent-rgb) / 0.5),
+    0 0 0 1px rgb(var(--accent2-rgb) / 0.2),
+    0 6px 22px rgb(var(--accent-rgb) / 0.25);
+}
+
+html[data-theme="light"] .ne-btn--secondary {
+  border-width: 2px;
+  border-color: rgb(var(--accent2-rgb) / 0.55);
+  background: linear-gradient(160deg, rgb(255 176 74 / 0.18), rgb(0 160 140 / 0.08));
+}
+
+html[data-theme="light"] .ne-btn--ghost {
+  border-width: 2px;
+  border-color: rgb(var(--accent-rgb) / 0.42);
+  background: rgb(255 255 255 / 0.35);
+}
+
+html[data-theme="light"] header {
+  border-bottom-width: 2px;
+  border-color: rgb(var(--accent-rgb) / 0.32) !important;
 }

@@ -23,9 +23,9 @@ export function NeuroPhotoGallery({ photos }: NeuroPhotoGalleryProps) {
 
   return (
     <div className="neuro-photo-gallery mt-6 overflow-visible px-1 sm:px-0">
-      <p className="mb-6 text-xs text-text/55 sm:mb-8 sm:text-sm">
-        {reduceMotion ? t("portfolio.neuroPhotoReduced") : t("portfolio.neuroPhotoHint")}
-      </p>
+      {reduceMotion ? (
+        <p className="mb-6 text-xs text-text/55 sm:mb-8 sm:text-sm">{t("portfolio.neuroPhotoReduced")}</p>
+      ) : null}
 
       {/* Общая верхняя линия — зона «крепления» */}
       <div className="neuro-photo-gallery__rail mb-0 flex justify-center" aria-hidden>

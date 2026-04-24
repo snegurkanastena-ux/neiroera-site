@@ -7,7 +7,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
 import { Portrait } from "./Portrait";
@@ -16,8 +16,9 @@ import { ServiceCalculator } from "./ServiceCalculator";
 import { ServiceOfferGrid } from "./ServiceOfferGrid";
 import { ElectricBorder } from "./ElectricBorder";
 import { TextType } from "./TextType";
+import { EducationTariffDetailModal } from "./EducationTariffDetailModal";
 import { LeadForm } from "./LeadForm";
-import { VkLogoIcon } from "./icons/VkLogoIcon";
+import { SocialContactCard } from "./SocialContactCard";
 import { Button } from "./ui/Button";
 import { NeuroPhotoGallery } from "./NeuroPhotoGallery";
 
@@ -37,7 +38,75 @@ const PORTFOLIO_PHOTOS = [
   "/portfolio/photos/photo-04.jpg.png"
 ] as const;
 
-function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string[]; listenLabel: string }) {
+function getPortfolioOpenHref(anchor: string): string {
+  if (anchor === "portfolio-photos") return siteLinks.portfolioTelegramPhoto;
+  if (anchor === "portfolio-video") return siteLinks.portfolioTelegramVideo;
+  if (anchor === "portfolio-music") return siteLinks.melanoMusic;
+  return "#";
+}
+
+type StreamPlatform = "apple" | "vk" | "yandex";
+
+const STREAM_PLATFORM_BTN: Record<
+  StreamPlatform,
+  { className: string; focusClass: string }
+> = {
+  apple: {
+    className:
+      "bg-gradient-to-b from-[#ff4b6a] to-[#fa233b] text-white shadow-sm hover:brightness-[1.08]",
+    focusClass: "focus:ring-rose-400/50"
+  },
+  vk: {
+    className: "bg-[#0077FF] text-white shadow-sm hover:brightness-110",
+    focusClass: "focus:ring-blue-400/45"
+  },
+  yandex: {
+    className: "bg-[#0a0a0a] text-[#ffdb4d] border border-[#e8c530]/90 shadow-sm hover:bg-[#141414]",
+    focusClass: "focus:ring-[#e8c530]/35"
+  }
+};
+
+function StreamPlatformButton({
+  href,
+  children,
+  platform,
+  className = "",
+  compact
+}: {
+  href: string;
+  children: ReactNode;
+  platform: StreamPlatform;
+  className?: string;
+  /** Компактные отступы и кегль — в один ряд в шапке «Музыка» */
+  compact?: boolean;
+}) {
+  const s = STREAM_PLATFORM_BTN[platform];
+  const sizeCls = compact
+    ? "min-h-0 min-w-0 max-w-full whitespace-nowrap px-2 py-2 text-[0.7rem] sm:min-h-[40px] sm:px-3.5 sm:py-2.5 sm:text-sm"
+    : "min-h-[40px] min-w-0 max-w-full px-3.5 py-2.5 text-sm";
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-1.5 rounded-2xl text-center font-semibold tracking-tight no-underline outline-none transition-all duration-200 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-offset-bg ${sizeCls} ${s.className} ${s.focusClass} ${className}`}
+      whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring" as const, stiffness: 520, damping: 32, mass: 0.35 }}
+    >
+      {children}
+    </motion.a>
+  );
+}
+
+function PortfolioMusicTracks({
+  tracks,
+  trackNames,
+  listenLabel
+}: {
+  tracks: readonly string[];
+  trackNames: string[];
+  listenLabel: string;
+}) {
   const [active, setActive] = useState<string | null>(null);
   const audioBySrc = useRef<Map<string, HTMLAudioElement>>(new Map());
   /** Игнорируем onPause у трека, который мы сами остановили при переключении */
@@ -76,45 +145,74 @@ function PortfolioMusicTracks({ tracks, listenLabel }: { tracks: readonly string
   }, []);
 
   return (
-    <div className="space-y-4">
-      {tracks.map((src, idx) => {
-        const isPlaying = active === src;
-        return (
-          <Reveal key={src} delayMs={idx * 70}>
-            <ElectricBorder
-              borderRadius={24}
-              className="ne-card-hover min-h-0 w-full"
-              accentVariant="accent"
-              speed={isPlaying ? 1.05 : 0.88}
-              chaos={isPlaying ? 0.13 : 0.11}
-              contentClassName="w-full"
-            >
-              <div
-                className={`rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] sm:p-5 ${
-                  isPlaying ? "bg-accent/[0.09] ring-1 ring-accent/40" : ""
-                }`}
+    <div>
+      <div className="space-y-4">
+        {tracks.map((src, idx) => {
+          const isPlaying = active === src;
+          const name = trackNames[idx] ?? "";
+          return (
+            <Reveal key={src} delayMs={idx * 70}>
+              <ElectricBorder
+                borderRadius={24}
+                className="ne-card-hover min-h-0 w-full"
+                accentVariant="accent"
+                speed={isPlaying ? 1.05 : 0.88}
+                chaos={isPlaying ? 0.13 : 0.11}
+                contentClassName="w-full"
               >
-                <div className="ne-card-hover__inner">
-                <div className="mb-3 text-sm font-semibold text-text">
-                  {listenLabel} <span className="text-text/55">· {idx + 1}</span>
-                </div>
-                <audio
-                  ref={(el) => registerAudio(src, el)}
-                  controls
-                  preload="metadata"
-                  className="h-11 w-full max-w-xl rounded-lg accent-accent"
-                  onPlay={() => handlePlay(src)}
-                  onPause={() => handlePause(src)}
-                  onEnded={() => handleEnded(src)}
+                <div
+                  className={`rounded-3xl bg-bg/[0.16] p-4 backdrop-blur-[1px] sm:p-5 ${
+                    isPlaying ? "bg-accent/[0.09] ring-1 ring-accent/40" : ""
+                  }`}
                 >
-                  <source src={src} type="audio/mpeg" />
-                </audio>
+                  <div className="ne-card-hover__inner">
+                    <div className="mb-3 text-sm font-semibold text-text">
+                      {listenLabel} <span className="text-text/55">· {idx + 1}</span>
+                    </div>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-3 md:gap-4">
+                      <audio
+                        ref={(el) => registerAudio(src, el)}
+                        controls
+                        preload="metadata"
+                        className="h-11 w-full min-w-0 shrink-0 rounded-lg accent-accent sm:max-w-[min(100%,26rem)]"
+                        onPlay={() => handlePlay(src)}
+                        onPause={() => handlePause(src)}
+                        onEnded={() => handleEnded(src)}
+                      >
+                        <source src={src} type="audio/mpeg" />
+                      </audio>
+                      {name ? (
+                        <div className="flex min-w-0 flex-1 items-center justify-end sm:pl-1 md:pl-2">
+                          <p className="w-full min-w-0 break-words text-balance text-right text-xl font-bold leading-tight tracking-tight text-text sm:text-2xl md:max-w-none md:text-[1.6rem]">
+                            {name}
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </ElectricBorder>
-          </Reveal>
-        );
-      })}
+              </ElectricBorder>
+            </Reveal>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+type AboutPanelId = "who" | "what" | "why";
+
+/** Подзаголовок в блоке «Обо мне»: линия + display — без капс-маркеров. */
+function AboutSubsectionHeader({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
+      <span
+        className="h-px w-5 shrink-0 bg-gradient-to-r from-accent to-accent2/50 sm:w-7"
+        aria-hidden
+      />
+      <span className="min-w-0 text-left font-display text-base font-semibold leading-snug tracking-tight text-text sm:text-[1.05rem]">
+        {children}
+      </span>
     </div>
   );
 }
@@ -217,51 +315,25 @@ function ServicesSectionTitle() {
   );
 }
 
-function MusicGlyph() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M9 18V5l12-2v13"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="18" cy="16" r="3" stroke="currentColor" strokeWidth="1.8" />
-    </svg>
-  );
-}
-
-function SocialGlyph({ label }: { label: "Telegram" | "VK" | "Instagram" | "Mail" }) {
-  if (label === "Telegram")
-    return (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M22 3L2 10.5L9 13L21 5.5L11.2 15.8L10.4 21L13.7 17.7L17.8 20.4L22 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      </svg>
-    );
-  if (label === "VK") return <VkLogoIcon size={20} className="text-accent" />;
-  if (label === "Mail")
-    return (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        <path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      </svg>
-    );
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="6" y="6" width="12" height="12" rx="3" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M15.3 8.7H15.3" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="12" cy="12" r="2.8" stroke="currentColor" strokeWidth="1.8" />
-    </svg>
-  );
-}
-
 export function HomePageContent() {
   const { t, messages, lang } = useI18n();
   const reduceMotion = useReducedMotion();
   const [leadFormOpen, setLeadFormOpen] = useState(false);
   const openLeadForm = useCallback(() => setLeadFormOpen(true), []);
+  const [aboutPanel, setAboutPanel] = useState<AboutPanelId | null>("who");
+  const toggleAboutPanel = useCallback((id: AboutPanelId) => {
+    setAboutPanel((prev) => (prev === id ? null : id));
+  }, []);
+  const [educationTariffId, setEducationTariffId] = useState<string | null>(null);
+  const educationTariffForModal = useMemo(
+    () => messages.educationSection.tariffs.find((x) => x.id === educationTariffId) ?? null,
+    [messages.educationSection.tariffs, educationTariffId]
+  );
+  const openEducationTariff = useCallback((id: string) => setEducationTariffId(id), []);
+  const requestQuoteFromEducationTariff = useCallback(() => {
+    setEducationTariffId(null);
+    setLeadFormOpen(true);
+  }, []);
 
   const heroList = {
     hidden: {},
@@ -298,9 +370,9 @@ export function HomePageContent() {
     }
   };
 
-  const aboutListItems = useMemo(() => {
+  const aboutResultItems = useMemo(() => {
     try {
-      return JSON.parse(t("about.listItems")) as string[];
+      return JSON.parse(t("about.whatResults")) as string[];
     } catch {
       return [];
     }
@@ -312,6 +384,10 @@ export function HomePageContent() {
   const reviewItems = messages.reviews.items;
   const portfolioItems = messages.portfolio.items;
   const painCards = messages.pain.cards;
+  const painDiagnosticsMailto = useMemo(() => {
+    const addr = siteLinks.email.replace(/^mailto:/, "");
+    return `mailto:${addr}?subject=${encodeURIComponent(messages.pain.diagnosticsMailSubject)}`;
+  }, [messages.pain.diagnosticsMailSubject]);
   const solutionBullets = messages.solution.bullets;
 
   const heroBullets = useMemo(() => {
@@ -437,28 +513,14 @@ export function HomePageContent() {
         <Reveal>
           <ServiceOfferGrid />
         </Reveal>
-        <Reveal delayMs={120}>
-          <div className="ne-card-hover mt-10 px-5 py-6 sm:px-8 sm:py-8">
-            <div className="ne-card-hover__inner">
-              <h3 className="text-lg font-bold text-text sm:text-xl">{messages.uncertaintyBlock.title}</h3>
-              <p className="mt-2 max-w-2xl text-base leading-relaxed text-text/80">{messages.uncertaintyBlock.body}</p>
-              <div className="mt-5">
-                <Button
-                  variant="primary"
-                  className="min-h-[48px] px-6 text-base"
-                  onClick={openLeadForm}
-                >
-                  {messages.uncertaintyBlock.cta}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </section>
 
       {/* КАЛЬКУЛЯТОР */}
       <section id="calculator" className="mt-14 scroll-mt-20 sm:mt-20 sm:scroll-mt-24 md:mt-24">
         <SectionTitle kickerKey="calculatorSection.kicker" titleKey="calculatorSection.title" />
+        <p className="mb-6 max-w-2xl text-sm leading-relaxed text-text/78 sm:mb-7 sm:text-base">
+          {messages.calculatorSection.intro}
+        </p>
         <ServiceCalculator onOpenLeadForm={openLeadForm} />
       </section>
 
@@ -480,7 +542,11 @@ export function HomePageContent() {
                 <div className="mt-3 text-3xl font-black tracking-tight text-text sm:text-4xl">{tariff.price}</div>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-text/75">{tariff.blurb}</p>
                 <div className="mt-6 flex flex-col gap-2">
-                  <Button variant="primary" className="min-h-[46px] w-full text-base" onClick={openLeadForm}>
+                  <Button
+                    variant="primary"
+                    className="min-h-[46px] w-full text-base"
+                    onClick={() => openEducationTariff(tariff.id)}
+                  >
                     {messages.educationSection.ctaChoose}
                   </Button>
                   <Button variant="ghost" className="min-h-[44px] w-full text-base" onClick={openLeadForm}>
@@ -503,8 +569,9 @@ export function HomePageContent() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[min(100%,18rem)] sm:max-w-[min(100%,20rem)] lg:mx-0 lg:max-w-none"
+            className="self-start mx-auto flex w-full max-w-[min(100%,18rem)] justify-center sm:max-w-[min(100%,20rem)] lg:mx-0 lg:max-w-full lg:justify-start"
           >
+            <div className="w-max max-w-full">
             <div
               className="relative rounded-[22px] p-[2px] shadow-[0_20px_60px_rgb(0_0_0/0.45)] sm:rounded-[24px]"
               style={{
@@ -513,15 +580,15 @@ export function HomePageContent() {
               }}
             >
               <div className="rounded-[20px] bg-bg/40 p-1 ring-1 ring-white/10 backdrop-blur-[2px] sm:rounded-[22px] sm:p-1.5">
-                {/* Лёгкая виньетка без multiply — портрет остаётся читаемым, края чуть уходат в фон */}
-                <div className="relative overflow-hidden rounded-[16px] bg-bg sm:rounded-[18px]">
+                {/* Рамка плотно облегает снимок: контейнер w-max, без растянутой полосы bg по ширине колонки */}
+                <div className="relative w-max max-w-full overflow-hidden rounded-[16px] bg-bg sm:rounded-[18px]">
                   <Image
                     src="/images/anastasia-about.png"
                     alt={t("footer.name")}
                     width={520}
                     height={680}
                     sizes="(max-width: 1024px) 90vw, 400px"
-                    className="relative z-0 mx-auto block h-auto max-h-[320px] w-auto max-w-full object-contain object-center brightness-[1.06] contrast-[1.02] sm:max-h-none lg:mx-0"
+                    className="relative z-0 block h-auto max-h-[320px] w-auto max-w-full object-contain object-center brightness-[1.06] contrast-[1.02] sm:max-h-none"
                   />
                   <div
                     className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit]"
@@ -545,26 +612,95 @@ export function HomePageContent() {
                 </div>
               </div>
             </div>
+            </div>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="min-h-0 min-w-0 w-full self-start">
             <Reveal delayMs={60}>
-              <div className="ne-card-hover p-4 sm:p-6">
-                <div className="ne-card-hover__inner">
-                <p className="whitespace-pre-line leading-relaxed text-text/88">{t("about.p1")}</p>
-                <p className="mt-4 whitespace-pre-line leading-relaxed text-text/88">{t("about.p2")}</p>
-                <p className="mt-6 text-sm font-semibold text-text/90">{t("about.listLabel")}</p>
-                <ul className="mt-3 space-y-2 text-sm leading-relaxed text-text/80">
-                  {aboutListItems.map((line) => (
-                    <li key={line} className="flex gap-2">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
-                      <span>{line}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-8 whitespace-pre-line border-t border-border/10 pt-6 text-base font-bold leading-snug text-text">
-                  {t("about.thesis")}
-                </p>
+              <div className="ne-card-hover flex max-h-[min(70vh,28rem)] flex-col overflow-hidden p-0 sm:max-h-[min(78vh,32rem)] lg:max-h-[min(32rem,85svh)]">
+                <div className="ne-card-hover__inner flex min-h-0 flex-1 flex-col p-4 sm:p-5">
+                  <div
+                    className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-0.5 [scrollbar-color:rgb(var(--border-rgb)/0.4)_transparent] [scrollbar-width:thin] sm:space-y-1"
+                    style={{ WebkitOverflowScrolling: "touch" } as CSSProperties}
+                  >
+                    {/* Кто я */}
+                    <div className="rounded-xl border border-border/[0.07] bg-surface/[0.03] sm:overflow-hidden sm:rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => toggleAboutPanel("who")}
+                        aria-expanded={aboutPanel === "who"}
+                        className="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-3 text-left transition hover:bg-surface/6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 sm:px-3.5 sm:py-3.5"
+                      >
+                        <AboutSubsectionHeader>{t("about.whoLabel")}</AboutSubsectionHeader>
+                        <span className="shrink-0 pl-1 text-xs text-text/50">
+                          <span aria-hidden>{aboutPanel === "who" ? "▼" : "▶"}</span>{" "}
+                          {aboutPanel === "who" ? messages.serviceOffers.collapse : messages.serviceOffers.expand}
+                        </span>
+                      </button>
+                      {aboutPanel === "who" ? (
+                        <div className="px-3 pb-3.5 pl-4 pr-2 text-sm leading-relaxed text-text/88 sm:px-3.5 sm:pl-5 sm:pb-4 sm:text-[0.95rem]">
+                          <p className="whitespace-pre-line">{t("about.whoBody")}</p>
+                        </div>
+                      ) : null}
+                    </div>
+                    {/* Что вы получите */}
+                    <div className="rounded-xl border border-border/[0.07] bg-surface/[0.03] sm:overflow-hidden sm:rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => toggleAboutPanel("what")}
+                        aria-expanded={aboutPanel === "what"}
+                        className="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-3 text-left transition hover:bg-surface/6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 sm:px-3.5 sm:py-3.5"
+                      >
+                        <AboutSubsectionHeader>{t("about.whatLabel")}</AboutSubsectionHeader>
+                        <span className="shrink-0 pl-1 text-xs text-text/50">
+                          <span aria-hidden>{aboutPanel === "what" ? "▼" : "▶"}</span>{" "}
+                          {aboutPanel === "what" ? messages.serviceOffers.collapse : messages.serviceOffers.expand}
+                        </span>
+                      </button>
+                      {aboutPanel === "what" ? (
+                        <div className="space-y-3 border-t border-border/8 px-3 pb-3.5 pl-[1.1rem] pr-2 pt-2.5 text-sm leading-relaxed text-text/88 sm:pl-[1.2rem] sm:pr-3.5 sm:pb-4 sm:pt-3 sm:text-[0.95rem]">
+                          <p className="whitespace-pre-line">{t("about.whatLead")}</p>
+                          <p className="rounded-lg border border-border/12 bg-surface/[0.06] px-3 py-2.5 text-sm font-medium text-text/90 sm:text-base">
+                            {t("about.whatFlow")}
+                          </p>
+                          <p className="text-sm font-semibold text-text/90">{t("about.whatResultsLabel")}</p>
+                          <ul className="space-y-2 text-sm leading-relaxed text-text/80">
+                            {aboutResultItems.map((line) => (
+                              <li key={line} className="flex gap-2">
+                                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/90" aria-hidden />
+                                <span>{line}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <p className="whitespace-pre-line text-text/88">{t("about.whatEntry")}</p>
+                          <p className="text-text/85">{t("about.whatReinforce")}</p>
+                        </div>
+                      ) : null}
+                    </div>
+                    {/* Опыт и ориентир */}
+                    <div className="rounded-xl border border-border/[0.07] bg-surface/[0.03] sm:overflow-hidden sm:rounded-2xl">
+                      <button
+                        type="button"
+                        onClick={() => toggleAboutPanel("why")}
+                        aria-expanded={aboutPanel === "why"}
+                        className="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-3 text-left transition hover:bg-surface/6 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 sm:px-3.5 sm:py-3.5"
+                      >
+                        <AboutSubsectionHeader>{t("about.whyLabel")}</AboutSubsectionHeader>
+                        <span className="shrink-0 pl-1 text-xs text-text/50">
+                          <span aria-hidden>{aboutPanel === "why" ? "▼" : "▶"}</span>{" "}
+                          {aboutPanel === "why" ? messages.serviceOffers.collapse : messages.serviceOffers.expand}
+                        </span>
+                      </button>
+                      {aboutPanel === "why" ? (
+                        <div className="border-t border-border/8 px-3 pb-3.5 pl-4 pr-2 pt-2.5 text-sm leading-relaxed text-text/88 sm:pl-5 sm:pr-3.5 sm:pb-4 sm:pt-3 sm:text-[0.95rem]">
+                          <p className="whitespace-pre-line">{t("about.whyBody")}</p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <p className="mt-3 shrink-0 whitespace-pre-line border-t border-border/10 py-3 text-sm font-bold leading-snug text-text/95 sm:text-base">
+                    {t("about.finalBlock")}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -587,9 +723,21 @@ export function HomePageContent() {
           ))}
         </div>
         <Reveal delayMs={320}>
-          <p className="mt-7 max-w-2xl whitespace-pre-line text-base font-semibold leading-relaxed text-text/85 sm:mt-10 sm:text-lg">
-            {messages.pain.closing}
-          </p>
+          <div className="mt-7 flex flex-col items-stretch gap-4 sm:mt-10 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+            <p className="max-w-2xl whitespace-pre-line text-base font-semibold leading-relaxed text-text/85 sm:text-lg">
+              {messages.pain.closing}
+            </p>
+            <div className="shrink-0 self-start sm:self-auto sm:pb-0.5">
+              <Button
+                href={painDiagnosticsMailto}
+                variant="primary"
+                className="min-h-[48px] w-full min-w-0 sm:w-auto sm:min-w-[12rem] sm:px-6"
+                target="_self"
+              >
+                {messages.pain.diagnosticsCta}
+              </Button>
+            </div>
+          </div>
         </Reveal>
       </section>
 
@@ -636,16 +784,23 @@ export function HomePageContent() {
         <div className="grid gap-4 md:grid-cols-3">
           {portfolioItems.map((item, idx) => (
             <Reveal key={item.title} delayMs={idx * 70}>
-              <a
-                href={`#${item.anchor}`}
-                className="ne-card-hover relative block h-full cursor-pointer overflow-hidden p-4 no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/40 sm:p-6"
-              >
-                <article className="ne-card-hover__inner relative flex h-full flex-col">
+              <div className="ne-card-hover flex h-full flex-col p-4 sm:p-6">
+                <div className="ne-card-hover__inner flex h-full min-h-0 flex-col">
                   <h3 className="font-display text-lg font-bold text-text">{item.title}</h3>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text/72">{item.desc}</p>
-                  <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent/90">↓</span>
-                </article>
-              </a>
+                  <div className="mt-4">
+                    <Button
+                      href={getPortfolioOpenHref(item.anchor)}
+                      variant="primary"
+                      className="w-full"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t("portfolio.open")}
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -656,32 +811,82 @@ export function HomePageContent() {
               <Reveal delayMs={idx * 40}>
                 <div className="ne-card-hover p-4 sm:p-6 md:p-8">
                   <div className="ne-card-hover__inner">
-                  <h3 className="font-display text-xl font-bold">{item.title}</h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
+                  {item.anchor === "portfolio-music" ? (
+                    <div>
+                      <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-x-6 sm:gap-y-1.5">
+                        <h3 className="min-w-0 max-w-2xl font-display text-xl font-bold leading-tight sm:col-start-1 sm:row-start-1">
+                          {item.title}
+                        </h3>
+                        <p className="mt-0 min-w-0 max-w-2xl text-sm leading-relaxed text-text/75 sm:col-start-1 sm:row-start-2 sm:mt-0 sm:pt-0">
+                          {item.desc}
+                        </p>
+                        <div className="sm:col-start-2 sm:row-start-1 sm:flex sm:shrink-0 sm:items-start sm:justify-end sm:pl-1 sm:pt-0.5">
+                          <div className="whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-text/55 sm:text-right">
+                            {t("portfolio.listenHeading")}
+                          </div>
+                        </div>
+                        <div className="flex w-full min-w-0 max-w-full flex-nowrap items-center justify-start gap-1.5 overflow-x-auto px-0.5 pb-0.5 [scrollbar-width:thin] sm:col-start-2 sm:row-start-2 sm:mx-0 sm:w-auto sm:max-w-none sm:justify-end sm:overflow-visible sm:pl-1 sm:pr-0 sm:pb-0 sm:pt-0 sm:gap-2">
+                          {(
+                            [
+                              { href: siteLinks.musicApple, label: t("portfolio.streamApple"), platform: "apple" as const },
+                              { href: siteLinks.musicVk, label: t("portfolio.streamVk"), platform: "vk" as const },
+                              { href: siteLinks.musicYandex, label: t("portfolio.streamYandex"), platform: "yandex" as const }
+                            ] as const
+                          ).map((l) => (
+                            <StreamPlatformButton key={l.href} href={l.href} platform={l.platform} compact>
+                              {l.label}
+                            </StreamPlatformButton>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : item.anchor === "portfolio-video" && item.casesCta ? (
+                    <div className="overflow-hidden rounded-2xl border border-border/12 bg-surface/[0.04] px-3 py-2.5 sm:px-5 sm:py-3">
+                      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                        <div className="min-w-0 flex-1 sm:pr-2">
+                          <h3 className="font-display text-lg font-bold leading-tight sm:text-xl">{item.title}</h3>
+                          <p className="mt-0.5 text-sm leading-snug text-text/75 sm:mt-1 sm:text-[0.95rem] sm:leading-relaxed">
+                            {item.desc}
+                          </p>
+                        </div>
+                        <Button
+                          href={siteLinks.portfolioTelegramVideo}
+                          variant="primary"
+                          className="h-10 min-h-0 w-full shrink-0 justify-center rounded-2xl px-4 text-sm sm:h-11 sm:w-auto sm:min-w-[11.5rem] sm:self-center"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.casesCta}
+                        </Button>
+                      </div>
+                      {item.casesNote ? (
+                        <p className="mt-2.5 text-[0.7rem] leading-relaxed text-text/50 sm:mt-2 sm:text-xs">
+                          {item.casesNote}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="font-display text-xl font-bold">{item.title}</h3>
+                      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-text/75">{item.desc}</p>
+                    </>
+                  )}
 
                   {item.anchor === "portfolio-photos" ? <NeuroPhotoGallery photos={PORTFOLIO_PHOTOS} /> : null}
 
-                  {item.anchor === "portfolio-video" && item.casesCta ? (
-                    <div className="mt-6">
-                      <div className="mb-3 text-sm font-semibold text-text">{t("portfolio.watchClip")}</div>
-                      <Button
-                        href={siteLinks.telegramPortfolioCases}
-                        variant="primary"
-                        className="min-h-[48px] w-full sm:w-auto"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {item.casesCta}
-                      </Button>
-                      {item.casesNote ? (
-                        <p className="mt-3 max-w-xl text-xs leading-relaxed text-text/55">{item.casesNote}</p>
-                      ) : null}
-                    </div>
-                  ) : null}
-
                   {item.anchor === "portfolio-music" ? (
                     <div className="mt-6">
-                      <PortfolioMusicTracks tracks={PORTFOLIO_MUSIC_TRACKS} listenLabel={t("portfolio.listenTrack")} />
+                      <PortfolioMusicTracks
+                        tracks={PORTFOLIO_MUSIC_TRACKS}
+                        trackNames={[
+                          messages.portfolio.musicTrack1,
+                          messages.portfolio.musicTrack2,
+                          messages.portfolio.musicTrack3,
+                          messages.portfolio.musicTrack4,
+                          messages.portfolio.musicTrack5
+                        ]}
+                        listenLabel={t("portfolio.listenTrack")}
+                      />
                     </div>
                   ) : null}
                   </div>
@@ -835,154 +1040,101 @@ export function HomePageContent() {
         <div className="rounded-[28px] border border-border/[0.08] bg-bg/20 p-4 sm:rounded-[32px] sm:border-border/12 sm:p-5 md:p-6">
           <p className="text-sm leading-relaxed text-text/70">{t("socials.intro")}</p>
 
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {/* Telegram-канал — акцент */}
-            <div className="ne-card-hover relative overflow-hidden border-accent/25 bg-accent/[0.06] p-4 sm:p-6 lg:col-span-2">
-              <div className="ne-card-hover__inner">
-              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.tgChannelTitle")}</div>
-                  <div className="font-display mt-1 text-lg font-bold">{t("socials.tgChannelSubtitle")}</div>
-                  <p className="mt-2 max-w-xl text-sm text-text/80">{t("socials.tgChannelText")}</p>
-                </div>
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-3xl border border-border/12 bg-bg/30 text-accent">
-                  <SocialGlyph label="Telegram" />
-                </div>
-              </div>
-              <div className="relative mt-5">
-                <Button href={siteLinks.telegramChannel} variant="primary" className="w-full sm:w-auto">
-                  {t("socials.tgCta")}
-                </Button>
-              </div>
-              </div>
-            </div>
-
-            {/* Бот */}
-            <a
-              href={siteLinks.telegramBot}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.tgBotTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.tgBotText")}</p>
-                </div>
-                <span className="ne-card-hover__glyph grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent transition-colors">
-                  <SocialGlyph label="Telegram" />
-                </span>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.write")} →</span>
-              </div>
-            </a>
-
-            {/* VK страница */}
-            <a
-              href={siteLinks.vkPage}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.vkPageTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.vkPageText")}</p>
-                </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent">
-                  <SocialGlyph label="VK" />
-                </span>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
-              </div>
-            </a>
-
-            {/* VK канал */}
-            <a
-              href={siteLinks.vkChannel}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.vkChannelTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.vkChannelText")}</p>
-                </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent">
-                  <SocialGlyph label="VK" />
-                </span>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
-              </div>
-            </a>
-
-            {/* Email */}
-            <a
-              href={siteLinks.email}
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.emailTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.emailText")}</p>
-                </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
-                  <SocialGlyph label="Mail" />
-                </span>
-              </div>
-              <span className="mt-4 truncate text-sm font-semibold text-accent">neuroera@yandex.com</span>
-              </div>
-            </a>
-
-            {/* Instagram */}
-            <div className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6 lg:col-span-2">
-              <a
+          <div className="mt-6 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal delayMs={0}>
+              <SocialContactCard
+                brand="telegram"
+                title={t("socials.tgChannelTitle")}
+                subtitle={t("socials.tgChannelSubtitle")}
+                description={t("socials.tgChannelText")}
+                cta={t("socials.tgCta")}
+                href={siteLinks.telegramChannel}
+              />
+            </Reveal>
+            <Reveal delayMs={40}>
+              <SocialContactCard
+                brand="vk"
+                title={t("socials.vkChannelTitle")}
+                subtitle={t("socials.vkBrand")}
+                description={t("socials.vkChannelText")}
+                cta={t("socials.vkChannelCta")}
+                href={siteLinks.vkChannel}
+              />
+            </Reveal>
+            <Reveal delayMs={80}>
+              <SocialContactCard
+                brand="max"
+                title={t("socials.maxTitle")}
+                subtitle={t("socials.maxSubtitle")}
+                description={t("socials.maxText")}
+                cta={t("socials.maxCta")}
+                href={siteLinks.maxChannel}
+              />
+            </Reveal>
+            <Reveal delayMs={120}>
+              <SocialContactCard
+                brand="vk"
+                title={t("socials.vkPageTitle")}
+                subtitle={t("socials.vkBrand")}
+                description={t("socials.vkPageText")}
+                cta={t("socials.vkPageCta")}
+                href={siteLinks.vkPage}
+              />
+            </Reveal>
+            <Reveal delayMs={160}>
+              <SocialContactCard
+                brand="instagram"
+                title={t("socials.instagramTitle")}
+                subtitle={t("socials.instagramSubtitle")}
+                description={t("socials.instagramText")}
+                cta={t("socials.instagramCta")}
                 href={siteLinks.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col rounded-2xl bg-transparent text-inherit no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-              >
-                <div className="ne-card-hover__inner flex flex-col">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <div className="text-sm text-text/70">{t("socials.instagramTitle")}</div>
-                      <p className="mt-1 text-sm text-text/75">{t("socials.instagramText")}</p>
-                    </div>
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
-                      <SocialGlyph label="Instagram" />
-                    </span>
-                  </div>
-                  <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
-                </div>
-              </a>
-              <p className="mt-3 text-xs leading-relaxed text-text/65">{t("socials.instagramLegal")}</p>
-            </div>
-
-            {/* MelanoMusic */}
-            <a
-              href={siteLinks.melanoMusic}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ne-card-hover flex flex-col bg-transparent p-4 sm:p-6"
-            >
-              <div className="ne-card-hover__inner flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm text-text/70">{t("socials.melanoTitle")}</div>
-                  <p className="mt-1 text-sm text-text/75">{t("socials.melanoText")}</p>
-                </div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border/12 text-accent2">
-                  <MusicGlyph />
-                </span>
-              </div>
-              <span className="mt-4 text-sm font-semibold text-accent">{t("socials.open")} →</span>
-              </div>
-            </a>
+                legalNote={t("socials.instagramLegal")}
+              />
+            </Reveal>
+            <Reveal delayMs={200}>
+              <SocialContactCard
+                brand="melano"
+                title={t("socials.melanoTitle")}
+                subtitle={t("socials.melanoSubtitle")}
+                description={t("socials.melanoText")}
+                cta={t("socials.melanoCta")}
+                href={siteLinks.melanoMusic}
+              />
+            </Reveal>
+            <Reveal delayMs={240}>
+              <SocialContactCard
+                brand="bot"
+                title={t("socials.tgBotTitle")}
+                subtitle={t("socials.tgBotSubtitle")}
+                description={t("socials.tgBotText")}
+                cta={t("socials.tgBotCta")}
+                href={siteLinks.telegramBot}
+                emphasized
+              />
+            </Reveal>
+            <Reveal delayMs={280}>
+              <SocialContactCard
+                brand="email"
+                title={t("socials.emailTitle")}
+                subtitle="neuroera@yandex.com"
+                description={t("socials.emailText")}
+                cta={t("socials.emailCta")}
+                href={siteLinks.email}
+                isMailto
+                emphasized
+              />
+            </Reveal>
+            <Reveal delayMs={320}>
+              <SocialContactCard
+                brand="portfolio"
+                title={t("socials.portfolioVibeTitle")}
+                subtitle={t("socials.portfolioVibeSubtitle")}
+                description={t("socials.portfolioVibeText")}
+                cta={t("socials.portfolioVibeCta")}
+                href={siteLinks.portfolioVibecoding}
+              />
+            </Reveal>
           </div>
 
           {/* Реферальные ссылки */}
@@ -990,12 +1142,15 @@ export function HomePageContent() {
             <div className="text-xs uppercase tracking-widest text-text/55">{t("referralSection.kicker")}</div>
             <h3 className="font-display mt-2 text-xl font-bold">{t("referralSection.title")}</h3>
             <p className="mt-2 max-w-2xl text-sm text-text/65">{t("referralSection.intro")}</p>
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {(
                 [
                   { key: "syntx" as const, href: siteLinks.referrals.syntxBot },
                   { key: "suno" as const, href: siteLinks.referrals.suno },
-                  { key: "vezarys" as const, href: siteLinks.referrals.vezarysVpn }
+                  { key: "vezarys" as const, href: siteLinks.referrals.vezarysVpn },
+                  { key: "sferoom" as const, href: siteLinks.referrals.sferoom },
+                  { key: "prodamus" as const, href: siteLinks.referrals.prodamus },
+                  { key: "edaSibiri" as const, href: siteLinks.referrals.edaSibiri }
                 ] as const
               ).map((item) => {
                 const block = messages.referrals[item.key];
@@ -1009,25 +1164,28 @@ export function HomePageContent() {
                     chaos={0.1}
                     contentClassName="h-full"
                   >
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block h-full rounded-2xl bg-surface/[0.06] p-4 no-underline sm:p-5"
-                    >
-                      <div className="ne-card-hover__inner">
-                      <div className="font-bold text-text">{block.title}</div>
-                      <p className="mt-2 text-sm text-text/65">{block.desc}</p>
-                      <span className="mt-3 inline-block text-sm font-semibold text-accent2">{block.cta} →</span>
+                    <div className="flex h-full flex-col rounded-2xl bg-surface/[0.06] p-4 sm:p-5">
+                      <div className="ne-card-hover__inner flex min-h-0 flex-1 flex-col">
+                        <div className="font-bold text-text">{block.title}</div>
+                        <p className="mt-2 flex-1 text-sm leading-relaxed text-text/65">{block.desc}</p>
+                        <div className="mt-4">
+                          <Button
+                            href={item.href}
+                            variant="primary"
+                            className="w-full"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {block.cta}
+                          </Button>
+                        </div>
                       </div>
-                    </a>
+                    </div>
                   </ElectricBorder>
                 );
               })}
             </div>
           </div>
-
-          <p className="mt-6 text-xs text-text/50">{t("socials.note")}</p>
         </div>
       </section>
 
@@ -1087,6 +1245,15 @@ export function HomePageContent() {
 
       <div className="h-10" />
 
+      <EducationTariffDetailModal
+        open={educationTariffForModal !== null}
+        onClose={() => setEducationTariffId(null)}
+        onRequestQuote={requestQuoteFromEducationTariff}
+        tariff={educationTariffForModal}
+        bonusesBlockTitle={messages.educationSection.bonusesBlockTitle}
+        bonusesBlockBody={messages.educationSection.bonusesBlockBody}
+        ctaRequest={messages.educationSection.ctaRequest}
+      />
       <LeadForm open={leadFormOpen} onClose={() => setLeadFormOpen(false)} />
     </div>
   );

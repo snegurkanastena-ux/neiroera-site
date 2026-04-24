@@ -32,22 +32,49 @@ export type Messages = {
   about: {
     kicker: string;
     title: string;
-    p1: string;
-    p2: string;
-    listLabel: string;
-    listItems: string;
-    thesis: string;
+    whoLabel: string;
+    whoBody: string;
+    whatLabel: string;
+    whatLead: string;
+    whatFlow: string;
+    whatResultsLabel: string;
+    whatResults: string;
+    whatEntry: string;
+    whatReinforce: string;
+    whyLabel: string;
+    whyBody: string;
+    finalBlock: string;
   };
-  pain: { kicker: string; title: string; cards: string[]; closing: string };
+  pain: {
+    kicker: string;
+    title: string;
+    cards: string[];
+    closing: string;
+    diagnosticsCta: string;
+    /** Тема письма в mailto при клике «записаться на диагностику» */
+    diagnosticsMailSubject: string;
+  };
   solution: { kicker: string; title: string; flow: string; bullets: string[]; cta: string };
   portfolio: {
     kicker: string;
     title: string;
     intro: string;
+    open: string;
+    streamOn: string;
+    /** Короткий заголовок у блока площадок (в одной строке с «Музыка») */
+    listenHeading: string;
+    streamApple: string;
+    streamVk: string;
+    streamYandex: string;
     listenTrack: string;
     watchClip: string;
     neuroPhotoHint: string;
     neuroPhotoReduced: string;
+    musicTrack1: string;
+    musicTrack2: string;
+    musicTrack3: string;
+    musicTrack4: string;
+    musicTrack5: string;
     items: {
       title: string;
       desc: string;
@@ -83,14 +110,22 @@ export type Messages = {
     title: string;
     lead: string;
     bonuses: string;
-    tariffs: { id: string; name: string; price: string; blurb: string; featured?: boolean }[];
+    /** Общий блок бонусов в модалке «описание тарифа» */
+    bonusesBlockTitle: string;
+    bonusesBlockBody: string;
+    tariffs: {
+      id: string;
+      name: string;
+      price: string;
+      blurb: string;
+      featured?: boolean;
+      /** Заголовок в модалке (с подзаголовком-обещанием) */
+      detailTitle: string;
+      /** Текст с переносами (\n) */
+      detailBody: string;
+    }[];
     ctaChoose: string;
     ctaRequest: string;
-  };
-  uncertaintyBlock: {
-    title: string;
-    body: string;
-    cta: string;
   };
   /** Модалка заявки (POST /api/send-order) */
   contactChoice: {
@@ -170,7 +205,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       reviews: "Отзывы",
       contacts: "Контакты",
       payment: "Оплата",
-      toTelegram: "В Telegram",
+      toTelegram: "Telegram",
       openMenu: "Открыть меню",
       ariaLabel: "Основная навигация"
     },
@@ -195,21 +230,32 @@ export const messagesByLang: Record<Lang, Messages> = {
       trust3: "реальные кейсы",
       ctaConsult: "Собрать систему под себя",
       ctaRequest: "Оставить заявку",
-      ctaTg: "В Telegram"
+      ctaTg: "Telegram"
     },
     about: {
       kicker: "Обо мне",
-      title: "Системный AI-архитектор и креатор",
-      p1: "Я не учу «пользоваться нейросетями».\nЯ внедряю их в реальные задачи бизнеса.",
-      p2: "Более 15 лет управленческого опыта\nи переход в практическое применение ИИ.",
-      listLabel: "Помогаю собрать систему, где:",
-      listItems: JSON.stringify([
-        "сайт приводит клиентов",
-        "контент продаёт",
-        "автоматизация экономит время",
-        "AI усиливает результат"
+      title: "Сначала система — потом инструменты",
+      whoLabel: "Кто я",
+      whoBody:
+        "AI-архитектор роста. Перевожу бизнес из ручного хаоса в связанную систему: от смысла и позиционирования — до AI и автоматизации, чтобы каждое звено работало на один измеримый результат, а не на «чек-лист ради чек-листа».",
+      whatLabel: "Что вы получите",
+      whatLead:
+        "Смотрю на бизнес как на единый контур, а не как на набор несвязанных «про сайт / про визуал / про нейросеть».",
+      whatFlow: "позиционирование → контент → сайт → автоматизация → AI",
+      whatResultsLabel: "В результате вы получаете:",
+      whatResults: JSON.stringify([
+        "ясное позиционирование и рост узнаваемости",
+        "стабильный поток заявок и сделок",
+        "время, которое перестаёт сгорать в ручных операциях",
+        "основу для масштабирования — без вечного тушения пожаров"
       ]),
-      thesis: "Вы не покупаете сайт.\nВы покупаете систему, которая работает."
+      whatEntry:
+        "Вход возможен с полной задачей «под ключ» или с точечным запросом: визуал, автоматизация, отдельное AI-решение — важно, чтобы кусок не ломал логику контура, а встраивался в неё.",
+      whatReinforce: "Каждое вложенное в систему усиление работает на общий результат, а не «украшает» бизнес обособленно.",
+      whyLabel: "Опыт и ориентир",
+      whyBody:
+        "15+ лет в операционном управлении бизнесом: в лидерстве — 100+ человек, сети — до 20 точек. Фокус — рост заявок, выручки и эффективности процессов, а не картинка в презентации.\n\nРешения подбираю и собираю под нишу, глубину задачи и масштаб: без готового шаблона — с тем, откуда в вашем бизнесе выгоднее и быстрее дать движение в деньгах и времени.",
+      finalBlock: "В конце пути — система, которая работает на вас: с понятной логикой, заявками и деньгами, а не очередной набор инструментов по отдельности."
     },
     pain: {
       kicker: "Диагностика",
@@ -220,7 +266,9 @@ export const messagesByLang: Record<Lang, Messages> = {
         "AI пробовали, но хаос",
         "Всё держится на вас и не масштабируется"
       ],
-      closing: "Проблема не в инструментах.\nПроблема — в отсутствии системы."
+      closing: "Проблема не в инструментах.\nПроблема — в отсутствии системы.",
+      diagnosticsCta: "Записаться на диагностику",
+      diagnosticsMailSubject: "Запись на диагностику"
     },
     solution: {
       kicker: "Решение",
@@ -238,12 +286,22 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Портфолио",
       title: "Визуал, движение и звук",
       intro: "Направления, в которых собираю цельные решения на стыке креатива и AI.",
+      open: "Открыть",
+      streamOn: "Слушать на площадках",
+      listenHeading: "Слушать",
+      streamApple: "Apple Music",
+      streamVk: "VK Музыка",
+      streamYandex: "Яндекс.Музыка",
       listenTrack: "Слушать трек",
       watchClip: "Смотреть клип",
-      neuroPhotoHint:
-        "Лёгкое покачивание для атмосферы — наведите на работу, чтобы чуть сильнее подсветить кадр.",
+      neuroPhotoHint: "",
       neuroPhotoReduced:
         "Анимация движения отключена в соответствии с настройками доступности — галерея статична.",
+      musicTrack1: "Бизнес партнёр",
+      musicTrack2: "Будни Т2 (18+)",
+      musicTrack3: "Весна между строк",
+      musicTrack4: "Всё нормально",
+      musicTrack5: "Имею право",
       items: [
         {
           title: "Нейрофото",
@@ -251,10 +309,10 @@ export const messagesByLang: Record<Lang, Messages> = {
           anchor: "portfolio-photos"
         },
         {
-          title: "Видео / клипы",
+          title: "Портфолио",
           desc: "Сценарии, монтаж и визуал — примеры смотрите в Telegram.",
           anchor: "portfolio-video",
-          casesCta: "Смотреть кейсы →",
+          casesCta: "Смотреть в Telegram",
           casesNote: "Часть кейсов не публикуется в открытом доступе"
         },
         {
@@ -352,6 +410,8 @@ export const messagesByLang: Record<Lang, Messages> = {
     calculatorSection: {
       kicker: "Ориентир",
       title: "Соберите свою систему",
+      intro:
+        "Не уверены в наборе? Отметьте, что важно для вашей системы — покажу ориентир по бюджету. В заявке соберу решение под ваш контекст.",
       hint: "Отметьте направления — покажу ориентир по бюджету."
     },
     serviceOffers: {
@@ -397,7 +457,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           id: "creative",
           emoji: "🎬",
-          title: "Творчество",
+          title: "Портфолио",
           priceLine: "от 3 000 ₽",
           details: [
             { name: "Видео", price: "от 3 000 ₽" },
@@ -417,7 +477,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       site: "сайт",
       automation: "автоматизация",
       visual: "визуал",
-      creative: "творчество",
+      creative: "портфолио",
       emptyHint: "Отметьте, что входит в систему",
       estimateFrom: "Ориентир: от {amount} ₽"
     },
@@ -426,18 +486,65 @@ export const messagesByLang: Record<Lang, Messages> = {
       title: "Нейросети под ваши задачи",
       lead: "Спокойный вход в практику: от первых шагов до устойчивого результата.",
       bonuses: "Материалы, шаблоны и разбор ваших кейсов в формате тарифа.",
+      bonusesBlockTitle: "🎁 БОНУСЫ",
+      bonusesBlockBody:
+        "🎁 «10 универсальных промптов для жизни и бизнеса»\n🎁 чек-лист «Как писать точные запросы»\n🎁 таблица «Где ChatGPT реально экономит деньги»",
       tariffs: [
-        { id: "start", name: "START", price: "от 10 000 ₽", blurb: "База и первые результаты" },
-        { id: "practice", name: "PRACTICE", price: "от 25 000 ₽", blurb: "Практика и закрепление", featured: true },
-        { id: "vip", name: "VIP", price: "от 80 000 ₽", blurb: "Индивидуально и глубоко" }
+        {
+          id: "start",
+          name: "START",
+          price: "от 10 000 ₽",
+          blurb: "База и первые результаты",
+          detailTitle: "START — «смотрю и внедряю»",
+          detailBody: `Для тех, кто хочет спокойно пройти курс в своём темпе.
+
+Что внутри:
+🎥 5 уроков в записи (по ~60 минут)
+📘 шаблоны, чек-листы, гайды
+🎁 бонусы курса
+⏳ доступ 1 месяц
+
+Без ДЗ и без проверки — просто берёшь и делаешь.`
+        },
+        {
+          id: "practice",
+          name: "PRACTICE",
+          price: "от 25 000 ₽",
+          blurb: "Практика и закрепление",
+          featured: true,
+          detailTitle: "PRACTICE — «С куратором и домашками» ⭐️",
+          detailBody: `Самый частый выбор: важно не «посмотреть», а внедрить и получить результат.
+
+Что внутри:
+всё из пакета START +
+🧩 домашние задания после каждого урока
+👩‍🏫 проверка ДЗ куратором
+💬 закрытый чат участников
+⏳ доступ 3 месяца
+
+Этот вариант для тех, кто не хочет сорваться — вас ведут и дают обратную связь.`
+        },
+        {
+          id: "vip",
+          name: "VIP",
+          price: "от 80 000 ₽",
+          blurb: "Индивидуально и глубоко",
+          detailTitle: "VIP — «Наставничество + Zoom + визуал»",
+          detailBody: `Для тех, кому нужен максимум, глубина и личная поддержка.
+
+Что внутри:
+всё из пакета PRACTICE +
+📹 2 Zoom-встречи (внедрение + разбор задач)
+🎨 доп. уроки по визуалу: нейрокартинки, баннеры, оформление
+🧠 разбор вашего кейса / аккаунта / задач
+📜 именной сертификат от «НейроЭры»
+⏳ доступ 6 месяцев
+
+VIP — когда вы выходите с курса уже с навыком и внедрением, а не с ощущением «попробовала».`
+        }
       ],
       ctaChoose: "Выбрать тариф",
       ctaRequest: "Оставить заявку"
-    },
-    uncertaintyBlock: {
-      title: "Не знаете, что выбрать?",
-      body: "Оставьте заявку — соберу решение под вас.",
-      cta: "Оставить заявку"
     },
     contactChoice: {
       title: "Заявка с сайта",
@@ -574,28 +681,45 @@ export const messagesByLang: Record<Lang, Messages> = {
     socials: {
       kicker: "Соцсети и контакты",
       title: "На связи там, где вам удобнее",
-      intro: "Практика и обновления — в Telegram и VK. Для быстрой связи есть бот и почта.",
+      intro: "Практика и обновления в каналах. Для быстрой связи — бот и почта. Портфолио и музыка — отдельными ссылками.",
       tgChannelTitle: "Telegram-канал",
       tgChannelSubtitle: "«НейроЭра»: внедрения, инструменты, примеры",
       tgChannelText: "Контент, который можно применять сразу: сценарии ИИ, разборы и свежие находки.",
       tgCta: "Открыть канал",
       tgBotTitle: "Бот для связи",
+      tgBotSubtitle: "Telegram",
       tgBotText: "Быстрый контакт и заявка в пару касаний.",
+      tgBotCta: "Перейти в бот",
+      vkBrand: "ВКонтакте",
       vkPageTitle: "Страница VK",
       vkPageText: "Публикации и новости проекта.",
+      vkPageCta: "Открыть страницу",
       vkChannelTitle: "VK-канал",
       vkChannelText: "Формат канала в мессенджере VK.",
+      vkChannelCta: "Открыть канал",
+      maxTitle: "MAX",
+      maxSubtitle: "Канал «НейроЭра»",
+      maxText: "Обновления и смыслы в мессенджере MAX — удобно на телефоне и в вебе.",
+      maxCta: "Канал в MAX",
       emailTitle: "Email",
       emailText: "Для деловой переписки и материалов.",
+      emailCta: "Написать на почту",
       write: "Написать",
       open: "Открыть",
       instagramTitle: "Instagram",
+      instagramSubtitle: "Профиль",
       instagramText: "Визуальные фрагменты и настроение бренда.",
+      instagramCta: "Открыть Instagram",
       instagramLegal:
         "Instagram принадлежит Meta Platforms Inc., деятельность которой ограничена на территории РФ.",
       melanoTitle: "MelanoMusic",
-      melanoText: "Музыкальный проект",
-      note: "Ссылки централизованы в коде (`src/lib/links.ts`) — при смене URL правьте там."
+      melanoSubtitle: "Музыка и витрина",
+      melanoText: "Музыкальный проект — треки, витрина и настроение.",
+      melanoCta: "Слушать проект",
+      portfolioVibeTitle: "Портфолио",
+      portfolioVibeSubtitle: "Vibe Coder / AI-first",
+      portfolioVibeText: "Сайт с проектами, вайбом и ощущением от интерфейса — отдельно от направления «НейроЭра».",
+      portfolioVibeCta: "Открыть сайт"
     },
     referralSection: {
       kicker: "Полезное",
@@ -617,6 +741,21 @@ export const messagesByLang: Record<Lang, Messages> = {
         title: "VPN VEZARYS",
         desc: "Стабильный доступ к сервисам, когда это нужно по работе.",
         cta: "Открыть бота"
+      },
+      sferoom: {
+        title: "SFEROOM",
+        desc: "Бонус для рефералов: −10% по промокоду «НейроЭра». Скидка на подписку каждый месяц для приглашённых пользователей.",
+        cta: "Перейти"
+      },
+      prodamus: {
+        title: "Prodamus",
+        desc: "Для ИП и ООО — скидка 20% на подключение. Для самозанятых сейчас отдельная акционная цена — 1 ₽.",
+        cta: "Перейти"
+      },
+      edaSibiri: {
+        title: "Еда Сибири",
+        desc: "Сайт: edasibiri.ru. По промокоду НЕЙРОЭРА — скидка 5%.",
+        cta: "Перейти"
       }
     },
     final: {
@@ -710,17 +849,28 @@ export const messagesByLang: Record<Lang, Messages> = {
     },
     about: {
       kicker: "About",
-      title: "AI architect and creator, systems-first",
-      p1: "I don’t teach people to “use neural networks.”\nI embed them into real business problems.",
-      p2: "15+ years in leadership\nand a shift into hands-on AI adoption.",
-      listLabel: "I help assemble a system where:",
-      listItems: JSON.stringify([
-        "your site brings clients",
-        "content sells",
-        "automation saves time",
-        "AI amplifies outcomes"
+      title: "System first—tools second",
+      whoLabel: "Who I am",
+      whoBody:
+        "A growth AI architect. I help businesses move from ad‑hoc firefighting to a connected system—from positioning to automation and AI—so every part pulls toward the same measurable outcome, not a checklist for its own sake.",
+      whatLabel: "What you get in practice",
+      whatLead:
+        "I treat a business as one full loop, not a handful of separate “website / visuals / AI” projects that never connect.",
+      whatFlow: "positioning → content → site → automation → AI",
+      whatResultsLabel: "In practice, that means:",
+      whatResults: JSON.stringify([
+        "crisper positioning and growing recognition",
+        "a more stable flow of leads and deals",
+        "time you stop burning on manual work",
+        "a foundation to scale without constant fire drills"
       ]),
-      thesis: "You’re not buying a website.\nYou’re buying a system that works."
+      whatEntry:
+        "We can work end‑to‑end or on a specific slice: visuals, automation, or a focused AI solution—what matters is that it slots into the loop, not fights it.",
+      whatReinforce: "Each improvement is aimed at the whole, not as an isolated add‑on for show.",
+      whyLabel: "Track record and focus",
+      whyBody:
+        "15+ years running operations in business. Leadership at 100+ people, networks of up to ~20 locations. I optimize for leads, revenue, and process efficiency—not a slide that only looks good.\n\nI tailor the stack to your niche, depth, and scale; no one‑size copy‑paste—anchored in where the fastest gains are for your money and time.",
+      finalBlock: "The outcome is a system that works for you—with clear logic, demand, and revenue, not a pile of disconnected tools."
     },
     pain: {
       kicker: "Diagnosis",
@@ -731,7 +881,9 @@ export const messagesByLang: Record<Lang, Messages> = {
         "You tried AI, but it’s chaos",
         "Everything depends on you and doesn’t scale"
       ],
-      closing: "The problem isn’t the tools.\nThe problem is the lack of a system."
+      closing: "The problem isn’t the tools.\nThe problem is the lack of a system.",
+      diagnosticsCta: "Book a diagnostic call",
+      diagnosticsMailSubject: "Diagnostic session request"
     },
     solution: {
       kicker: "Solution",
@@ -749,12 +901,22 @@ export const messagesByLang: Record<Lang, Messages> = {
       kicker: "Portfolio",
       title: "Visuals, motion, and sound",
       intro: "Focus areas where I ship cohesive work at the intersection of craft and AI.",
+      open: "Open",
+      streamOn: "Listen on",
+      listenHeading: "Listen",
+      streamApple: "Apple Music",
+      streamVk: "VK Music",
+      streamYandex: "Yandex Music",
       listenTrack: "Listen to the track",
       watchClip: "Watch the clip",
-      neuroPhotoHint:
-        "A subtle sway adds atmosphere — hover a piece to lift and emphasize the frame.",
+      neuroPhotoHint: "",
       neuroPhotoReduced:
         "Motion is reduced per your accessibility settings — the gallery is static.",
+      musicTrack1: "Business partner",
+      musicTrack2: "Weekdays T2 (18+)",
+      musicTrack3: "Spring between the lines",
+      musicTrack4: "All good",
+      musicTrack5: "I have the right",
       items: [
         {
           title: "Neuro photography",
@@ -762,10 +924,10 @@ export const messagesByLang: Record<Lang, Messages> = {
           anchor: "portfolio-photos"
         },
         {
-          title: "Video / clips",
+          title: "Portfolio",
           desc: "Scripts, editing, and visuals — examples on Telegram.",
           anchor: "portfolio-video",
-          casesCta: "View cases →",
+          casesCta: "View on Telegram",
           casesNote: "Some work is not shared publicly"
         },
         {
@@ -863,6 +1025,8 @@ export const messagesByLang: Record<Lang, Messages> = {
     calculatorSection: {
       kicker: "Estimate",
       title: "Build your stack",
+      intro:
+        "Not sure what to include? Check what matters for your system — I’ll give a budget range. In your request, I’ll shape the offer to your context.",
       hint: "Check what you need — I’ll share a budget range."
     },
     serviceOffers: {
@@ -908,7 +1072,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           id: "creative",
           emoji: "🎬",
-          title: "Creative",
+          title: "Portfolio",
           priceLine: "from 3,000 ₽",
           details: [
             { name: "Video", price: "from 3,000 ₽" },
@@ -928,7 +1092,7 @@ export const messagesByLang: Record<Lang, Messages> = {
       site: "website",
       automation: "automation",
       visual: "visuals",
-      creative: "creative",
+      creative: "portfolio",
       emptyHint: "Select what goes into the system",
       estimateFrom: "Ballpark: from {amount} ₽"
     },
@@ -937,18 +1101,65 @@ export const messagesByLang: Record<Lang, Messages> = {
       title: "Neural networks for your real tasks",
       lead: "A calm on-ramp: from first steps to steady outcomes.",
       bonuses: "Templates, materials, and case reviews tailored to your tier.",
+      bonusesBlockTitle: "🎁 Bonuses (all tiers)",
+      bonusesBlockBody:
+        "🎁 10 universal prompts for life and business\n🎁 Checklist: how to write precise requests\n🎁 Table: where ChatGPT really saves money",
       tariffs: [
-        { id: "start", name: "START", price: "from 10,000 ₽", blurb: "Foundations and first wins" },
-        { id: "practice", name: "PRACTICE", price: "from 25,000 ₽", blurb: "Practice and momentum", featured: true },
-        { id: "vip", name: "VIP", price: "from 80,000 ₽", blurb: "1:1 and deep work" }
+        {
+          id: "start",
+          name: "START",
+          price: "from 10,000 ₽",
+          blurb: "Foundations and first wins",
+          detailTitle: "START — “I watch and implement”",
+          detailBody: `For those who want to go through the course calmly at their own pace.
+
+What’s inside:
+🎥 5 recorded lessons (~60 min each)
+📘 templates, checklists, guides
+🎁 course bonuses
+⏳ 1 month access
+
+No homework or reviews — you take it and do it.`
+        },
+        {
+          id: "practice",
+          name: "PRACTICE",
+          price: "from 25,000 ₽",
+          blurb: "Practice and momentum",
+          featured: true,
+          detailTitle: "PRACTICE — “With a curator and homework” ⭐️",
+          detailBody: `Our most popular option: the goal is not to “watch” but to implement and get a result.
+
+What’s inside:
+everything in START +
+🧩 homework after every lesson
+👩‍🏫 reviews from the curator
+💬 private participants’ chat
+⏳ 3 months access
+
+You’re less likely to drop off — you’re guided and get feedback.`
+        },
+        {
+          id: "vip",
+          name: "VIP",
+          price: "from 80,000 ₽",
+          blurb: "1:1 and deep work",
+          detailTitle: "VIP — “Mentoring + Zoom + visuals”",
+          detailBody: `For those who want maximum depth and personal support.
+
+What’s inside:
+everything in PRACTICE +
+📹 2 Zoom calls (implementation + task review)
+🎨 extra lessons on visuals: AI images, banners, layout
+🧠 review of your case / account / tasks
+📜 personalized certificate from NeiroEra
+⏳ 6 months access
+
+VIP is when you leave with skills in use — not just “I tried it once.”`
+        }
       ],
       ctaChoose: "Choose a tier",
       ctaRequest: "Request a quote"
-    },
-    uncertaintyBlock: {
-      title: "Not sure what to pick?",
-      body: "Leave a request — I’ll build a solution for you.",
-      cta: "Request a quote"
     },
     contactChoice: {
       title: "Website request",
@@ -1085,28 +1296,45 @@ export const messagesByLang: Record<Lang, Messages> = {
     socials: {
       kicker: "Social & contact",
       title: "Reach out where it fits you",
-      intro: "Updates live on Telegram and VK. For a fast ping, use the bot or email.",
+      intro: "Updates in channels. For a fast ping, use the bot or email. Portfolio and music are separate links.",
       tgChannelTitle: "Telegram channel",
       tgChannelSubtitle: "NeuroEra: playbooks, tools, examples",
       tgChannelText: "Actionable ideas you can apply immediately—AI workflows, breakdowns, fresh finds.",
       tgCta: "Open channel",
       tgBotTitle: "Contact bot",
+      tgBotSubtitle: "Telegram",
       tgBotText: "Quick touchpoints and requests in a few taps.",
-      vkPageTitle: "VK profile",
+      tgBotCta: "Open bot",
+      vkBrand: "VK",
+      vkPageTitle: "VK page",
       vkPageText: "Posts and project news.",
+      vkPageCta: "Open page",
       vkChannelTitle: "VK channel",
       vkChannelText: "Messenger-style channel inside VK.",
+      vkChannelCta: "Open channel",
+      maxTitle: "MAX",
+      maxSubtitle: "NeuroEra on MAX",
+      maxText: "Updates in the MAX messenger—mobile and web.",
+      maxCta: "Open MAX channel",
       emailTitle: "Email",
       emailText: "For formal threads and materials.",
+      emailCta: "Write an email",
       write: "Write",
       open: "Open",
       instagramTitle: "Instagram",
+      instagramSubtitle: "Profile",
       instagramText: "Visual snippets and brand mood.",
+      instagramCta: "Open Instagram",
       instagramLegal:
         "Instagram is owned by Meta Platforms Inc., whose activities are restricted in the Russian Federation.",
       melanoTitle: "MelanoMusic",
-      melanoText: "Music project",
-      note: "All URLs live in `src/lib/links.ts` for easy updates."
+      melanoSubtitle: "Music & site",
+      melanoText: "Music project—tracks, site, and mood.",
+      melanoCta: "Open project",
+      portfolioVibeTitle: "Portfolio",
+      portfolioVibeSubtitle: "Vibe Coder / AI-first",
+      portfolioVibeText: "A separate site: projects, vibe, and the feel of the interface.",
+      portfolioVibeCta: "Open site"
     },
     referralSection: {
       kicker: "Partners",
@@ -1128,6 +1356,21 @@ export const messagesByLang: Record<Lang, Messages> = {
         title: "VPN VEZARYS",
         desc: "Reliable access when your work depends on it.",
         cta: "Open bot"
+      },
+      sferoom: {
+        title: "SFEROOM",
+        desc: "Referral bonus: −10% with promo code “NeuroEra.” Monthly subscription discount for invited users.",
+        cta: "Open"
+      },
+      prodamus: {
+        title: "Prodamus",
+        desc: "20% off connection for sole proprietors and companies. A special promo price of ₽1 for the self‑employed.",
+        cta: "Open"
+      },
+      edaSibiri: {
+        title: "Eda Sibiri",
+        desc: "edasibiri.ru. Promo code NEIROERA — 5% off.",
+        cta: "Open"
       }
     },
     final: {

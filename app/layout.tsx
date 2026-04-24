@@ -37,6 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="orb-drift-2 absolute left-3 top-1/4 h-[24rem] w-[24rem] gradient-orb warm will-change-transform" />
               <div className="orb-drift-3 absolute bottom-0 right-0 h-[28rem] w-[28rem] opacity-65 gradient-orb will-change-transform" />
               <div className="animated-gradient absolute inset-0 opacity-[0.38]" />
+              {/* Светлая тема: мягкий «радужный» слой под зелёным свечением (см. .light-rainbow-mesh) */}
+              <div className="light-rainbow-mesh absolute inset-0" />
             </div>
 
             <div className="site-noise" aria-hidden="true" />
