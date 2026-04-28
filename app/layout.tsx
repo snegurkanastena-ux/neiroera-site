@@ -6,6 +6,7 @@ import Header from "../src/components/Header";
 import { Container } from "../src/components/Container";
 import { SiteFooter } from "../src/components/SiteFooter";
 import { ThemeToggle } from "../src/components/ThemeToggle";
+import { Analytics } from "@vercel/analytics/next";
 
 const fontDisplay = Unbounded({
   subsets: ["latin", "cyrillic"],
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
