@@ -21,6 +21,7 @@ import { LeadForm } from "./LeadForm";
 import { SocialContactCard } from "./SocialContactCard";
 import { Button } from "./ui/Button";
 import { NeuroPhotoGallery } from "./NeuroPhotoGallery";
+import { Certificates } from "./Certificates";
 
 /** Треки в `public/portfolio/music` (имена файлов из репозитория). */
 const PORTFOLIO_MUSIC_TRACKS = [
@@ -707,6 +708,8 @@ export function HomePageContent() {
           </div>
         </div>
       </section>
+
+      <Certificates />
 
       {/* БОЛИ */}
       <section id="pain" className="mt-12 scroll-mt-20 sm:mt-16 sm:scroll-mt-24 md:mt-20">
