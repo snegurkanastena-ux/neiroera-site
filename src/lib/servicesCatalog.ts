@@ -17,6 +17,7 @@ export const SERVICE_IDS = [
   "training",
   "aiConsulting",
   "branding",
+  "stickers",
   "custom"
 ] as const;
 
@@ -24,18 +25,19 @@ export type ServiceId = (typeof SERVICE_IDS)[number];
 
 /** Цены в условных единицах (например, руб.) — заглушки для демонстрации UI */
 export const SERVICE_PRICES: Record<ServiceId, number> = {
-  websites: 45000,
-  apps: 95000,
+  websites: 10000,
+  apps: 25000,
   content: 12000,
   neurovideo: 8000,
   neurophoto: 5000,
   songs: 7000,
-  automation: 25000,
-  bots: 35000,
+  automation: 20000,
+  bots: 20000,
   training: 18000,
-  aiConsulting: 15000,
-  branding: 40000,
-  custom: 20000
+  aiConsulting: 5000,
+  branding: 10000,
+  stickers: 2000,
+  custom: 5000
 };
 
 export type QtyLabelKind = "projects" | "units" | "sessions";
@@ -49,7 +51,7 @@ export type CalculatorRowConfig = {
 };
 
 function qtyKindForService(id: ServiceId): QtyLabelKind {
-  if (["content", "neurovideo", "neurophoto", "songs"].includes(id)) return "units";
+  if (["content", "neurovideo", "neurophoto", "songs", "stickers"].includes(id)) return "units";
   if (["aiConsulting", "training"].includes(id)) return "sessions";
   return "projects";
 }
@@ -59,3 +61,5 @@ export const CALCULATOR_ROW_CONFIG: CalculatorRowConfig[] = SERVICE_IDS.map((id)
   maxQty: 50,
   qtyLabelKind: qtyKindForService(id)
 }));
+
+

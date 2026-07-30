@@ -8,7 +8,7 @@ export default function CasesPage() {
       <Reveal>
         <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Кейсы</h1>
         <p className="mt-3 text-text/70 max-w-2xl">
-          Заглушка под полноценную витрину кейсов. Сейчас на главной уже есть “карточки-истории” — здесь можно расширить под статьи.
+          Портфолио НейроЭры: ИИ-коуч по трансформации, OpenClaw-бот Кузя, Rankofe с приложением и клубом, стикеры для бизнеса с Telegram, MAX и Битрикс.
         </p>
       </Reveal>
 
@@ -34,4 +34,5 @@ export default function CasesPage() {
     </div>
   );
 }
+
 
