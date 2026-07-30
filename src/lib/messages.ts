@@ -457,7 +457,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         {
           id: "creative",
           emoji: "🎬",
-          title: "Портфолио",
+          title: "Творчество",
           priceLine: "от 3 000 ₽",
           details: [
             { name: "Видео", price: "от 3 000 ₽" },
@@ -1072,7 +1072,7 @@ VIP — когда вы выходите с курса уже с навыком 
         {
           id: "creative",
           emoji: "🎬",
-          title: "Portfolio",
+          title: "Creative",
           priceLine: "from 3,000 ₽",
           details: [
             { name: "Video", price: "from 3,000 ₽" },
