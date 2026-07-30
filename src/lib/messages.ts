@@ -335,7 +335,7 @@ export const messagesByLang: Record<Lang, Messages> = {
           desc: "Рубрики, смыслы и ритм публикаций, которые прогревают аудиторию и поддерживают продажи."
         },
         {
-          title: "Автоматизация",
+          title: "ИИ-ассистент",
           desc: "AI и процессы, которые снимают рутину и ускоряют команду — от черновиков до сценариев."
         }
       ]
@@ -377,7 +377,7 @@ export const messagesByLang: Record<Lang, Messages> = {
         action: "В калькулятор"
       },
       automation: {
-        title: "Автоматизация",
+        title: "ИИ-ассистент",
         desc: "Снимаю рутину: сценарии, интеграции и понятные процессы для команды.",
         action: "В калькулятор"
       },
@@ -424,25 +424,25 @@ export const messagesByLang: Record<Lang, Messages> = {
           id: "sites",
           emoji: "💻",
           title: "Сайты",
-          priceLine: "от 20 000 ₽",
+          priceLine: "от 10 000 ₽",
           details: [
-            { name: "Лендинг", price: "от 20 000 ₽" },
-            { name: "Под ключ", price: "от 50 000 ₽" }
+            { name: "Лендинг / простой сайт", price: "от 10 000 ₽" },
+            { name: "Многостраничный сайт", price: "от 25 000 ₽" }
           ]
         },
         {
           id: "automation",
           emoji: "⚙️",
-          title: "Автоматизация",
-          priceLine: "от 15 000 ₽",
-          details: [{ name: "Боты / агенты", price: "от 15 000 ₽" }]
+          title: "ИИ-ассистент",
+          priceLine: "20 000 ₽",
+          details: [{ name: "ИИ-ассистент под задачу", price: "20 000 ₽" }]
         },
         {
           id: "content",
           emoji: "🎨",
-          title: "Контент и визуал",
-          priceLine: "от 5 000 ₽",
-          details: [{ name: "Визуал", price: "от 5 000 ₽" }]
+          title: "Разбор",
+          priceLine: "5 000 ₽",
+          details: [{ name: "Консультация / разбор", price: "5 000 ₽" }]
         },
         {
           id: "training",
@@ -950,7 +950,7 @@ VIP — когда вы выходите с курса уже с навыком 
           desc: "Themes, narrative, and publishing rhythm that warm the audience and support sales."
         },
         {
-          title: "Automation",
+          title: "AI assistant",
           desc: "AI and workflows that remove busywork and speed up the team — from drafts to playbooks."
         }
       ]
@@ -992,7 +992,7 @@ VIP — когда вы выходите с курса уже с навыком 
         action: "Add to estimator"
       },
       automation: {
-        title: "Automation",
+        title: "AI assistant",
         desc: "Remove busywork: scenarios, integrations, and clear team playbooks.",
         action: "Add to estimator"
       },
@@ -1039,25 +1039,25 @@ VIP — когда вы выходите с курса уже с навыком 
           id: "sites",
           emoji: "💻",
           title: "Websites",
-          priceLine: "from 20,000 ₽",
+          priceLine: "from 10,000 ₽",
           details: [
-            { name: "Landing page", price: "from 20,000 ₽" },
-            { name: "Full build", price: "from 50,000 ₽" }
+            { name: "Landing / simple website", price: "from 10,000 ₽" },
+            { name: "Multi-page website", price: "from 25,000 ₽" }
           ]
         },
         {
           id: "automation",
           emoji: "⚙️",
-          title: "Automation",
-          priceLine: "from 15,000 ₽",
-          details: [{ name: "Bots / agents", price: "from 15,000 ₽" }]
+          title: "AI assistant",
+          priceLine: "20,000 ₽",
+          details: [{ name: "AI assistant for your workflow", price: "20,000 ₽" }]
         },
         {
           id: "content",
           emoji: "🎨",
-          title: "Content & visuals",
-          priceLine: "from 5,000 ₽",
-          details: [{ name: "Visuals", price: "from 5,000 ₽" }]
+          title: "Diagnostic call",
+          priceLine: "5,000 ₽",
+          details: [{ name: "Consultation / diagnostic", price: "5,000 ₽" }]
         },
         {
           id: "training",
