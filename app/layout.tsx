@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Onest, Unbounded } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -20,6 +21,8 @@ const fontBody = Onest({
   weight: ["400", "500", "600", "700"]
 });
 
+const yandexMetrikaId = 111188666;
+
 export const metadata: Metadata = {
   title: "Анастасия Мельникова — AI-креатор и AI-архитектор",
   description:
@@ -30,6 +33,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${fontDisplay.variable} ${fontBody.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <Script id="yandex-metrika" strategy="afterInteractive">
+          {`
+            (function(m,e,t,r,i,k,a){
+              m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l=1*new Date();
+              for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+            })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${yandexMetrikaId}', 'ym');
+
+            ym(${yandexMetrikaId}, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+          `}
+        </Script>
+        <noscript>
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`https://mc.yandex.ru/watch/${yandexMetrikaId}`} style={{ position: "absolute", left: "-9999px" }} alt="" />
+          </div>
+        </noscript>
         <Providers>
           <div className="relative min-h-screen overflow-x-hidden">
             {/* Фоновые градиенты (не перехватывают клики) */}
