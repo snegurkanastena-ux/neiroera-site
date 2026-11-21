@@ -1,9 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "../providers/SiteProviders";
-import { Button } from "./ui/Button";
 
 const portfolioUrl = "https://www.xn----8sb1aregjk5f.xn--p1ai/portfolio";
 const portfolioLabels = {
@@ -19,51 +18,59 @@ export function ServiceOfferGrid() {
   const { messages, lang } = useI18n();
   const { cards, expand, collapse } = messages.serviceOffers;
   const [openId, setOpenId] = useState<string | null>(null);
-  const [portfolioId, setPortfolioId] = useState<keyof typeof portfolioLabels | null>(null);
-  const dialog = useRef<HTMLDialogElement>(null);
   const reduceMotion = useReducedMotion();
   const openCard = openId ? cards.find((c) => c.id === openId) : undefined;
-  const portfolioCard = cards.find((card) => card.id === portfolioId);
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {cards.map((card) => {
         const isOpen = openId === card.id;
-        const opensDialog = isPortfolioService(card.id);
+        const cardContent = (
+          <>
+            <span className="text-2xl leading-none" aria-hidden>{card.emoji}</span>
+            <span className="mt-3 min-w-0 max-w-full break-words text-lg font-bold leading-tight">{card.title}</span>
+            <span className="mt-2 min-w-0 max-w-full break-words text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">
+              {card.priceLine}
+            </span>
+          </>
+        );
+        const cardClass = `ne-card-hover-sm flex h-full w-full max-w-full flex-col items-start overflow-hidden px-4 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:min-h-[140px] sm:px-5 sm:py-6 ${
+          isOpen ? "border-accent/50 bg-accent/[0.08] text-text" : "text-text/95"
+        }`;
+        const innerClass = "ne-card-hover__inner flex h-full w-full min-w-0 max-w-full flex-col items-start text-left";
+
         return (
           <div key={card.id} className="min-w-0">
-            <motion.button
-              type="button"
-              aria-haspopup={opensDialog ? "dialog" : undefined}
-              aria-expanded={opensDialog ? undefined : isOpen}
-              aria-controls={opensDialog ? "service-portfolio-dialog" : isOpen ? `service-offer-panel-${card.id}` : undefined}
-              onClick={() => {
-                if (isPortfolioService(card.id)) {
-                  setPortfolioId(card.id);
-                  dialog.current?.showModal();
-                } else {
-                  setOpenId((prev) => (prev === card.id ? null : card.id));
-                }
-              }}
-              whileTap={reduceMotion ? undefined : { scale: 0.985 }}
-              transition={{ type: "spring", stiffness: 480, damping: 28 }}
-              className={`ne-card-hover-sm flex w-full max-w-full flex-col items-start overflow-hidden px-4 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:min-h-[140px] sm:px-5 sm:py-6 ${
-                isOpen ? "border-accent/50 bg-accent/[0.08] text-text" : "text-text/95"
-              }`}
-            >
-              <span className="ne-card-hover__inner flex w-full min-w-0 max-w-full flex-col items-start text-left">
-                <span className="text-2xl leading-none" aria-hidden>
-                  {card.emoji}
+            {isPortfolioService(card.id) ? (
+              <a
+                className={cardClass}
+                href={`${portfolioUrl}?utm_source=neiroera&utm_medium=referral&utm_campaign=services&utm_content=${card.id}`}
+              >
+                <span className={innerClass}>
+                  {cardContent}
+                  <span className="mt-auto pt-3 text-sm font-semibold leading-snug text-accent underline underline-offset-4">
+                    {portfolioLabels[card.id][lang]} <span aria-hidden>→</span>
+                  </span>
                 </span>
-                <span className="mt-3 min-w-0 max-w-full break-words text-lg font-bold leading-tight">{card.title}</span>
-                <span className="mt-2 min-w-0 max-w-full break-words text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">
-                  {card.priceLine}
+              </a>
+            ) : (
+              <motion.button
+                type="button"
+                aria-expanded={isOpen}
+                aria-controls={isOpen ? `service-offer-panel-${card.id}` : undefined}
+                onClick={() => setOpenId((prev) => (prev === card.id ? null : card.id))}
+                whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+                transition={{ type: "spring", stiffness: 480, damping: 28 }}
+                className={cardClass}
+              >
+                <span className={innerClass}>
+                  {cardContent}
+                  <span className="mt-3 text-xs font-medium text-text/55">
+                    {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
+                  </span>
                 </span>
-                <span className="mt-3 text-xs font-medium text-text/55">
-                  {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
-                </span>
-              </span>
-            </motion.button>
+              </motion.button>
+            )}
           </div>
         );
       })}
@@ -119,44 +126,6 @@ export function ServiceOfferGrid() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-
-      <dialog
-        ref={dialog}
-        id="service-portfolio-dialog"
-        aria-labelledby="service-portfolio-title"
-        onClose={() => setPortfolioId(null)}
-        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-lg border border-accent/35 bg-bg p-5 text-text shadow-xl backdrop:bg-black/70 sm:p-6"
-      >
-        <button
-          type="button"
-          aria-label={lang === "ru" ? "Закрыть" : "Close"}
-          onClick={() => dialog.current?.close()}
-          className="absolute right-2 top-2 grid h-10 w-10 place-items-center rounded text-2xl leading-none hover:bg-accent/10 focus-visible:ring-2 focus-visible:ring-accent"
-        >
-          <span aria-hidden>×</span>
-        </button>
-        {portfolioCard && portfolioId ? (
-          <>
-            <h2 id="service-portfolio-title" className="pr-10 text-xl font-bold">{portfolioCard.title}</h2>
-            <ul className="my-4 divide-y divide-border/15 border-y border-border/15">
-              {portfolioCard.details.map((row) => (
-                <li key={row.name} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 py-3">
-                  <span>{row.name}</span>
-                  <span className="font-bold text-accent">{row.price}</span>
-                </li>
-              ))}
-            </ul>
-            <Button
-              href={`${portfolioUrl}?utm_source=neiroera&utm_medium=referral&utm_campaign=services&utm_content=${portfolioId}`}
-              target="_blank"
-              className="w-full text-center"
-            >
-              {portfolioLabels[portfolioId][lang]} <span aria-hidden>↗</span>
-            </Button>
-            <p className="mt-3 text-sm text-text/70">про-сайты.рф</p>
-          </>
-        ) : null}
-      </dialog>
     </div>
   );
 }
