@@ -25,7 +25,7 @@ export const siteLinks = {
   /** VK канал (мессенджер) */
   vkChannel: "https://vk.com/im/channels/-234461837",
   /** Канал в мессенджере MAX */
-  maxChannel: "https://max.ru/join/97kInXgz8SvwTIVfosXrcX782wDQnIh_UmPJQfd39CY",
+  maxChannel: "https://max.ru/channel_neiroeraMelnikova",
   /** Портфолио / вайбкодинг (отдельный проект) */
   portfolioVibecoding: "https://anastasia-portfolio-five.vercel.app/",
   /** Email */

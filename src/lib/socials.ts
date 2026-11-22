@@ -1,7 +1,7 @@
 import { siteLinks } from "./links";
 
 export type SocialLink = {
-  label: string;
+  label: "Telegram" | "VK" | "Instagram" | "MAX";
   href: string;
 };
 
@@ -12,5 +12,6 @@ export type SocialLink = {
 export const socialLinks: SocialLink[] = [
   { label: "Telegram", href: siteLinks.telegramChannel },
   { label: "VK", href: siteLinks.vkPage },
-  { label: "Instagram", href: siteLinks.instagram }
+  { label: "Instagram", href: siteLinks.instagram },
+  { label: "MAX", href: siteLinks.maxChannel }
 ];

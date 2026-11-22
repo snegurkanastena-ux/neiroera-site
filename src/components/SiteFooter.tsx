@@ -9,7 +9,6 @@ import { socialLinks } from "../lib/socials";
 import { useI18n } from "../providers/SiteProviders";
 import { Container } from "./Container";
 import { VkLogoIcon } from "./icons/VkLogoIcon";
-import { Button } from "./ui/Button";
 
 function TelegramIcon() {
   return (
@@ -33,10 +32,18 @@ function InstagramIcon() {
   );
 }
 
-function SocialGlyph({ label }: { label: string }) {
+const socialColors = {
+  Telegram: "bg-[#0876a6]",
+  VK: "bg-[#0063d6]",
+  Instagram: "bg-gradient-to-r from-[#a32e53] via-[#b32370] to-[#6e35a8]",
+  MAX: "bg-gradient-to-r from-[#214ec7] to-[#6e1aff]"
+};
+
+function SocialGlyph({ label }: { label: keyof typeof socialColors }) {
   if (label === "Telegram") return <TelegramIcon />;
   if (label === "VK") return <VkIcon />;
-  return <InstagramIcon />;
+  if (label === "Instagram") return <InstagramIcon />;
+  return null;
 }
 
 export function SiteFooter() {
@@ -64,21 +71,16 @@ export function SiteFooter() {
 
           <div className="flex flex-wrap items-center gap-2">
             {socialLinks.map((s) => (
-              <Button
+              <a
                 key={s.label}
                 href={s.href}
-                variant={s.label === "Telegram" ? "primary" : "ghost"}
-                className="!px-3"
+                className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 text-sm font-semibold text-white transition-[filter] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-accent ${socialColors[s.label]}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span
-                  className={`inline-flex items-center gap-2 ${s.label === "Telegram" ? "text-onAccent" : "text-accent"}`}
-                >
-                  <SocialGlyph label={s.label} />
-                  <span className="hidden sm:inline">{s.label}</span>
-                </span>
-              </Button>
+                <SocialGlyph label={s.label} />
+                {s.label}
+              </a>
             ))}
           </div>
       </Container>
