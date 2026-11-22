@@ -1153,7 +1153,9 @@ export function HomePageContent() {
                   { key: "vezarys" as const, href: siteLinks.referrals.vezarysVpn },
                   { key: "sferoom" as const, href: siteLinks.referrals.sferoom },
                   { key: "prodamus" as const, href: siteLinks.referrals.prodamus },
-                  { key: "edaSibiri" as const, href: siteLinks.referrals.edaSibiri }
+                  { key: "edaSibiri" as const, href: siteLinks.referrals.edaSibiri },
+                  { key: "virtualCard" as const, href: siteLinks.referrals.virtualCard },
+                  { key: "aiSchool" as const, href: siteLinks.referrals.aiSchool }
                 ] as const
               ).map((item) => {
                 const block = messages.referrals[item.key];

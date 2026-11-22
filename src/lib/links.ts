@@ -46,6 +46,8 @@ export const siteLinks = {
     /** Prodamus (подключение оплаты) */
     prodamus: "https://connect.prodamus.ru/?ref=NEIROERA&c=SDy",
     /** Еда Сибири */
-    edaSibiri: "https://edasibiri.ru"
+    edaSibiri: "https://edasibiri.ru",
+    virtualCard: "https://platipomiru.com/?code=13E783Q1",
+    aiSchool: "https://neiroprofi.site/neiroseti?gcao=46986&gcpc=3e87e"
   }
 } as const;

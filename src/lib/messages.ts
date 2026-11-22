@@ -756,6 +756,16 @@ VIP — когда вы выходите с курса уже с навыком 
         title: "Еда Сибири",
         desc: "Сайт: edasibiri.ru. По промокоду НЕЙРОЭРА — скидка 5%.",
         cta: "Перейти"
+      },
+      virtualCard: {
+        title: "💳 Виртуальная иностранная карта",
+        desc: "Выпуск примерно за минуту, пополнение с обычной карты. Использую для оплаты зарубежных сервисов.",
+        cta: "Перейти"
+      },
+      aiSchool: {
+        title: "🎓 Школа ИИ технологий Ксении Барановой",
+        desc: "Здесь я училась нейросетям, ИИ-агентам, ботам, контенту, визуалу и вайб-кодингу.",
+        cta: "Перейти"
       }
     },
     final: {
@@ -1370,6 +1380,16 @@ VIP is when you leave with skills in use — not just “I tried it once.”`
       edaSibiri: {
         title: "Eda Sibiri",
         desc: "edasibiri.ru. Promo code NEIROERA — 5% off.",
+        cta: "Open"
+      },
+      virtualCard: {
+        title: "💳 International virtual card",
+        desc: "Issued in about a minute and topped up with a regular card. I use it to pay for international services.",
+        cta: "Open"
+      },
+      aiSchool: {
+        title: "🎓 Ksenia Baranova's AI Technology School",
+        desc: "I studied neural networks, AI agents, bots, content creation, visual design and vibe coding here.",
         cta: "Open"
       }
     },
