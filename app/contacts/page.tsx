@@ -27,7 +27,7 @@ export default function ContactsPage() {
       <Reveal>
         <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Контакты</h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-text/80">
-          Связаться можно через сайт, email или социальные сети
+          Связаться можно по телефону, почте или через социальные сети
         </p>
       </Reveal>
 
@@ -35,6 +35,11 @@ export default function ContactsPage() {
         <dl className="mt-10 max-w-2xl rounded-2xl border border-border/14 bg-bg/[0.15] px-5 py-2 sm:px-8 sm:py-4">
           <Row label="Имя">Мельникова Анастасия Викторовна</Row>
           <Row label="Бренд">НейроЭра</Row>
+          <Row label="Телефон">
+            <a href="tel:+79922080300" className={linkClass}>
+              +7 992 208-03-00
+            </a>
+          </Row>
           <Row label="Email">
             <a href="mailto:neuroera@yandex.com" className={linkClass}>
               neuroera@yandex.com
@@ -54,6 +59,11 @@ export default function ContactsPage() {
           <Row label="VK">
             <a href={siteLinks.vkPage} className={linkClass} target="_blank" rel="noopener noreferrer">
               https://vk.com/neuroera_melnikova
+            </a>
+          </Row>
+          <Row label="MAX">
+            <a href={siteLinks.maxChannel} className={linkClass} target="_blank" rel="noopener noreferrer">
+              Канал «НейроЭра»
             </a>
           </Row>
           <Row label="Instagram">
