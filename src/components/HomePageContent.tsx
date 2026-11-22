@@ -904,10 +904,10 @@ export function HomePageContent() {
       {/* AUDIENCE */}
       <section id="audience" className="mt-12 sm:mt-16 md:mt-20">
         <SectionTitle kickerKey="audience.kicker" titleKey="audience.title" />
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid auto-rows-fr gap-4 md:grid-cols-2">
           {audienceItems.map((x, idx) => (
             <Reveal key={x.title} delayMs={idx * 80}>
-              <div className="ne-card-hover p-4 sm:p-6">
+              <div className="ne-card-hover h-full p-4 sm:p-6">
                 <div className="ne-card-hover__inner">
                 <div className="flex items-start justify-between gap-4">
                   <div>
