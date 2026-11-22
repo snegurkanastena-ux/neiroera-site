@@ -1,158 +1,106 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
-import { Button } from "./ui/Button";
 
-const reviewContact = {
-  ru: { book: "Записаться на разбор", email: "Написать на почту", subject: "Запись на разбор" },
-  en: { book: "Book a consultation", email: "Send an email", subject: "Consultation booking" }
+const portfolioUrl = "https://www.xn----8sb1aregjk5f.xn--p1ai/portfolio";
+const vkUrl = new URL(new URL(siteLinks.vkPage).pathname, "https://vk.me").href;
+const phoneUrl = "tel:+79922080300";
+
+const offerText = {
+  ru: {
+    sites: { title: "Сайты", summary: "Лендинг или многостраничный сайт под вашу задачу.", topic: "Обсудить разработку сайта" },
+    automation: { title: "Автоматизация", summary: "Боты, ИИ-агенты и Android-приложения под вашу задачу.", topic: "Обсудить автоматизацию" },
+    content: { title: "Разбор", summary: "Консультация по вашей задаче и рекомендации по следующим шагам.", topic: "Записаться на разбор" },
+    training: { title: "Обучение нейросетям", summary: "Уроки и шаблоны. В старших тарифах — проверка заданий и наставничество.", topic: "Узнать об обучении нейросетям" },
+    creative: { title: "Видео и музыка на заказ", summary: "Видео или песня под вашу задачу.", topic: "Обсудить заказ видео или музыки" }
+  },
+  en: {
+    sites: { title: "Websites", summary: "A landing page or a multi-page website for your needs.", topic: "Discuss a website project" },
+    automation: { title: "Automation", summary: "Bots, AI agents and Android apps for your workflow.", topic: "Discuss automation" },
+    content: { title: "Consultation", summary: "Review your challenge and get clear recommendations on next steps.", topic: "Book a consultation" },
+    training: { title: "AI training", summary: "Lessons and templates, with assignment feedback and mentoring in higher tiers.", topic: "Ask about AI training" },
+    creative: { title: "Custom video and music", summary: "A video or song tailored to your project.", topic: "Discuss a video or music project" }
+  }
 };
-const reviewVkUrl = new URL(new URL(siteLinks.vkPage).pathname, "https://vk.me").href;
+
+const contactText = {
+  ru: { choose: "Выбрать", email: "Почта", call: "Позвонить", quote: "По задаче", examples: "Примеры сайтов", cases: "Кейсы автоматизации", plans: "Тарифы обучения", video: "Примеры видео", music: "MELANØ" },
+  en: { choose: "Select", email: "Email", call: "Call", quote: "Project quote", examples: "Website examples", cases: "Automation case studies", plans: "Training plans", video: "Video examples", music: "MELANØ" }
+};
+
+const choiceClass = "inline-flex min-h-11 items-center justify-center rounded-lg border border-border/25 px-3 py-2 text-center text-sm font-semibold leading-snug text-text hover:border-accent hover:text-accent focus-visible:ring-2 focus-visible:ring-accent";
 
 function trackReviewBooking() {
   const metrika = window as Window & { ym?: (id: number, method: "reachGoal", goal: string) => void };
   metrika.ym?.(111188666, "reachGoal", "review_vk_click");
 }
 
-const portfolioUrl = "https://www.xn----8sb1aregjk5f.xn--p1ai/portfolio";
-const portfolioLabels = {
-  sites: { ru: "Смотреть примеры сайтов", en: "View website examples" },
-  automation: { ru: "Смотреть кейсы ИИ-ассистентов", en: "View AI assistant case studies" }
-};
-
-function isPortfolioService(id: string): id is keyof typeof portfolioLabels {
-  return id === "sites" || id === "automation";
-}
-
 export function ServiceOfferGrid() {
   const { messages, lang } = useI18n();
-  const { cards, expand, collapse } = messages.serviceOffers;
-  const [openId, setOpenId] = useState<string | null>(null);
-  const reduceMotion = useReducedMotion();
-  const openCard = openId ? cards.find((c) => c.id === openId) : undefined;
-  const contact = reviewContact[lang];
+  const { cards, collapse } = messages.serviceOffers;
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const labels = contactText[lang];
+  const destinations: Record<string, { href: string; label: string }[]> = {
+    sites: [{ href: `${portfolioUrl}?utm_source=neiroera&utm_medium=referral&utm_campaign=services&utm_content=sites`, label: labels.examples }],
+    automation: [{ href: `${portfolioUrl}?utm_source=neiroera&utm_medium=referral&utm_campaign=services&utm_content=automation`, label: labels.cases }],
+    training: [{ href: "#education", label: labels.plans }],
+    creative: [
+      { href: siteLinks.portfolioTelegramVideo, label: labels.video },
+      { href: siteLinks.melanoMusic, label: labels.music }
+    ]
+  };
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div className="grid items-start grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {cards.map((card) => {
-        const isOpen = openId === card.id;
-        const cardContent = (
-          <>
-            <span className="text-2xl leading-none" aria-hidden>{card.emoji}</span>
-            <span className="mt-3 min-w-0 max-w-full break-words text-lg font-bold leading-tight">{card.title}</span>
-            <span className="mt-2 min-w-0 max-w-full break-words text-lg font-bold tabular-nums tracking-tight text-accent sm:text-xl">
-              {card.priceLine}
-            </span>
-          </>
-        );
-        const cardClass = `ne-card-hover-sm flex h-full w-full max-w-full flex-col items-start overflow-hidden px-4 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:min-h-[140px] sm:px-5 sm:py-6 ${
-          isOpen ? "border-accent/50 bg-accent/[0.08] text-text" : "text-text/95"
-        }`;
-        const innerClass = "ne-card-hover__inner flex h-full w-full min-w-0 max-w-full flex-col items-start text-left";
+        const copy = offerText[lang][card.id as keyof typeof offerText.ru];
+        const isOpen = selectedId === card.id;
+        const panelId = `service-offer-panel-${card.id}`;
 
         return (
           <div key={card.id} className="min-w-0">
-            {isPortfolioService(card.id) ? (
-              <a
-                className={cardClass}
-                href={`${portfolioUrl}?utm_source=neiroera&utm_medium=referral&utm_campaign=services&utm_content=${card.id}`}
-              >
-                <span className={innerClass}>
-                  {cardContent}
-                  <span className="mt-auto pt-3 text-sm font-semibold leading-snug text-accent underline underline-offset-4">
-                    {portfolioLabels[card.id][lang]} <span aria-hidden>→</span>
-                  </span>
-                </span>
-              </a>
-            ) : (
-              <motion.button
-                type="button"
-                aria-expanded={isOpen}
-                aria-controls={isOpen ? `service-offer-panel-${card.id}` : undefined}
-                onClick={() => setOpenId((prev) => (prev === card.id ? null : card.id))}
-                whileTap={reduceMotion ? undefined : { scale: 0.985 }}
-                transition={{ type: "spring", stiffness: 480, damping: 28 }}
-                className={cardClass}
-              >
-                <span className={innerClass}>
-                  {cardContent}
-                  <span className="mt-3 text-xs font-medium text-text/55">
-                    {isOpen ? "▼" : "▶"} {isOpen ? collapse : card.id === "content" ? contact.book : expand}
-                  </span>
-                </span>
-              </motion.button>
-            )}
+            <button
+              type="button"
+              aria-expanded={isOpen}
+              aria-controls={panelId}
+              onClick={() => setSelectedId(isOpen ? null : card.id)}
+              className={`ne-card-hover-sm flex w-full flex-col items-start px-4 py-5 text-left focus-visible:ring-2 focus-visible:ring-accent sm:min-h-[240px] ${isOpen ? "border-accent/50 bg-accent/[0.08]" : ""}`}
+            >
+              <span className="text-2xl leading-none" aria-hidden>{card.emoji}</span>
+              <span className="mt-3 break-words text-base font-bold leading-tight">{copy?.title ?? card.title}</span>
+              {copy && <span className="mt-2 text-sm leading-snug text-text/80">{copy.summary}</span>}
+              <span className="mt-auto pt-3 font-bold text-accent">{card.id === "automation" ? labels.quote : card.priceLine}</span>
+              <span className="mt-3 inline-flex min-h-9 items-center rounded-lg border border-border/25 px-3 text-sm font-semibold">
+                {isOpen ? collapse : labels.choose}
+                <span className="ml-2" aria-hidden>{isOpen ? "↑" : "↓"}</span>
+              </span>
+            </button>
+            <div id={panelId} hidden={!isOpen} className="mt-2 rounded-lg border border-border/25 bg-bg px-3 py-4">
+              <h3 className="text-base font-bold leading-snug">{copy?.topic ?? card.title}</h3>
+              {(card.id === "sites" || card.id === "automation") && (
+                <ul className="mt-2 space-y-1.5 text-sm leading-snug text-text/80">
+                  {card.details.map((detail) => (
+                    <li key={detail.name}>{detail.name} · <span className="text-accent">{detail.price}</span></li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <a className={`${choiceClass} border-accent/50 bg-accent/10 text-accent`} href={siteLinks.telegramBot}>Telegram</a>
+                <a className={choiceClass} href={`${siteLinks.email}?subject=${encodeURIComponent(copy?.topic ?? card.title)}`}>{labels.email}</a>
+                <a className={choiceClass} href={vkUrl} onClick={card.id === "content" ? trackReviewBooking : undefined}>VK</a>
+                <a className={choiceClass} href={phoneUrl}>{labels.call}</a>
+              </div>
+              {destinations[card.id]?.map(({ href, label }) => (
+                <a key={href} className={`${choiceClass} mt-2 flex w-full`} href={href}>
+                  {label} <span className="ml-1" aria-hidden>→</span>
+                </a>
+              ))}
+            </div>
           </div>
         );
       })}
-
-      <AnimatePresence initial={false}>
-        {openCard ? (
-          <motion.div
-            key={openCard.id}
-            id={`service-offer-panel-${openCard.id}`}
-            role="region"
-            aria-label={openCard.title}
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
-            transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-full min-w-0"
-          >
-            <div className="overflow-hidden rounded-xl border border-border/12 bg-bg/[0.55] px-4 py-4 sm:px-6 sm:py-5">
-              <ul className="space-y-0 divide-y divide-border/10">
-                {openCard.details.map((row, i) => (
-                  <motion.li
-                    key={`${openCard.id}-${row.name}-${i}`}
-                    initial={reduceMotion ? false : { opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: reduceMotion ? 0 : 0.04 + i * 0.04, duration: 0.28 }}
-                    className="py-4 first:pt-0 last:pb-0"
-                  >
-                    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                      <span className="min-w-0 flex-1 text-base font-semibold leading-snug text-text sm:text-lg sm:leading-snug">
-                        {row.name}
-                      </span>
-                      <span className="shrink-0 text-left text-xl font-bold tabular-nums leading-tight tracking-tight text-accent sm:text-right sm:text-2xl sm:leading-tight">
-                        {row.price}
-                      </span>
-                    </div>
-                    {row.linkHref ? (
-                      <a
-                        href={row.linkHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-flex max-w-full items-center gap-1 text-sm font-medium leading-snug text-accent/95 underline decoration-accent/35 underline-offset-[3px] transition-colors hover:text-accent hover:decoration-accent sm:mt-2.5 sm:text-base"
-                      >
-                        {row.linkLabel ?? row.linkHref}
-                        <span aria-hidden className="text-sm opacity-80">
-                          ↗
-                        </span>
-                      </a>
-                    ) : null}
-                  </motion.li>
-                ))}
-              </ul>
-              {openCard.id === "content" && (
-                <div className="mt-4 flex flex-col gap-3 border-t border-border/12 pt-4 sm:flex-row sm:items-center">
-                  <Button href={reviewVkUrl} target="_self" onClick={trackReviewBooking} className="text-center">
-                    {contact.book} <span aria-hidden>→</span>
-                  </Button>
-                  <a
-                    href={`${siteLinks.email}?subject=${encodeURIComponent(contact.subject)}`}
-                    className="rounded px-3 py-3 text-center text-sm font-semibold text-accent underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-accent"
-                  >
-                    {contact.email}
-                  </a>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
     </div>
   );
 }
