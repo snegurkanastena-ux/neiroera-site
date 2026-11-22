@@ -10,18 +10,18 @@ const phoneUrl = "tel:+79922080300";
 
 const offerText = {
   ru: {
-    sites: { title: "Сайты", summary: "Лендинг или многостраничный сайт под вашу задачу.", topic: "Обсудить разработку сайта" },
-    automation: { title: "Автоматизация", summary: "Боты, ИИ-агенты и Android-приложения под вашу задачу.", topic: "Обсудить автоматизацию" },
-    content: { title: "Разбор", summary: "Консультация по вашей задаче и рекомендации по следующим шагам.", topic: "Записаться на разбор" },
-    training: { title: "Обучение нейросетям", summary: "Уроки и шаблоны. В старших тарифах — проверка заданий и наставничество.", topic: "Узнать об обучении нейросетям" },
-    creative: { title: "Видео и музыка на заказ", summary: "Видео или песня под вашу задачу.", topic: "Обсудить заказ видео или музыки" }
+    sites: { title: "Сайты", summary: "Лендинги и многостраничные сайты.", topic: "Обсудить разработку сайта" },
+    automation: { title: "Автоматизация", summary: "Боты, ИИ-агенты и Android-приложения.", topic: "Обсудить автоматизацию" },
+    content: { title: "Разбор", summary: "Консультация с рекомендациями и планом действий.", topic: "Записаться на разбор" },
+    training: { title: "Обучение нейросетям", summary: "START: уроки и шаблоны. PRACTICE: проверка заданий. VIP: личные встречи.", topic: "Узнать об обучении нейросетям" },
+    creative: { title: "Реклама и творчество", summary: "Рекламные ролики, видео и песни на заказ.", topic: "Обсудить рекламу или творческий проект" }
   },
   en: {
-    sites: { title: "Websites", summary: "A landing page or a multi-page website for your needs.", topic: "Discuss a website project" },
-    automation: { title: "Automation", summary: "Bots, AI agents and Android apps for your workflow.", topic: "Discuss automation" },
+    sites: { title: "Websites", summary: "Landing pages and multi-page websites.", topic: "Discuss a website project" },
+    automation: { title: "Automation", summary: "Bots, AI agents and Android apps.", topic: "Discuss automation" },
     content: { title: "Consultation", summary: "Review your challenge and get clear recommendations on next steps.", topic: "Book a consultation" },
-    training: { title: "AI training", summary: "Lessons and templates, with assignment feedback and mentoring in higher tiers.", topic: "Ask about AI training" },
-    creative: { title: "Custom video and music", summary: "A video or song tailored to your project.", topic: "Discuss a video or music project" }
+    training: { title: "AI training", summary: "START: lessons and templates. PRACTICE: assignment feedback. VIP: one-on-one sessions.", topic: "Ask about AI training" },
+    creative: { title: "Advertising and creative", summary: "Commercials, videos and custom songs.", topic: "Discuss an advertising or creative project" }
   }
 };
 
@@ -53,31 +53,30 @@ export function ServiceOfferGrid() {
   };
 
   return (
-    <div className="grid items-start grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {cards.map((card) => {
         const copy = offerText[lang][card.id as keyof typeof offerText.ru];
         const isOpen = selectedId === card.id;
         const panelId = `service-offer-panel-${card.id}`;
 
         return (
-          <div key={card.id} className="min-w-0">
+          <div key={card.id} className="row-span-2 grid min-w-0 grid-rows-subgrid">
             <button
               type="button"
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => setSelectedId(isOpen ? null : card.id)}
-              className={`ne-card-hover-sm flex w-full flex-col items-start px-4 py-5 text-left focus-visible:ring-2 focus-visible:ring-accent sm:min-h-[240px] ${isOpen ? "border-accent/50 bg-accent/[0.08]" : ""}`}
+              className={`ne-card-hover-sm flex min-h-[230px] w-full flex-col items-start px-4 py-5 text-left focus-visible:ring-2 focus-visible:ring-pink-400 ${isOpen ? "border-accent/50 bg-accent/[0.08]" : ""}`}
             >
               <span className="text-2xl leading-none" aria-hidden>{card.emoji}</span>
               <span className="mt-3 break-words text-base font-bold leading-tight">{copy?.title ?? card.title}</span>
               {copy && <span className="mt-2 text-sm leading-snug text-text/80">{copy.summary}</span>}
               <span className="mt-auto pt-3 font-bold text-accent">{card.id === "automation" ? labels.quote : card.priceLine}</span>
-              <span className="mt-3 inline-flex min-h-9 items-center rounded-lg border border-border/25 px-3 text-sm font-semibold">
+              <span className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-[#ff73ca] px-3 text-sm font-bold text-[#2a1021] shadow-[0_0_14px_rgba(255,115,202,0.28)]">
                 {isOpen ? collapse : labels.choose}
-                <span className="ml-2" aria-hidden>{isOpen ? "↑" : "↓"}</span>
               </span>
             </button>
-            <div id={panelId} hidden={!isOpen} className="mt-2 rounded-lg border border-border/25 bg-bg px-3 py-4">
+            <div id={panelId} hidden={!isOpen} className="row-start-auto self-start rounded-lg border border-border/25 bg-bg px-3 py-4">
               <h3 className="text-base font-bold leading-snug">{copy?.topic ?? card.title}</h3>
               {(card.id === "sites" || card.id === "automation") && (
                 <ul className="mt-2 space-y-1.5 text-sm leading-snug text-text/80">
