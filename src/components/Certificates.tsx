@@ -57,8 +57,6 @@ export function Certificates() {
           <Reveal key={certificate.src} delayMs={idx * 70} className="flex min-w-0">
             <a
               href={certificate.src}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group flex min-w-0 flex-1 flex-col overflow-hidden rounded-3xl border border-border/10 bg-bg/[0.3] p-3 no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:p-4"
               aria-label={`Открыть сертификат: ${certificate.title}`}
             >
