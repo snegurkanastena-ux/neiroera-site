@@ -13,14 +13,14 @@ const offerText = {
     sites: { title: "Сайты", summary: "Лендинги и многостраничные сайты.", topic: "Обсудить разработку сайта" },
     automation: { title: "Автоматизация", summary: "Боты, ИИ-агенты и Android-приложения.", topic: "Обсудить автоматизацию" },
     content: { title: "Разбор", summary: "Консультация с рекомендациями и планом действий.", topic: "Записаться на разбор" },
-    training: { title: "Обучение нейросетям", summary: "START: уроки и шаблоны. PRACTICE: проверка заданий. VIP: личные встречи.", topic: "Узнать об обучении нейросетям" },
+    training: { title: "Обучение нейросетям", summary: "Три варианта обучения.", topic: "Узнать об обучении нейросетям" },
     creative: { title: "Реклама и творчество", summary: "Рекламные ролики, видео и песни на заказ.", topic: "Обсудить рекламу или творческий проект" }
   },
   en: {
     sites: { title: "Websites", summary: "Landing pages and multi-page websites.", topic: "Discuss a website project" },
     automation: { title: "Automation", summary: "Bots, AI agents and Android apps.", topic: "Discuss automation" },
     content: { title: "Consultation", summary: "Review your challenge and get clear recommendations on next steps.", topic: "Book a consultation" },
-    training: { title: "AI training", summary: "START: lessons and templates. PRACTICE: assignment feedback. VIP: one-on-one sessions.", topic: "Ask about AI training" },
+    training: { title: "AI training", summary: "Three training options.", topic: "Ask about AI training" },
     creative: { title: "Advertising and creative", summary: "Commercials, videos and custom songs.", topic: "Discuss an advertising or creative project" }
   }
 };
