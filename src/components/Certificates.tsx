@@ -54,15 +54,15 @@ export function Certificates() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {certificates.map((certificate, idx) => (
-          <Reveal key={certificate.src} delayMs={idx * 70}>
+          <Reveal key={certificate.src} delayMs={idx * 70} className="flex min-w-0">
             <a
               href={certificate.src}
               target="_blank"
               rel="noopener noreferrer"
-              className="ne-card-hover group flex h-full flex-col overflow-hidden p-3 no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:p-4"
+              className="group flex min-w-0 flex-1 flex-col overflow-hidden rounded-3xl border border-border/10 bg-bg/[0.3] p-3 no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent/45 sm:p-4"
               aria-label={`Открыть сертификат: ${certificate.title}`}
             >
-              <span className="ne-card-hover__inner flex h-full flex-col">
+              <span className="flex flex-1 flex-col">
                 <span className="relative block aspect-[800/565] overflow-hidden rounded-2xl border border-border/10 bg-bg/35">
                   <Image
                     src={certificate.src}
@@ -70,16 +70,15 @@ export function Certificates() {
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     loading="lazy"
-                    className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.025]"
+                    className="object-cover object-center transition-transform duration-300 motion-safe:group-hover:scale-[1.025]"
                   />
                 </span>
                 <span className="flex flex-1 flex-col p-2 pt-4 sm:p-3 sm:pt-4">
-                  <span className="font-display text-base font-bold leading-snug text-text sm:text-lg">
+                  <span className="font-display mb-4 text-base font-bold leading-snug text-text sm:text-lg">
                     {certificate.title}
                   </span>
-                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-2xl border border-accent/30 bg-accent/[0.08] px-4 py-2 text-sm font-semibold text-accent transition-colors group-hover:border-accent/55 group-hover:bg-accent/[0.13]">
+                  <span className="mt-auto inline-flex w-fit items-center rounded-2xl border border-accent/30 bg-accent/[0.08] px-4 py-2 text-sm font-semibold text-accent">
                     Открыть сертификат
-                    <span aria-hidden>↗</span>
                   </span>
                 </span>
               </span>
