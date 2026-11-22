@@ -2,7 +2,20 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import { siteLinks } from "../lib/links";
 import { useI18n } from "../providers/SiteProviders";
+import { Button } from "./ui/Button";
+
+const reviewContact = {
+  ru: { book: "Записаться на разбор", email: "Написать на почту", subject: "Запись на разбор" },
+  en: { book: "Book a consultation", email: "Send an email", subject: "Consultation booking" }
+};
+const reviewVkUrl = new URL(new URL(siteLinks.vkPage).pathname, "https://vk.me").href;
+
+function trackReviewBooking() {
+  const metrika = window as Window & { ym?: (id: number, method: "reachGoal", goal: string) => void };
+  metrika.ym?.(111188666, "reachGoal", "review_vk_click");
+}
 
 const portfolioUrl = "https://www.xn----8sb1aregjk5f.xn--p1ai/portfolio";
 const portfolioLabels = {
@@ -20,6 +33,7 @@ export function ServiceOfferGrid() {
   const [openId, setOpenId] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
   const openCard = openId ? cards.find((c) => c.id === openId) : undefined;
+  const contact = reviewContact[lang];
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -66,7 +80,7 @@ export function ServiceOfferGrid() {
                 <span className={innerClass}>
                   {cardContent}
                   <span className="mt-3 text-xs font-medium text-text/55">
-                    {isOpen ? "▼" : "▶"} {isOpen ? collapse : expand}
+                    {isOpen ? "▼" : "▶"} {isOpen ? collapse : card.id === "content" ? contact.book : expand}
                   </span>
                 </span>
               </motion.button>
@@ -122,6 +136,19 @@ export function ServiceOfferGrid() {
                   </motion.li>
                 ))}
               </ul>
+              {openCard.id === "content" && (
+                <div className="mt-4 flex flex-col gap-3 border-t border-border/12 pt-4 sm:flex-row sm:items-center">
+                  <Button href={reviewVkUrl} target="_self" onClick={trackReviewBooking} className="text-center">
+                    {contact.book} <span aria-hidden>→</span>
+                  </Button>
+                  <a
+                    href={`${siteLinks.email}?subject=${encodeURIComponent(contact.subject)}`}
+                    className="rounded px-3 py-3 text-center text-sm font-semibold text-accent underline underline-offset-4 focus-visible:ring-2 focus-visible:ring-accent"
+                  >
+                    {contact.email}
+                  </a>
+                </div>
+              )}
             </div>
           </motion.div>
         ) : null}
